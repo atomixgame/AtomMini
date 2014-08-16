@@ -32,6 +32,7 @@ import com.jme3.texture.Texture;
 import java.util.EnumSet;
 import java.util.List;
 import org.apache.commons.configuration.Configuration;
+import sg.atom.core.lifecycle.IGameCycle;
 
 /**
  * An AppState automaticly reload assets when it out of date.
@@ -44,7 +45,7 @@ import org.apache.commons.configuration.Configuration;
  *
  * @author atomix
  */
-public class AtomAssetManager implements AssetManager, AppState {
+public class AtomAssetManager implements AssetManager, AppState, IGameCycle {
 
     AtomAssetCache assetCache;
     EventBus eventBus;

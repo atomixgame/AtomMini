@@ -179,7 +179,7 @@ public class Skill {
             effectManager.attachEffect(gameCharacter.getLocation(), effectSpatial);
         } else {
             //Jump back and forth
-            gameCharacter.getCharacterControl().skillAttack(target);
+//            gameCharacter.getCharacterControl().skillAttack(target);
 
 
         }

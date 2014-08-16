@@ -20,6 +20,7 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.control.Control;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,7 @@ public class GameCharacter implements Savable, Agent, Cloneable {
     protected Skill mainSkill;
     protected Item currentItem;
     protected Combat touchedCombat;
-    protected BaseCharacterControl characterControl;
+    protected Control characterControl;
     protected CursorControl cursorControl;
     protected Quest currentQuest;
     protected Combat currentCombat;
@@ -100,27 +101,13 @@ public class GameCharacter implements Savable, Agent, Cloneable {
 
     public void createSkills() {
         SkillManager skillManager = SkillManager.getInstance();
-        skills.add(skillManager.getSkillByName("Skill-001"));
-        skills.add(skillManager.getSkillByName("Skill-002"));
-        skills.add(skillManager.getSkillByName("Skill-003"));
-        skills.add(skillManager.getSkillByName("Skill-004"));
-        skills.add(skillManager.getSkillByName("Skill-005"));
-        skills.add(skillManager.getSkillByName("Skill-006"));
-
         this.mainSkill = skills.get(0);
     }
 
     public void createInventory() {
         inventory = new Inventory(5, 5);
-
         items = new ArrayList<Item>();
         ItemManager itemManager = ItemManager.getInstance();
-        items.add(itemManager.getItemByName("Sword-001"));
-        items.add(itemManager.getItemByName("Sword-002"));
-        items.add(itemManager.getItemByName("Sword-003"));
-        items.add(itemManager.getItemByName("Sword-004"));
-        items.add(itemManager.getItemByName("Sword-005"));
-        items.add(itemManager.getItemByName("Sword-006"));
         inventory.addAll(items);
 
         this.currentItem = items.get(0);
@@ -139,7 +126,7 @@ public class GameCharacter implements Savable, Agent, Cloneable {
 
     public void onDead() {
         System.out.println(" " + name + " dead!");
-        characterControl.let("Die");
+//        characterControl.let("Die");
         cursorControl.setShow3DCussor(true);
         cursorControl.setColor(ColorRGBA.Gray);
     }
@@ -166,29 +153,29 @@ public class GameCharacter implements Savable, Agent, Cloneable {
     }
 
     public void onTurn() {
-        System.out.println("On turn :" + name);
-        //Find target automaticly
-        List<GameCharacter> nearBy = getGamePlayManager().getCombatGamePlay().getBy(byRange(this, range), byEnemy(this), byAlive(true));
-        if (!nearBy.isEmpty()) {
-            GameCharacter target = nearBy.get(0);
-
-            //And use main Skill
-            if (cursorControl != null) {
-                cursorControl.setShow3DCussor(true);
-                cursorControl.setColor(ColorRGBA.Orange);
-
-                //FIXME: Should be in Animation finish!
-                stageManager.queueAction(this, new Runnable() {
-                    public void run() {
-                        if (!isDead()) {
-                            cursorControl.setShow3DCussor(false);
-                        }
-                    }
-                }, 2f);
-            }
-            useSkill(mainSkill, target);
-            this.turnDelay = turnDelayMax;
-        }
+//        System.out.println("On turn :" + name);
+//        //Find target automaticly
+//        List<GameCharacter> nearBy = getGamePlayManager().getCombatGamePlay().getBy(byRange(this, range), byEnemy(this), byAlive(true));
+//        if (!nearBy.isEmpty()) {
+//            GameCharacter target = nearBy.get(0);
+//
+//            //And use main Skill
+//            if (cursorControl != null) {
+//                cursorControl.setShow3DCussor(true);
+//                cursorControl.setColor(ColorRGBA.Orange);
+//
+//                //FIXME: Should be in Animation finish!
+//                stageManager.queueAction(this, new Runnable() {
+//                    public void run() {
+//                        if (!isDead()) {
+//                            cursorControl.setShow3DCussor(false);
+//                        }
+//                    }
+//                }, 2f);
+//            }
+//            useSkill(mainSkill, target);
+//            this.turnDelay = turnDelayMax;
+//        }
     }
 
     public void onEndTurn() {
@@ -213,7 +200,7 @@ public class GameCharacter implements Savable, Agent, Cloneable {
         System.out.println(" Use skill :" + skill.toString() + " to: " + target);
         if (target != null) {
             if (characterControl != null) {
-                characterControl.face(target);
+//                characterControl.face(target);
             }
             // Is there any calculation?
             skill.calculate(this, target);
@@ -365,7 +352,7 @@ public class GameCharacter implements Savable, Agent, Cloneable {
         }
     }
 
-    //GETTER & SETTER
+    //GETTER & SETTER-----------------------------------------------------------
     public Node getModelNode() {
         return (Node) model;
     }
@@ -414,11 +401,11 @@ public class GameCharacter implements Savable, Agent, Cloneable {
         return stageManager;
     }
 
-    public BaseCharacterControl getCharacterControl() {
+    public Control getCharacterControl() {
         return characterControl;
     }
 
-    public void setCharacterControl(BaseCharacterControl characterControl) {
+    public void setCharacterControl(Control characterControl) {
         this.characterControl = characterControl;
     }
 

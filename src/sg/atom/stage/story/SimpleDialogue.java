@@ -28,28 +28,29 @@ import sg.atom.stage.StageManager;
  */
 public class SimpleDialogue {
 
-    String title;
-    int status;
-    int lineNum;
-    private int currentLine;
-    private DialogueNode currentNode;
-    private DialogueChoice parentNode = null;
+    protected int id;
+    protected String title;
+    protected int status;
+    protected int lineNum;
+    protected int currentLine;
+    protected DialogueNode currentNode;
+    protected DialogueChoice parentNode = null;
 //    List<String> alias;
 //    List<String> actionAlias;
 //    List<String> varAlias;    
-    List<String> characterAlias;
-    HashMap<String, GameAction> actionMap = new HashMap<String, GameAction>();
-    HashMap<String, Object> vars = new HashMap<String, Object>();
-    HashMap<String, GameCharacter> characterMap = new HashMap<String, GameCharacter>();
-    List<GameCharacter> characters;
-    String place;
-    TreeTraverser<DialogueNode> dialogueTraverser;
-    List<DialogueNode> sequence;
-    GamePlayManager gamePlayManager;
-    private StageManager stageManager;
-    private AssetManager assetManager;
-    String choicePrefix = "Choice";
-    int NO_ANSWER = -1;
+    protected List<String> characterAlias;
+    protected HashMap<String, GameAction> actionMap = new HashMap<String, GameAction>();
+    protected HashMap<String, Object> vars = new HashMap<String, Object>();
+    protected HashMap<String, GameCharacter> characterMap = new HashMap<String, GameCharacter>();
+    protected List<GameCharacter> characters;
+    protected String place;
+    protected TreeTraverser<DialogueNode> dialogueTraverser;
+    protected List<DialogueNode> sequence;
+    protected GamePlayManager gamePlayManager;
+    protected StageManager stageManager;
+    protected AssetManager assetManager;
+    protected String choicePrefix = "Choice";
+    protected int NO_ANSWER = -1;
 
     public SimpleDialogue(String title, StageManager stageManager) {
         this.title = title;
@@ -79,8 +80,6 @@ public class SimpleDialogue {
     }
 
     public void initVars() {
-        characterMap.put("B", new GameCharacter("Kiaira"));
-        this.place = "Village";
     }
 
     public void load(String path) {
@@ -226,10 +225,9 @@ public class SimpleDialogue {
     }
 
     public void doAction(String actionName) {
-        System.out.println(" Do action " + actionName);
     }
 
-    private void addMappings(int num) {
+    protected void addMappings(int num) {
 
         InputManager inputManager = stageManager.getApp().getInputManager();
 //        for (int i = 0; i < 9; i++) {
@@ -268,6 +266,6 @@ public class SimpleDialogue {
 //};
 
     public String getMainCharacterName() {
-        return "B";
+        return null;
     }
 }

@@ -9,6 +9,7 @@ import com.jme3.math.Transform;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.HashMap;
+import org.apache.commons.configuration.Configuration;
 
 /**
  *
@@ -23,15 +24,30 @@ public class GameLevel {
     protected int picture;
     protected String path;
     protected String description;
-    protected HashMap<String, Transform> camAngles;
     protected Node levelNode;
-
+    protected HashMap<String, Transform> levelPoints;
+    
     public GameLevel(String name) {
         this.name = name;
     }
 
+    public void load(){
+        
+    }
     
+    public void config(Configuration configuration){
+        
+    }
     
+    public void update(float tpf){
+        
+    }
+    
+    public void finish(){
+        
+    }
+    
+    //GETTER & SETTER
     public Vector3f getStartPos() {
         return Vector3f.ZERO;
     }
@@ -40,10 +56,7 @@ public class GameLevel {
         return new Node("LevelNode");
     }
 
-    public void load() {
-    }
-
-    public GameLevel nextLevel() {
+    public GameLevel getNextLevel() {
         return null;
     }
 

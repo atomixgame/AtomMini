@@ -42,7 +42,7 @@ public class CombatFightGamePlay extends BaseGamePlay {
     }
 
     public void onFightStart(Combat combat) {
-        this.fightState = stageManager.getApp().getStateManager().getState(FightState.class);
+        this.fightState = app.getStateManager().getState(FightState.class);
         //this.stageConner = fightState.getStageConner();
         this.currentCombat = combat;
         setupCharacter();
@@ -91,7 +91,7 @@ public class CombatFightGamePlay extends BaseGamePlay {
                 float cz = (-stageSizeY / 2) + stageSizeY / numOfRow * row;
                 model.setLocalTranslation(cx, 0, cz);
                 model.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.PI * direction, Vector3f.UNIT_Y));
-                stageManager.placeCharacter(gc);
+                app.getStageManager().placeCharacter(gc);
 
                 // Increase the delay
                 if (gc.isNpc()) {
@@ -177,7 +177,7 @@ public class CombatFightGamePlay extends BaseGamePlay {
 
     private void onDead(GameCharacter gameCharacter) {
         gameCharacter.onDead();
-        gameCharacter.onOutStage(stageManager);
+        gameCharacter.onOutStage(app.getStageManager());
         //stageManager.removeCharacter(pc, 1f);
     }
 //    private void nextTurn() {

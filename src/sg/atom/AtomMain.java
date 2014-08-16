@@ -11,11 +11,11 @@ import sg.atom.core.lifecycle.IGameCycle;
 import sg.atom.corex.MaterialManager;
 import sg.atom.corex.asset.AtomAssetManager;
 import sg.atom.gameplay.GamePlayManager;
+import sg.atom.net.NetworkManager;
 import sg.atom.stage.EffectManager;
 import sg.atom.stage.SoundManager;
 import sg.atom.stage.StageManager;
 import sg.atom.state.GameStateManager;
-import sg.atom.state.MainMenuState;
 import sg.atom.ui.GUIManager;
 import sg.atom.ui.ToneGodGUIManager;
 import sg.atom.world.WorldManager;
@@ -36,6 +36,7 @@ public class AtomMain extends SimpleApplication implements IGameCycle {
     protected MaterialManager materialManager;
     protected EffectManager effectManager;
     protected EntityManager entityManager;
+    protected NetworkManager networkManager;
     protected DeviceInfo deviceInfo;
     protected boolean customCycle = false;
 
@@ -210,6 +211,17 @@ public class AtomMain extends SimpleApplication implements IGameCycle {
     public void setCustomCycle(boolean customCycle) {
         this.customCycle = customCycle;
     }
-    
+
+    public AtomAssetManager getExAssetManager() {
+        return exAssetManager;
+    }
+
+    public EffectManager getEffectManager() {
+        return effectManager;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }  
     
 }

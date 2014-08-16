@@ -13,7 +13,6 @@ import java.util.ArrayList;
  * @author CuongNguyen
  */
 public class Match {
-    
     protected int id;
     protected ArrayList<Player> characters;
 }

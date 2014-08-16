@@ -17,19 +17,31 @@ import sg.atom.stage.StageManager;
  *
  * @author cuong.nguyenmanh2
  */
-public abstract class BaseGamePlay extends AbstractAppState implements IGameCycle{
+public abstract class BaseGamePlay extends AbstractAppState implements IGameCycle {
 
-    protected InputManager inputManager;
     protected GamePlayManager gamePlayManager;
-    protected StageManager stageManager;
     protected AtomMain app;
+
+    public BaseGamePlay(AtomMain app) {
+        this.app = app;
+        this.gamePlayManager = app.getGamePlayManager();
+    }
 
     public BaseGamePlay(GamePlayManager gamePlayManager) {
         this.gamePlayManager = gamePlayManager;
-        this.app = stageManager.getApp();
-        this.inputManager = this.app.getInputManager();
+        this.app = gamePlayManager.getApp();
     }
 
+    @Override
+    public void initialize(AppStateManager stateManager, Application app) {
+        super.initialize(stateManager, app);
+        this.app = (AtomMain) app;
+        this.gamePlayManager = getApp().getGamePlayManager();
+//        this.stageManager = getApp().getStageManager();
+//        this.inputManager = getApp().getInputManager();
+    }
+
+    //SETTER & GETTER
     public StageManager getStageManager() {
         return app.getStageManager();
     }
@@ -40,16 +52,7 @@ public abstract class BaseGamePlay extends AbstractAppState implements IGameCycl
 
     public void setCharacters(List<GameCharacter> characters) {
         gamePlayManager.setupCharacters(characters);
-    }   
-
-    @Override
-    public void initialize(AppStateManager stateManager, Application app) {
-        super.initialize(stateManager, app); 
-        this.app = (AtomMain)app;
-        this.gamePlayManager = getApp().getGamePlayManager();
-        this.stageManager = getApp().getStageManager();
-        this.inputManager = this.app.getInputManager();
-    }   
+    }
 
     public AtomMain getApp() {
         return app;

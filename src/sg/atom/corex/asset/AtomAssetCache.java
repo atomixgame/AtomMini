@@ -11,6 +11,7 @@ import com.jme3.asset.AssetKey;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.cache.AssetCache;
 import org.apache.commons.configuration.Configuration;
+import sg.atom.core.lifecycle.IGameCycle;
 import sg.atom.core.lifecycle.ManagableObject;
 
 /**
@@ -76,10 +77,13 @@ public class AtomAssetCache implements AssetCache, ManagableObject {
     }
 
 
-    public void init(Application app, Object... managers) {
+    public void init(Application app) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public void initManagers(IGameCycle... managers){
+        
+    }
 
     public void load(AssetManager assetManager) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

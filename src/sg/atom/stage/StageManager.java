@@ -53,7 +53,7 @@ import sg.atom.state.InGameState;
 import sg.atom.world.WorldManager;
 
 /**
- * StageManager for Stage, Characters and Effects.
+ * StageManager for Stage, Actors (Characters) and Camera.
  *
  * @author CuongNguyen
  */
@@ -438,7 +438,7 @@ public class StageManager  implements IGameCycle{
 
     public void onTouch(Vector3f touchLoc) {
         cursorControl.placeCursor(touchLoc);
-        gamePlayManager.getAdventureGamePlay().getCharacterControl().letMoveTo(touchLoc);
+//        gamePlayManager.getAdventureGamePlay().getCharacterControl().letMoveTo(touchLoc);
     }
 
     public void onSelect(Geometry target, float intensity) {

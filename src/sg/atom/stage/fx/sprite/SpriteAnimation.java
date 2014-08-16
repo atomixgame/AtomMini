@@ -6,7 +6,7 @@ package sg.atom.stage.fx.sprite;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import sg.atom.corex.AtomAnimation;
+import sg.atom.corex.animation.AtomAnimation;
 
 
 /**

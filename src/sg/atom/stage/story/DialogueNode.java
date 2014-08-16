@@ -74,6 +74,22 @@ public class DialogueNode {
     public void setType(int type) {
         this.type = type;
     }
+
+    public String getCharacterName() {
+        return characterName;
+    }
+
+    public void setCharacterName(String characterName) {
+        this.characterName = characterName;
+    }
+
+    public String getActionName() {
+        return actionName;
+    }
+
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
+    }
     
     
 }

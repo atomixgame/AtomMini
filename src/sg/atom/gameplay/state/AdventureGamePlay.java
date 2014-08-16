@@ -5,6 +5,7 @@
 package sg.atom.gameplay.state;
 
 import com.jme3.input.ChaseCamera;
+import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.Vector3f;
@@ -19,7 +20,6 @@ import sg.atom.gameplay.Player;
 import sg.atom.gameplay.Quest;
 import sg.atom.gameplay.Skill;
 import sg.atom.gameplay.controls.PlayerCharacterControl;
-import sg.atom.stage.StageManager;
 
 /**
  *
@@ -44,7 +44,7 @@ public class AdventureGamePlay extends BaseGamePlay {
     }
 
     public void setupInput() {
-
+        InputManager inputManager = app.getInputManager();
         inputManager.addMapping("CharLeft", new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping("CharRight", new KeyTrigger(KeyInput.KEY_D));
         inputManager.addMapping("CharUp", new KeyTrigger(KeyInput.KEY_W));
@@ -69,7 +69,7 @@ public class AdventureGamePlay extends BaseGamePlay {
         mainPlayer.setCharacter(skai);
         // Other characters
         GameCharacter aerith = new GameCharacter("Aerith", mainPlayer, app.getWorldManager().getModel("Aerith"));
-        new PlayerCharacterControl(stageManager, aerith);
+        new PlayerCharacterControl(app.getStageManager(), aerith);
         // Place characters
         characters.add(skai);
         characters.add(aerith);

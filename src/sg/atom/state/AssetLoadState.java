@@ -25,9 +25,9 @@ import sg.atom.ui.GUIManager;
  *
  * @author cuong.nguyenmanh2
  */
-public class LoadingState extends AbstractAppState {
+public class AssetLoadState extends AbstractAppState {
 
-    static final Logger logger = Logger.getLogger(LoadingState.class.getName());
+    static final Logger logger = Logger.getLogger(AssetLoadState.class.getName());
     private AtomMain app;
     private Node rootNode;
     //Managers

@@ -21,7 +21,9 @@ import org.apache.commons.configuration.Configuration;
  */
 public interface ManagableObject {
 
-    public void init(Application app, Object... managers);
+    public void init(Application app);
+    
+    public void initManagers(IGameCycle... managers);
 
     public void load(AssetManager assetManager);
 

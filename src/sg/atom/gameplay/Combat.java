@@ -23,7 +23,7 @@ public class Combat {
     
     public Combat(GamePlayManager gamePlayManager) {
         this.gamePlayManager = gamePlayManager;
-        this.combatFightGamePlay = gamePlayManager.getCombatGamePlay();
+//        this.combatFightGamePlay = gamePlayManager.getCombatGamePlay();
     }
 
     public void start(Player player, List<GameCharacter> npc) {

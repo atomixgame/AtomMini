@@ -4,8 +4,10 @@
  */
 package sg.atom.gameplay.managers;
 
+import java.util.ArrayList;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.core.lifecycle.IGameCycle;
+import sg.atom.gameplay.Player;
 
 /**
  *
@@ -17,6 +19,20 @@ public class PlayerManager  implements IGameCycle{
     public static final int STATUS_JOINED = 1;
     public static final int STATUS_BANNED = 2;
     
+        ArrayList<Player> players;
+
+    public void collectPlayerInfo(){
+        // If on Desktop
+        // If on Android
+    }
+    //Events--------------------------------------------------------------------
+    public void onPlayerJoined(String gameLeague) {
+    }
+
+    public void onPlayerRegistered(String gameLeague) {
+    }
+    //
+    //Cycle
     public void init() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

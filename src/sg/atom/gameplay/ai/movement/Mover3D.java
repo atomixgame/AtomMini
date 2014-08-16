@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.atom.utils.trading;
+package sg.atom.gameplay.ai.movement;
 
 /**
  *
  * @author CuongNguyen
  */
-public interface PaymentPolicy {
+public class Mover3D {
     
 }

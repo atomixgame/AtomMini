@@ -47,13 +47,14 @@ public class EffectManager implements IGameCycle{
     public static final int MOTION_RECT = 3;
     public static final int MOTION_TRI = 4;
     //Timing & curves
-    private StageManager stageManager;
-    private HashMap<String, String> effectMap;
-    private HashMap<String, Spatial> effectModelMap;
-    private final AssetManager assetManager;
-    private final Node worldNode;
-    private Node effectsModel;
-    private Cinematic effectCine;
+    protected AtomMain app;
+    protected StageManager stageManager;
+    protected HashMap<String, String> effectMap;
+    protected HashMap<String, Spatial> effectModelMap;
+    protected AssetManager assetManager;
+    protected Node worldNode;
+    protected Node effectsModel;
+    protected Cinematic effectCine;
 
     public EffectManager(AtomMain app) {
         this.stageManager = app.getStageManager();

@@ -30,10 +30,10 @@ import sg.atom.ui.nifty.UIFightScreen;
 import sg.atom.ui.nifty.UIInGameScreen;
 
 /**
- *
+ * GamePlayManager is Manager for GamePlay, Player, Character, Level, Score.
  * @author CuongNguyen
  */
-public class GamePlayManager  implements IGameCycle{
+public class GamePlayManager implements IGameCycle {
 
     protected final AtomMain app;
     protected final AssetManager assetManager;
@@ -50,8 +50,7 @@ public class GamePlayManager  implements IGameCycle{
     protected int playMode = -1;
     protected ArrayList<GameLevel> levels;
     protected GameLevel currentLevel;
-    protected CombatFightGamePlay combatGamePlay;
-    protected AdventureGamePlay adventureGamePlay;
+    protected ArrayList<BaseGamePlay> gamePlayList;
     protected BaseGamePlay currentGamePlay;
     protected boolean firstRun = true;
 
@@ -65,15 +64,18 @@ public class GamePlayManager  implements IGameCycle{
         this.stageManager = app.getStageManager();
     }
 
-    public void loadLevels(AssetKey assetKey){
+    public void loadLevels(AssetKey assetKey) {
         ArrayList<GameLevel> gameLevels = (ArrayList<GameLevel>) assetManager.loadAsset(assetKey);
     }
+
+    public void loadLevels() {
+    }
+
     public void goInGame() {
         setupPlayer();
         startLevel(getCurrentLevel());
         setupInput();
-        this.adventureGamePlay = new AdventureGamePlay(this);
-        this.combatGamePlay = new CombatFightGamePlay(this);
+        setupGamePlayStates();
         //adventureGamePlay.startGamePlay();
     }
 
@@ -86,13 +88,13 @@ public class GamePlayManager  implements IGameCycle{
     public void setupPlayer() {
         mainPlayer = new Player("Atomix");
     }
+    
+    public void setupGamePlayStates(){
+        
+    }
 
     public void update(float tpf) {
-        if (playMode == 1) {
-            combatGamePlay.update(tpf);
-        } else {
-            adventureGamePlay.update(tpf);
-        }
+
     }
 
     public void startLevel(GameLevel level) {
@@ -185,7 +187,7 @@ public class GamePlayManager  implements IGameCycle{
     public void initLevel(GameLevel currentLevel) {
     }
     //GETTER & SETTER
-    
+
     public void setupCharacters(List<GameCharacter> characters) {
         this.characters = Lists.newArrayList(characters);
     }
@@ -210,15 +212,12 @@ public class GamePlayManager  implements IGameCycle{
         return stageManager;
     }
 
-    public CombatFightGamePlay getCombatGamePlay() {
-        return combatGamePlay;
-    }
-
-    public AdventureGamePlay getAdventureGamePlay() {
-        return adventureGamePlay;
-    }
-
     public Player getMainPlayer() {
         return mainPlayer;
     }
+
+    public AtomMain getApp() {
+        return app;
+    }
+    
 }

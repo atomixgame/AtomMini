@@ -179,7 +179,7 @@ public class BaseCharacterControl extends AbstractControl implements AnimEventLi
                 spatial.getLocalTranslation().clone());
 
 
-        target.getCharacterControl().onSkillAttackHurt(character);
+//        target.getCharacterControl().onSkillAttackHurt(character);
     }
 
     public void letClearTargetPos() {

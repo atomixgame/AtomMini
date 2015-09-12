@@ -13,31 +13,29 @@ import java.util.logging.Logger;
 
 import sg.atom.AtomMain;
 import sg.atom.gameplay.GamePlayManager;
-import sg.atom.stage.StageManager;
-import sg.atom.ui.GUIManager;
-import sg.atom.ui.NiftyGUIManager;
-import sg.atom.ui.nifty.UIInGameScreen;
+import sg.atom.corex.managers.StageManager;
+import sg.atom.corex.managers.GUIManager;
+import sg.atom.corex.ui.NiftyGUIManager;
+import sg.atom.corex.ui.nifty.UIInGameScreen;
 
 /**
  *
  * @author cuong.nguyenmanh2
  */
 public class InGameState extends AbstractAppState {
-    private static final Logger logger = Logger.getLogger(CreditState.class.getName());
-    
+
+    private static final Logger logger = Logger.getLogger(InGameState.class.getName());
     //FIXME: Should not use shortcuts!
     protected AtomMain app;
     protected Node rootNode;
     protected AssetManager assetManager;
     protected AppStateManager stateManager;
     protected GameStateManager gameStateManager;
-    
     protected GUIManager guiManager;
     protected StageManager stageManager;
     protected GamePlayManager gamePlayManager;
     protected UIInGameScreen screenController;
     protected InputManager inputManager;
-    
     //FIXME: replace with Int state
     protected boolean gamePause;
     protected ActionListener actionListener;
@@ -73,24 +71,24 @@ public class InGameState extends AbstractAppState {
         }
     }
 
-    public void fromState(Class<? extends AbstractAppState> previousState){
-        
+    public void fromState(Class<? extends AbstractAppState> previousState) {
     }
+
     public void setupInput() {
         actionListener = new ActionListener() {
-        public void onAction(String name, boolean keyPressed, float tpf) {
-            if (name.equals("dialogue") && keyPressed) {
-                if (!guiManager.isCurrentScreen("InGameScreen")) {
-                    guiManager.goToScreen("InGameScreen");
-                } else {
-                    guiManager.goToScreen("DialogueScreen");
+            public void onAction(String name, boolean keyPressed, float tpf) {
+                if (name.equals("dialogue") && keyPressed) {
+                    if (!guiManager.isCurrentScreen("InGameScreen")) {
+                        guiManager.goToScreen("InGameScreen");
+                    } else {
+                        guiManager.goToScreen("DialogueScreen");
+                    }
+                } else if (name.equals("fight") && keyPressed) {
+                    toState(FightState.class);
                 }
-            } else if (name.equals("fight") && keyPressed) {
-                toState(FightState.class);
             }
-        }
-    };
-        
+        };
+
         inputManager.addMapping("dialogue", new KeyTrigger(KeyInput.KEY_K));
         inputManager.addListener(actionListener, "dialogue");
 
@@ -98,7 +96,7 @@ public class InGameState extends AbstractAppState {
         inputManager.addListener(actionListener, "fight");
     }
 
-    public void bindUI(GUIManager manager,Object ui) {
+    public void bindUI(GUIManager manager, Object ui) {
         if (guiManager.isCurrentScreen("InGameScreen")) {
             this.guiManager.getInputManager().setCursorVisible(true);
             if (guiManager instanceof NiftyGUIManager) {
@@ -110,7 +108,7 @@ public class InGameState extends AbstractAppState {
         }
     }
 
-    public void unbindUI(GUIManager manager,Object ui) {
+    public void unbindUI(GUIManager manager, Object ui) {
         if (guiManager.isCurrentScreen("InGameScreen")) {
             //app.getGuiNode().detachAllChildren();
         }
@@ -131,14 +129,6 @@ public class InGameState extends AbstractAppState {
         }
     }
 
-    public void goInGame() {
-        setupInput();
-        stageManager.goInGame();
-        guiManager.goToScreen("InGameScreen");
-        stageManager.goNormalScene();
-//        stageManager.getGamePlayManager().goNormalScene();
-    }
-
     public void pauseGame() {
         //FIXME: Move to PauseState
 //        guiManager.pauseGame();
@@ -146,6 +136,11 @@ public class InGameState extends AbstractAppState {
     }
 
     public void startGame() {
+        setupInput();
+        stageManager.onStageReady();
+        guiManager.goToScreen("InGameScreen");
+//        stageManager.goToScene("Adventure");
+//        stageManager.getGamePlayManager().goNormalScene();
 //        stateManager.attach(npcManager);
 //        stateManager.attach(terrainManager);
     }
@@ -164,15 +159,15 @@ public class InGameState extends AbstractAppState {
         super.setEnabled(enabled);
 
         if (enabled) {
-            goInGame();
+            startGame();
         } else {
         }
     }
 
-    public Object getUIFacade(){
+    public Object getUIFacade() {
         return null;
     }
-    
+
     public UIInGameScreen getScreenController() {
         return screenController;
     }

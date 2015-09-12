@@ -11,8 +11,8 @@ import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import java.util.logging.Logger;
 import sg.atom.AtomMain;
-import sg.atom.stage.StageManager;
-import sg.atom.ui.GUIManager;
+import sg.atom.corex.managers.StageManager;
+import sg.atom.corex.managers.GUIManager;
 
 /**
  *

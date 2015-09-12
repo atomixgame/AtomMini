@@ -2,21 +2,18 @@ package sg.atom.core.execution;
 
 public interface IProgress {
 
-    public float getProgress();
+    public static final float DEFAULT_RATE = 1;
 
-    public void addProgress(float rate);
+    float getProgress();
 
-    public void addProgress(float rate, String activity);
+    void setProgress(float progress);
 
-    public void setProgress(float progress);
+    float getContributedRate();
 
-    public void setProgress(float progress, String activity);
+    void addListener(IProgress.Listener listener);
 
-    public float increment();
+    public interface Listener {
 
-    public float increment(int steps);
-
-    public float increment(String activity);
-
-    public float increment(int steps, String activity);
+        void onProgress(float progress);
+    }
 }

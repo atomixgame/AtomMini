@@ -20,7 +20,7 @@ public class Item {
     String updateState;
     String versionState;
     String description = "";
-    GameCharacter owner;
+    CommonGameCharacter owner;
     String icon;
     int width = 1;
     int height = 1;
@@ -55,7 +55,7 @@ public class Item {
         
     }
     
-    public void onUse(GameCharacter character) {
+    public void onUse(CommonGameCharacter character) {
         
     }
     //GETTER & SETTER -------------------------------------------------------------------
@@ -99,11 +99,11 @@ public class Item {
         this.description = description;
     }
 
-    public GameCharacter getOwner() {
+    public CommonGameCharacter getOwner() {
         return owner;
     }
 
-    public void setOwner(GameCharacter owner) {
+    public void setOwner(CommonGameCharacter owner) {
         this.owner = owner;
     }
 

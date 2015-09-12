@@ -19,7 +19,7 @@ public class Forces3f {
         float d = startPos.distance(targetPos);
         if (d != 0) {
             float amount = (time * speed) / d;
-            return new Vector3f(0, 0, 0).interpolate(startPos, targetPos, amount);
+            return new Vector3f(0, 0, 0).interpolateLocal(startPos, targetPos, amount);
         } else {
             return new Vector3f(1, 1, 1);
         }
@@ -28,7 +28,7 @@ public class Forces3f {
     public static Vector3f linearVecTargetedDuration(float time, float duration, Vector3f startPos, Vector3f targetPos) {
         float d = startPos.distance(targetPos);
         if (d != 0) {
-            return new Vector3f(0, 0, 0).interpolate(startPos, targetPos, time / duration);
+            return new Vector3f(0, 0, 0).interpolateLocal(startPos, targetPos, time / duration);
         } else {
             return new Vector3f(1, 1, 1);
         }

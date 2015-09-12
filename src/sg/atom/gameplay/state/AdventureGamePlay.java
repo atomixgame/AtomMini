@@ -14,7 +14,7 @@ import com.simsilica.es.Entity;
 import java.util.ArrayList;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.gameplay.BaseGamePlay;
-import sg.atom.gameplay.GameCharacter;
+import sg.atom.gameplay.CommonGameCharacter;
 import sg.atom.gameplay.GamePlayManager;
 import sg.atom.gameplay.Player;
 import sg.atom.gameplay.Quest;
@@ -30,7 +30,7 @@ public class AdventureGamePlay extends BaseGamePlay {
     private ChaseCamera chaseCam;
     private Spatial playerModel;
     private PlayerCharacterControl playerCharacterControl;
-    private ArrayList<GameCharacter> characters;
+    private ArrayList<CommonGameCharacter> characters;
     private Quest currentQuest;
 
     public AdventureGamePlay(GamePlayManager gamePlayManager) {
@@ -58,23 +58,23 @@ public class AdventureGamePlay extends BaseGamePlay {
 
     public void setupCharacters() {
         System.out.println("Create charaters!");
-        characters = new ArrayList<GameCharacter>();
+        characters = new ArrayList<CommonGameCharacter>();
 
         // FIXME: Simplize this?
         // Main character
         Player mainPlayer = gamePlayManager.getMainPlayer();
         playerModel = app.getWorldManager().getModel("Skai");
-        GameCharacter skai = new GameCharacter("Skai", mainPlayer, playerModel);
+        CommonGameCharacter skai = new CommonGameCharacter("Skai", mainPlayer, playerModel);
         playerCharacterControl = new PlayerCharacterControl(getStageManager(), skai);
         mainPlayer.setCharacter(skai);
         // Other characters
-        GameCharacter aerith = new GameCharacter("Aerith", mainPlayer, app.getWorldManager().getModel("Aerith"));
+        CommonGameCharacter aerith = new CommonGameCharacter("Aerith", mainPlayer, app.getWorldManager().getModel("Aerith"));
         new PlayerCharacterControl(app.getStageManager(), aerith);
         // Place characters
         characters.add(skai);
         characters.add(aerith);
-        getStageManager().placeCharacter(skai, new Vector3f());
-        getStageManager().placeCharacter(aerith, new Vector3f(1, 0, 2));
+        getStageManager().putCharacter(skai, new Vector3f());
+        getStageManager().putCharacter(aerith, new Vector3f(1, 0, 2));
         getGamePlayManager().setupCharacters(characters);
 
         //Misc
@@ -95,7 +95,7 @@ public class AdventureGamePlay extends BaseGamePlay {
     }
     //Dialouge------------------------------------------------------------------
 
-    public void startDialogue(GameCharacter... gameCharacters) {
+    public void startDialogue(CommonGameCharacter... gameCharacters) {
     }
 
     //Events--------------------------------------------------------------------
@@ -105,7 +105,7 @@ public class AdventureGamePlay extends BaseGamePlay {
     public void onSelect(Entity entity) {
     }
 
-    public void onSelect(GameCharacter gameCharacter) {
+    public void onSelect(CommonGameCharacter gameCharacter) {
     }
 
     public void onSelect(int option) {

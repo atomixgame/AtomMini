@@ -9,9 +9,9 @@ import java.util.List;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.gameplay.BaseGamePlay;
 import sg.atom.gameplay.Combat;
-import sg.atom.gameplay.GameCharacter;
+import sg.atom.gameplay.CommonGameCharacter;
 import sg.atom.gameplay.GamePlayManager;
-import sg.atom.stage.StageManager;
+import sg.atom.corex.managers.StageManager;
 import sg.atom.state.FightState;
 
 /**
@@ -46,9 +46,9 @@ public class CombatFightGamePlay extends BaseGamePlay {
         //this.stageConner = fightState.getStageConner();
         this.currentCombat = combat;
         setupCharacter();
-        for (GameCharacter gc : currentCombat.getCharacters()) {
-            gc.onFightStart(currentCombat);
-        }
+//        for (GameCharacter gc : currentCombat.getCharacters()) {
+//            gc.onFightStart(currentCombat);
+//        }
     }
 
     public void onFightEnd() {
@@ -76,13 +76,13 @@ public class CombatFightGamePlay extends BaseGamePlay {
 //
 //    public void layout(List<GameCharacter> characters) {
 //    }
-    public void layout(List<GameCharacter> characters, boolean isNPC) {
+    public void layout(List<CommonGameCharacter> characters, boolean isNPC) {
 
         float direction = isNPC ? 1 : -1;
         for (int rank = 0; rank < numOfRank; rank++) {
-            List<GameCharacter> charactersInRank = getBy(characters, GameCharacter.byRank(rank));
+            List<CommonGameCharacter> charactersInRank = getBy(characters, CommonGameCharacter.byRank(rank));
 
-            for (GameCharacter gc : charactersInRank) {
+            for (CommonGameCharacter gc : charactersInRank) {
                 int row = charactersInRank.indexOf(gc);
                 int numOfRow = charactersInRank.size();
 
@@ -91,12 +91,7 @@ public class CombatFightGamePlay extends BaseGamePlay {
                 float cz = (-stageSizeY / 2) + stageSizeY / numOfRow * row;
                 model.setLocalTranslation(cx, 0, cz);
                 model.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.PI * direction, Vector3f.UNIT_Y));
-                app.getStageManager().placeCharacter(gc);
-
-                // Increase the delay
-                if (gc.isNpc()) {
-                    gc.setTurnDelayMax( gc.getTurnDelayMax() + row);
-                }
+                app.getStageManager().putCharacter(gc);
             }
         }
     }
@@ -104,12 +99,12 @@ public class CombatFightGamePlay extends BaseGamePlay {
     public void endGamePlay() {
     }
 
-    public List<GameCharacter> getBy(Predicate<GameCharacter>... filters) {
-        return GameCharacter.getBy(currentCombat.getCharacters(), filters);
+    public List<CommonGameCharacter> getBy(Predicate<CommonGameCharacter>... filters) {
+        return CommonGameCharacter.getBy(currentCombat.getCharacters(), filters);
     }
 
-    public List<GameCharacter> getBy(List<GameCharacter> list, Predicate<GameCharacter>... filters) {
-        return GameCharacter.getBy(list, filters);
+    public List<CommonGameCharacter> getBy(List<CommonGameCharacter> list, Predicate<CommonGameCharacter>... filters) {
+        return CommonGameCharacter.getBy(list, filters);
     }
 
     public void update(float tpf) {
@@ -118,7 +113,7 @@ public class CombatFightGamePlay extends BaseGamePlay {
             //Decrease all the wait time of characters;
 
             //Continue the combat
-            for (GameCharacter gc : currentCombat.getCharacters()) {
+            for (CommonGameCharacter gc : currentCombat.getCharacters()) {
                 if (gc.isStaged()) {
                     if (currentCombat.isDead(gc)) {
                     } else {
@@ -146,7 +141,7 @@ public class CombatFightGamePlay extends BaseGamePlay {
             boolean pcAllDead = true;
             boolean npcAllDead = true;
 
-            for (GameCharacter gc : currentCombat.getCharacters()) {
+            for (CommonGameCharacter gc : currentCombat.getCharacters()) {
                 if (!currentCombat.isDead(gc)) {
                     if (gc.isNpc()) {
                         npcAllDead = false;
@@ -171,11 +166,11 @@ public class CombatFightGamePlay extends BaseGamePlay {
     }
     //Turn----------------------------------------------------------------------
 
-    private void onTurn(GameCharacter gameCharacter) {
-        gameCharacter.onTurn();
+    private void onTurn(CommonGameCharacter gameCharacter) {
+//        gameCharacter.onTurn();
     }
 
-    private void onDead(GameCharacter gameCharacter) {
+    private void onDead(CommonGameCharacter gameCharacter) {
         gameCharacter.onDead();
         gameCharacter.onOutStage(app.getStageManager());
         //stageManager.removeCharacter(pc, 1f);

@@ -4,6 +4,7 @@
  */
 package sg.atom.gameplay.managers;
 
+import com.jme3.app.state.AbstractAppState;
 import java.util.ArrayList;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.core.lifecycle.IGameCycle;
@@ -13,7 +14,7 @@ import sg.atom.gameplay.Player;
  *
  * @author CuongNguyen
  */
-public class PlayerManager  implements IGameCycle{
+public class PlayerManager extends AbstractAppState  implements IGameCycle{
     //Constant
     public static final int STATUS_NONE = 0;
     public static final int STATUS_JOINED = 1;

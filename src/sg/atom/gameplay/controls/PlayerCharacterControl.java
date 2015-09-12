@@ -13,8 +13,8 @@ import com.jme3.scene.Node;
 import com.jme3.scene.SceneGraphVisitorAdapter;
 import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
-import sg.atom.gameplay.GameCharacter;
-import sg.atom.stage.StageManager;
+import sg.atom.gameplay.CommonGameCharacter;
+import sg.atom.corex.managers.StageManager;
 
 /**
  * This character control try to immitate the Character movement in the game
@@ -38,7 +38,7 @@ public class PlayerCharacterControl extends BaseCharacterControl implements Acti
         this(stageManager, null);
     }
 
-    public PlayerCharacterControl(StageManager stageManager, GameCharacter character) {
+    public PlayerCharacterControl(StageManager stageManager, CommonGameCharacter character) {
         super(stageManager, character);
 //        this.gameEffectManager = stageManager.getGameEffectManager();
 //        inGameUI = (UIIngameController) stageManager.getGUIManager().getNifty().getCurrentScreen().getScreenController();
@@ -61,7 +61,7 @@ public class PlayerCharacterControl extends BaseCharacterControl implements Acti
     }
 
     public void moveCharByInput(float tpf) {
-        this.cam = stageManager.getCurrentActiveCamera();
+        this.cam = stageManager.getCurrentCamera();
         //         if (isOnWater()) {
         //         moveSpeed = 0.04f;
         //         }
@@ -397,7 +397,7 @@ public class PlayerCharacterControl extends BaseCharacterControl implements Acti
     }
 
     private void setCamPos() {
-        this.cam = stageManager.getCurrentActiveCamera();
+        this.cam = stageManager.getCurrentCamera();
         cam.setLocation(getCurrentPos().add(new Vector3f(0, 6, 9)));
     }
 

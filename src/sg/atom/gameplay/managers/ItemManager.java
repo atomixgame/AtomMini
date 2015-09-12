@@ -4,6 +4,7 @@
  */
 package sg.atom.gameplay.managers;
 
+import com.jme3.app.state.AbstractAppState;
 import com.jme3.asset.AssetManager;
 import java.util.ArrayList;
 import org.apache.commons.configuration.Configuration;
@@ -14,7 +15,7 @@ import sg.atom.gameplay.Item;
  *
  * @author cuong.nguyenmanh2
  */
-public class ItemManager  implements IGameCycle{
+public class ItemManager extends AbstractAppState  implements IGameCycle{
 
     /**
      * Singleton reference of ItemManager.

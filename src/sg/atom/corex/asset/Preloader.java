@@ -8,7 +8,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sg.atom.core.execution.IProgress;
-import sg.atom.core.execution.NullProgress;
 
 /**
  * Multi-mainThread preloader load asset in paralel. The preloader can depend in
@@ -45,7 +44,7 @@ public final class Preloader implements Runnable {
     final ArrayList<Float> progressContribution;
     float currentContribution;
     long yieldTime;
-    IProgress progress = new NullProgress();
+    IProgress progress;
     int priority = Thread.NORM_PRIORITY;
 
     public Preloader(String name) {
@@ -121,7 +120,7 @@ public final class Preloader implements Runnable {
         if (progress != null) {
             this.progress = progress;
         } else {
-            this.progress = new NullProgress();
+//            this.progress = new NullProgress();
         }
         if (current != null) {
             current.setProgress(progress);

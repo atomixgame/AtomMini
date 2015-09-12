@@ -5,6 +5,7 @@
 package sg.atom.state.base;
 
 import com.jme3.app.state.AbstractAppState;
+import sg.atom.corex.managers.GUIManager;
 
 /**
  *
@@ -17,4 +18,13 @@ public abstract class AbstractGameState extends AbstractAppState {
     int[] dependencies;
     boolean uiBound;
     int transistionType;
+
+    public void bindUI(GUIManager guiManager, Object ui) {
+    }
+
+    public void unbindUI(GUIManager guiManager, Object ui) {
+    }
+
+    public void toState(Class<? extends AbstractAppState> newState) {
+    }
 }

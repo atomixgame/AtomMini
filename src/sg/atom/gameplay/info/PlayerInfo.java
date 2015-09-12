@@ -5,8 +5,8 @@
 package sg.atom.gameplay.info;
 
 import de.lessvoid.nifty.render.NiftyImage;
-import sg.atom.ui.GUIManager;
-import sg.atom.ui.NiftyGUIManager;
+import sg.atom.corex.managers.GUIManager;
+import sg.atom.corex.ui.NiftyGUIManager;
 
 /**
  *

@@ -29,7 +29,7 @@ public class Quest {
         this.description = description;
         this.questChecks = new ArrayList<Condition<Quest>>();
     }
-    public void takeQuest(GameCharacter gameCharacter){
+    public void takeQuest(CommonGameCharacter gameCharacter){
         
     }
     public void addCheck(Condition<Quest> check){

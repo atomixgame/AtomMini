@@ -6,8 +6,8 @@ package sg.atom.gameplay.controls;
 
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
-import sg.atom.gameplay.GameCharacter;
-import sg.atom.stage.StageManager;
+import sg.atom.gameplay.CommonGameCharacter;
+import sg.atom.corex.managers.StageManager;
 
 /**
  *
@@ -15,7 +15,7 @@ import sg.atom.stage.StageManager;
  */
 public class NonPlayerCharacterControl extends BaseCharacterControl {
 
-    public NonPlayerCharacterControl(StageManager stageManager, GameCharacter character) {
+    public NonPlayerCharacterControl(StageManager stageManager, CommonGameCharacter character) {
         super(stageManager, character);
     }
 

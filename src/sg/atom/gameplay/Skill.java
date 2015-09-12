@@ -12,10 +12,10 @@ import static sg.atom.gameplay.Skill.SKILL_EFFECT_EFFECTED;
 import static sg.atom.gameplay.Skill.SKILL_EFFECT_NONE;
 import static sg.atom.gameplay.Skill.SKILL_MOTION_STRAIGHT;
 import sg.atom.gameplay.controls.SkillControl;
-import sg.atom.stage.fx.EffectControl;
-import sg.atom.stage.fx.EffectEvent;
-import sg.atom.stage.EffectManager;
-import sg.atom.stage.fx.interpolators.Vector3fInterpolator;
+import sg.atom.corex.stage.fx.EffectControl;
+import sg.atom.corex.stage.fx.EffectEvent;
+import sg.atom.corex.managers.EffectManager;
+import sg.atom.corex.stage.fx.interpolators.Vector3fInterpolator;
 
 /**
  * Skill.
@@ -79,8 +79,8 @@ public class Skill {
 //    public String skillSteering;
     public Spatial model;
     public String animName;
-    private GameCharacter owner;
-    private GameCharacter target;
+    private CommonGameCharacter owner;
+    private CommonGameCharacter target;
 
     public Skill(int id, String name, int cost, String icon) {
         this.id = id;
@@ -90,10 +90,10 @@ public class Skill {
         this.skillEffect = "fire";
     }
 
-    public void calculate(GameCharacter owner, GameCharacter target) {
+    public void calculate(CommonGameCharacter owner, CommonGameCharacter target) {
         if ((owner.attack + this.damage > target.defend) || // Defend more than attack
                 (costMana > owner.mana) || // Not enough mana
-                (range < GameCharacter.distance(owner, target)) // Range too short
+                (range < CommonGameCharacter.distance(owner, target)) // Range too short
                 ) {
             this.missed = false;
         } else {
@@ -101,12 +101,12 @@ public class Skill {
         }
     }
 
-    public void applySkill(GameCharacter owner) {
+    public void applySkill(CommonGameCharacter owner) {
         this.owner = owner;
         applyCost(owner);
     }
 
-    public void applySkill(GameCharacter owner, GameCharacter target) {
+    public void applySkill(CommonGameCharacter owner, CommonGameCharacter target) {
         this.owner = owner;
         applyCost(owner);
         applyDamage(owner, target);
@@ -115,17 +115,17 @@ public class Skill {
         this.target = target;
     }
 
-    public void applySkill(GameCharacter owner, GameCharacter... targets) {
+    public void applySkill(CommonGameCharacter owner, CommonGameCharacter... targets) {
     }
 
-    public void applySkill(GameCharacter owner, List<GameCharacter> targets) {
+    public void applySkill(CommonGameCharacter owner, List<CommonGameCharacter> targets) {
     }
 
-    public void applyCost(GameCharacter owner) {
+    public void applyCost(CommonGameCharacter owner) {
         owner.mana -= costMana;
     }
 
-    public void applyDamage(GameCharacter owner, GameCharacter target) {
+    public void applyDamage(CommonGameCharacter owner, CommonGameCharacter target) {
         if (target.isNpc) {
             damage = 1;
         } else {
@@ -158,11 +158,11 @@ public class Skill {
         return missed;
     }
 
-    public void showSkill(GameCharacter gameCharacter) {
+    public void showSkill(CommonGameCharacter gameCharacter) {
         showSkill(gameCharacter, null);
     }
 
-    public void showSkill(GameCharacter gameCharacter, GameCharacter target) {
+    public void showSkill(CommonGameCharacter gameCharacter, CommonGameCharacter target) {
         EffectManager effectManager = gameCharacter.getStageManager().getEffectManager();
         Vector2f skillPos2d = gameCharacter.getLocationOnScreen();
 

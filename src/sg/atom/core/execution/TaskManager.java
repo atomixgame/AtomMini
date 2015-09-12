@@ -4,33 +4,42 @@
  */
 package sg.atom.core.execution;
 
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningScheduledExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.core.lifecycle.IGameCycle;
 
 /**
- *
+ * TaskManager or ExecutionService?
  * @author CuongNguyen
  */
-public class TaskManager  implements IGameCycle{
-
+public class TaskManager implements IGameCycle{
+    // Futures , Caches?
+    protected ListeningScheduledExecutorService executor;
+    protected ListenableFuture<Boolean> loadGUIAsset, loadDataTask, loadAssetTask, loadStageTask, configTask, socialTask;
+    
     public void init() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        executor = MoreExecutors.listeningDecorator(new ScheduledThreadPoolExecutor(4));
     }
 
+    public void submit(){
+//        return new AtomTask();
+    }
+    public void submitTasks(){
+        
+    }
     public void load() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void config(Configuration props) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void update(float tpf) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void finish() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

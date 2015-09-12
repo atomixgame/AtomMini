@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.logging.Logger;
 import sg.atom.AtomMain;
 import sg.atom.gameplay.GamePlayManager;
-import sg.atom.stage.StageManager;
-import sg.atom.ui.GUIManager;
-import sg.atom.ui.NiftyGUIManager;
-import sg.atom.ui.nifty.UIFightScreen;
-import sg.atom.ui.nifty.UIInGameScreen;
+import sg.atom.corex.managers.StageManager;
+import sg.atom.corex.managers.GUIManager;
+import sg.atom.corex.ui.NiftyGUIManager;
+import sg.atom.corex.ui.nifty.UIFightScreen;
+import sg.atom.corex.ui.nifty.UIInGameScreen;
 
 /**
  *

@@ -12,10 +12,10 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import java.util.List;
 import sg.atom.corex.math.Forces3f;
-import sg.atom.gameplay.GameCharacter;
+import sg.atom.gameplay.CommonGameCharacter;
 import sg.atom.gameplay.Skill;
-import sg.atom.stage.fx.EffectControl;
-import sg.atom.stage.EffectManager;
+import sg.atom.corex.stage.fx.EffectControl;
+import sg.atom.corex.managers.EffectManager;
 
 /**
  *
@@ -43,7 +43,7 @@ public class SkillControl extends AbstractControl {
     public int motionType;
     public boolean started = false;
     // Gameplay involve
-    protected GameCharacter gameCharacter;
+    protected CommonGameCharacter gameCharacter;
     protected Skill skill;
     protected EffectControl fxControl;
     protected Vector3f startPos, targetPos;

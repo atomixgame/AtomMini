@@ -4,28 +4,28 @@ import com.google.common.util.concurrent.ServiceManager;
 import com.jme3.app.SimpleApplication;
 import com.jme3.renderer.RenderManager;
 import com.jme3.system.AppSettings;
+import java.util.ArrayList;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.core.device.DeviceInfo;
-import sg.atom.core.entity.EntityManager;
+import sg.atom.corex.entity.EntityManager;
 import sg.atom.core.lifecycle.IGameCycle;
-import sg.atom.corex.MaterialManager;
+import sg.atom.corex.managers.MaterialManager;
 import sg.atom.corex.asset.AtomAssetManager;
 import sg.atom.gameplay.GamePlayManager;
 import sg.atom.net.NetworkManager;
-import sg.atom.stage.EffectManager;
-import sg.atom.stage.SoundManager;
-import sg.atom.stage.StageManager;
+import sg.atom.corex.managers.EffectManager;
+import sg.atom.corex.managers.SoundManager;
+import sg.atom.corex.managers.StageManager;
 import sg.atom.state.GameStateManager;
-import sg.atom.ui.GUIManager;
-import sg.atom.ui.ToneGodGUIManager;
-import sg.atom.world.WorldManager;
+import sg.atom.corex.managers.GUIManager;
+import sg.atom.corex.ui.ToneGodGUIManager;
+import sg.atom.corex.managers.WorldManager;
 
 /**
  * An optimized version of AtomMain which hard coded the Managers and the Cycle.
  */
 public class AtomMain extends SimpleApplication implements IGameCycle {
 
-    protected static AtomMain defaultInstance;
     protected AtomAssetManager exAssetManager;
     protected StageManager stageManager;
     protected GUIManager guiManager;
@@ -37,16 +37,10 @@ public class AtomMain extends SimpleApplication implements IGameCycle {
     protected EffectManager effectManager;
     protected EntityManager entityManager;
     protected NetworkManager networkManager;
+    protected GameStateManager gameStateManager;
     protected DeviceInfo deviceInfo;
     protected boolean customCycle = false;
-
-    public static synchronized AtomMain getInstance() {
-        if (defaultInstance == null) {
-            defaultInstance = new AtomMain();
-        }
-        return defaultInstance;
-    }
-    private GameStateManager gameStateManager;
+    protected ArrayList<IGameCycle> cycles = new ArrayList<IGameCycle>();
 
     @Override
     public void simpleInitApp() {
@@ -56,36 +50,51 @@ public class AtomMain extends SimpleApplication implements IGameCycle {
         config(null);
     }
 
+    protected void registerServices() {
+    }
+
     protected void initServices() {
         //network service
         //social service
         //game leaderboard service
         //content update service
-        
     }
 
-    protected void initManagers() {
+    protected void registerManagers() {
         this.materialManager = new MaterialManager(assetManager);
         this.soundManager = new SoundManager(this);
         this.worldManager = new WorldManager(this);
         this.stageManager = new StageManager(this);
-        //this.guiManager = new NiftyGUIManager(this);
         this.guiManager = new ToneGodGUIManager(this);
         this.gamePlayManager = new GamePlayManager(this);
+    }
 
+    protected void initManagers() {
         if (!customCycle) {
-            materialManager.init();
-            soundManager.init();
-            stageManager.init();
-            worldManager.init();
-            gamePlayManager.init();
-            guiManager.init();
+            if (this.materialManager != null) {
+                this.materialManager.init();
+            }
+            if (this.soundManager != null) {
+                this.soundManager.init();
+            }
+            if (this.stageManager != null) {
+                this.stageManager.init();
+            }
+            if (this.worldManager != null) {
+                this.worldManager.init();
+            }
+            if (this.gamePlayManager != null) {
+                this.gamePlayManager.init();
+            }
+            if (this.guiManager != null) {
+                this.guiManager.init();
+            }
         }
     }
 
-    public void initStates(){
-        
+    public void initStates() {
     }
+
     protected void initConfigurations() {
     }
 
@@ -120,8 +129,8 @@ public class AtomMain extends SimpleApplication implements IGameCycle {
 
     public void init() {
         initConfigurations();
+        registerServices();
         initServices();
-        initManagers();
     }
 
     public void load() {
@@ -129,45 +138,93 @@ public class AtomMain extends SimpleApplication implements IGameCycle {
         if (!customCycle) {
             //show loading screen
             //if there any loading
-            materialManager.load();
-            soundManager.load();
-            worldManager.load();
-            gamePlayManager.load();
-            stageManager.load();
-            guiManager.load();
+            if (materialManager != null) {
+                materialManager.load();
+            }
+            if (materialManager != null) {
+                soundManager.load();
+            }
+            if (worldManager != null) {
+                worldManager.load();
+            }
+            if (gamePlayManager != null) {
+                gamePlayManager.load();
+            }
+            if (stageManager != null) {
+                stageManager.load();
+            }
+            if (guiManager != null) {
+                guiManager.load();
+            }
         }
     }
 
     public void config(Configuration configuration) {
         if (!customCycle) {
-            materialManager.config(null);
-            soundManager.config(null);
-            worldManager.config(null);
-            gamePlayManager.config(null);
-            stageManager.config(null);
-            guiManager.config(null);
+            if (materialManager != null) {
+                materialManager.config(null);
+            }
+            if (soundManager != null) {
+                soundManager.config(null);
+            }
+            if (worldManager != null) {
+                worldManager.config(null);
+            }
+            if (gamePlayManager != null) {
+                gamePlayManager.config(null);
+            }
+            if (stageManager != null) {
+                stageManager.config(null);
+            }
+            if (guiManager != null) {
+                guiManager.config(null);
+            }
         }
     }
 
     public void update(float tpf) {
         if (!customCycle) {
-            materialManager.update(tpf);
-            soundManager.update(tpf);
-            worldManager.update(tpf);
-            stageManager.update(tpf);
-            gamePlayManager.update(tpf);
-            guiManager.update(tpf);
+            if (materialManager != null) {
+                materialManager.update(tpf);
+            }
+            if (soundManager != null) {
+                soundManager.update(tpf);
+            }
+            if (worldManager != null) {
+                worldManager.update(tpf);
+            }
+            if (stageManager != null) {
+                stageManager.update(tpf);
+            }
+            if (gamePlayManager != null) {
+                gamePlayManager.update(tpf);
+            }
+            if (guiManager != null) {
+                guiManager.update(tpf);
+            }
         }
     }
 
     public void finish() {
         if (!customCycle) {
-            guiManager.finish();
-            stageManager.finish();
-            worldManager.finish();
-            gamePlayManager.finish();
-            soundManager.finish();
-            materialManager.finish();
+            if (guiManager != null) {
+                guiManager.finish();
+            }
+            if (stageManager != null) {
+                stageManager.finish();
+            }
+            if (worldManager != null) {
+                worldManager.finish();
+            }
+            if (gamePlayManager != null) {
+                gamePlayManager.finish();
+            }
+            if (soundManager != null) {
+                soundManager.finish();
+            }
+            if (materialManager != null) {
+                materialManager.finish();
+            }
         }
     }
     //SETTER & GETTER --------------------------------------------------------
@@ -222,6 +279,5 @@ public class AtomMain extends SimpleApplication implements IGameCycle {
 
     public EntityManager getEntityManager() {
         return entityManager;
-    }  
-    
+    }
 }

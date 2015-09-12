@@ -7,8 +7,8 @@ import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import java.util.logging.Logger;
 import sg.atom.AtomMain;
-import sg.atom.stage.StageManager;
-import sg.atom.ui.GUIManager;
+import sg.atom.corex.managers.StageManager;
+import sg.atom.corex.managers.GUIManager;
 
 /**
  *
@@ -16,14 +16,14 @@ import sg.atom.ui.GUIManager;
  */
 public class MainMenuState extends AbstractAppState {
 
-    private AtomMain app;
-    private Node rootNode;
-    private AssetManager assetManager;
-    private AppStateManager stateManager;
-    private GameStateManager gameStateManager;
-    private static final Logger logger = Logger.getLogger(CreditState.class.getName());
-    private GUIManager guiManager;
-    private StageManager stageManager;
+    private static final Logger logger = Logger.getLogger(MainMenuState.class.getName());
+    protected AtomMain app;
+    protected Node rootNode;
+    protected AssetManager assetManager;
+    protected AppStateManager stateManager;
+    protected GameStateManager gameStateManager;
+    protected GUIManager guiManager;
+    protected StageManager stageManager;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -43,13 +43,13 @@ public class MainMenuState extends AbstractAppState {
     public void bindUI() {
         //this.creditScreenController = (UICreditScreen) guiManager.getScreenController();
     }
-    
-    public void bindUI(GUIManager guiManager,Object ui){
-        
+
+    public void bindUI(GUIManager guiManager, Object ui) {
     }
-    public void unbindUI(GUIManager guiManager,Object ui){
-        
+
+    public void unbindUI(GUIManager guiManager, Object ui) {
     }
+
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
@@ -72,6 +72,4 @@ public class MainMenuState extends AbstractAppState {
         }
 
     }
-    
-
 }

@@ -12,10 +12,10 @@ import com.jme3.scene.Node;
 import de.lessvoid.nifty.Nifty;
 import java.util.logging.Logger;
 import sg.atom.AtomMain;
-import sg.atom.stage.StageManager;
-import sg.atom.ui.GUIManager;
-import sg.atom.ui.NiftyGUIManager;
-import sg.atom.ui.nifty.UICreditScreen;
+import sg.atom.corex.managers.StageManager;
+import sg.atom.corex.managers.GUIManager;
+import sg.atom.corex.ui.NiftyGUIManager;
+import sg.atom.corex.ui.nifty.UICreditScreen;
 
 /**
  *

@@ -15,7 +15,7 @@ public class Combat {
     private GamePlayManager gamePlayManager;
     private CombatFightGamePlay combatFightGamePlay;
     private Player player;
-    private List<GameCharacter> enemies;
+    private List<CommonGameCharacter> enemies;
     private int playerScore;
     private int resultScore;
     private int enviroment;
@@ -26,7 +26,7 @@ public class Combat {
 //        this.combatFightGamePlay = gamePlayManager.getCombatGamePlay();
     }
 
-    public void start(Player player, List<GameCharacter> npc) {
+    public void start(Player player, List<CommonGameCharacter> npc) {
         this.player = player;
         this.enemies = npc;
         this.combatFightGamePlay.onFightStart(this);
@@ -41,29 +41,29 @@ public class Combat {
         System.out.println("Combat end "+playerWin);
     }
 
-    public List<GameCharacter> getCharacters() {
-        ArrayList<GameCharacter> result = Lists.newArrayList(getPlayerCharacters());
+    public List<CommonGameCharacter> getCharacters() {
+        ArrayList<CommonGameCharacter> result = Lists.newArrayList(getPlayerCharacters());
         result.addAll(enemies);
         return result;
     }
 
-    public List<GameCharacter> getPlayerCharacters() {
+    public List<CommonGameCharacter> getPlayerCharacters() {
         return player.getCombatCharacters();
     }
 
-    public List<GameCharacter> getNonPlayerCharacters() {
+    public List<CommonGameCharacter> getNonPlayerCharacters() {
         return enemies;
     }
 
-    public List<GameCharacter> getEnemies() {
+    public List<CommonGameCharacter> getEnemies() {
         return enemies;
     }
 
-    public boolean isDead(GameCharacter pc) {
+    public boolean isDead(CommonGameCharacter pc) {
         return pc.isDead();
     }
 
-    boolean isBanned(GameCharacter pc) {
+    boolean isBanned(CommonGameCharacter pc) {
         return false;
     }
 

@@ -11,10 +11,10 @@ import com.jme3.asset.AssetManager;
 import java.util.logging.Logger;
 import sg.atom.AtomMain;
 import sg.atom.gameplay.Shop;
-import sg.atom.stage.StageManager;
-import sg.atom.ui.GUIManager;
-import sg.atom.ui.NiftyGUIManager;
-import sg.atom.ui.nifty.UIShopScreen;
+import sg.atom.corex.managers.StageManager;
+import sg.atom.corex.managers.GUIManager;
+import sg.atom.corex.ui.NiftyGUIManager;
+import sg.atom.corex.ui.nifty.UIShopScreen;
 
 /**
  *
@@ -76,7 +76,7 @@ public class ShopState extends AbstractAppState {
 
     public void goInGame() {
         guiManager.goToScreen("InGameScreen");
-        stageManager.goInGame();
+        stageManager.onStageReady();
     }
 
     private void resumeGame() {

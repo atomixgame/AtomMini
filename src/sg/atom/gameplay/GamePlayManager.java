@@ -5,8 +5,6 @@
  */
 package sg.atom.gameplay;
 
-import sg.atom.gameplay.state.AdventureGamePlay;
-import sg.atom.gameplay.state.CombatFightGamePlay;
 import sg.atom.gameplay.managers.ItemManager;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -20,20 +18,22 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.IGameCycle;
 import sg.atom.gameplay.controls.NonPlayerCharacterControl;
-import sg.atom.stage.StageManager;
-import sg.atom.ui.nifty.UIFightScreen;
-import sg.atom.ui.nifty.UIInGameScreen;
+import sg.atom.corex.managers.StageManager;
+import sg.atom.corex.ui.nifty.UIFightScreen;
+import sg.atom.corex.ui.nifty.UIInGameScreen;
 
 /**
  * GamePlayManager is Manager for GamePlay, Player, Character, Level, Score.
+ *
  * @author CuongNguyen
  */
-public class GamePlayManager implements IGameCycle {
+public class GamePlayManager extends AbstractAppState implements IGameCycle {
 
     protected final AtomMain app;
     protected final AssetManager assetManager;
@@ -43,9 +43,10 @@ public class GamePlayManager implements IGameCycle {
     protected final Node rootNode;
     protected final StageManager stageManager;
     // Game related
-    protected ArrayList<GameCharacter> characters;
+    protected ArrayList<CommonGameCharacter> characters;
     protected Player player;
     protected Player mainPlayer;
+    protected ArrayList<Player> players;
     // Gameplay Mode! FIXME: State plz!
     protected int playMode = -1;
     protected ArrayList<GameLevel> levels;
@@ -65,78 +66,49 @@ public class GamePlayManager implements IGameCycle {
     }
 
     public void loadLevels(AssetKey assetKey) {
-        ArrayList<GameLevel> gameLevels = (ArrayList<GameLevel>) assetManager.loadAsset(assetKey);
+        ArrayList<GameLevel> newLevels = (ArrayList<GameLevel>) assetManager.loadAsset(assetKey);
+        this.levels.addAll(newLevels);
     }
 
     public void loadLevels() {
     }
 
-    public void goInGame() {
-        setupPlayer();
-        startLevel(getCurrentLevel());
-        setupInput();
-        setupGamePlayStates();
-        //adventureGamePlay.startGamePlay();
+    public void addLevel(GameLevel level) {
+        this.levels.add(level);
     }
 
-    public void startGamePlay() {
+    public void addLevels(Collection<GameLevel> newLevels) {
+        this.levels.addAll(newLevels);
+    }
+
+    public void startLevel(GameLevel level) {
+    }
+
+    public void initLevel(GameLevel currentLevel) {
+    }
+
+    public void setCurrentLevel(GameLevel level) {
+        this.currentLevel = level;
+    }
+
+    public void startGame() {
     }
 
     public void setupInput() {
     }
 
     public void setupPlayer() {
-        mainPlayer = new Player("Atomix");
     }
-    
-    public void setupGamePlayStates(){
-        
+
+    public void initStates() {
     }
 
     public void update(float tpf) {
-
-    }
-
-    public void startLevel(GameLevel level) {
-//        Vector3f startPos = currentLevel.getStartPos();
-//        currentLevel.getLevelNode().attachChild(mainPlayer.getPlayerMainCharacter().getModelNode());
-//        characterControl.setLocation(new Vector3f(0f, 8f, 0f));
-//         steerManager = new SteerManager(this.stageManager.getApp());
-//        createRandomNPC();
     }
 
     public void updateGUI(ScreenController screenController, float tpf) {
-        if (screenController instanceof UIInGameScreen) {
+        
 
-            // Update onscreen info
-            UIInGameScreen inGameScreen = (UIInGameScreen) screenController;
-            //inGameScreen.setAlert("Hello World");
-            GameCharacter mainCharacter = mainPlayer.getMainCharacter();
-            inGameScreen.setHealth(mainCharacter.health, mainCharacter.maxHP);
-            inGameScreen.setMana(mainCharacter.mana, mainCharacter.maxMana);
-
-            for (GameCharacter character : characters) {
-                inGameScreen.setCharacterInfoExtra(character);
-            }
-        } else if (screenController instanceof UIFightScreen) {
-            UIFightScreen fightScreen = (UIFightScreen) screenController;
-            for (GameCharacter character : characters) {
-                fightScreen.setCharacterInfoExtra(character);
-            }
-        }
-
-    }
-
-    public List<GameCharacter> createRandomNPC() {
-        ArrayList<GameCharacter> npcs = new ArrayList<GameCharacter>();
-        for (int i = 0; i < 8; i++) {
-            GameCharacter cerberus = new GameCharacter("Cerberus " + i, app.getWorldManager().getModel("Cerberus").clone());
-            cerberus.setCharacterControl(new NonPlayerCharacterControl(stageManager, cerberus));
-            cerberus.rank = i % 3;
-            cerberus.maxHP = 1000 + i * 100;
-            npcs.add(cerberus);
-        }
-        return npcs;
     }
 
     public void award(Player player, int score) {
@@ -147,48 +119,24 @@ public class GamePlayManager implements IGameCycle {
     public void onState(Class<? extends AbstractAppState> newState) {
     }
 
-//    public void goFightScene() {
-//        this.playMode = 1;
-//        if (!firstRun) {
-//            adventureGamePlay.endGamePlay();
-//            adventureGamePlay.getCharacterControl().setInputControlled(this.playMode != 1);
-//        }
-//        combatGamePlay.startGamePlay();
-//        Combat exampleCombat = new Combat(this);
-//        exampleCombat.start(mainPlayer, createRandomNPC());
-//
-//    }
-//
-//    public void goNormalScene() {
-//        this.playMode = 1;
-//        if (!firstRun) {
-//            adventureGamePlay.getCharacterControl().setInputControlled(this.playMode != 1);
-//            combatGamePlay.endGamePlay();
-//        }
-//        this.adventureGamePlay.startGamePlay();
-//    }
+    public void toState(Class<? extends AbstractAppState> newState) {
+        
+    }
     //Cycle---------------------------------------------------------------------
     public void init() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void load() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void config(Configuration props) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void finish() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void initLevel(GameLevel currentLevel) {
-    }
     //GETTER & SETTER
-
-    public void setupCharacters(List<GameCharacter> characters) {
+    public void setupCharacters(List<CommonGameCharacter> characters) {
         this.characters = Lists.newArrayList(characters);
     }
 
@@ -196,13 +144,13 @@ public class GamePlayManager implements IGameCycle {
         return currentLevel;
     }
 
-    public List<GameCharacter> getCharacters() {
+    public List<CommonGameCharacter> getCharacters() {
         return characters;
     }
 
-    public GameCharacter getCharacter(final String name) {
-        return Iterables.find(characters, new Predicate<GameCharacter>() {
-            public boolean apply(GameCharacter gc) {
+    public CommonGameCharacter getCharacter(final String name) {
+        return Iterables.find(characters, new Predicate<CommonGameCharacter>() {
+            public boolean apply(CommonGameCharacter gc) {
                 return gc.name.equals(name);
             }
         });
@@ -219,5 +167,4 @@ public class GamePlayManager implements IGameCycle {
     public AtomMain getApp() {
         return app;
     }
-    
 }

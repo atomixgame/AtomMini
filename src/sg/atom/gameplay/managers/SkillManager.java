@@ -6,6 +6,7 @@
 package sg.atom.gameplay.managers;
 
 import com.google.common.base.Function;
+import com.jme3.app.state.AbstractAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Spatial;
@@ -13,17 +14,17 @@ import java.util.ArrayList;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.IGameCycle;
-import sg.atom.gameplay.GameCharacter;
+import sg.atom.gameplay.CommonGameCharacter;
 import sg.atom.gameplay.Skill;
-import sg.atom.stage.StageManager;
+import sg.atom.corex.managers.StageManager;
 import sg.atom.state.InGameState;
-import sg.atom.ui.nifty.UIInGameScreen;
+import sg.atom.corex.ui.nifty.UIInGameScreen;
 
 /**
  *
  * @author CuongNguyen
  */
-public class SkillManager  implements IGameCycle{
+public class SkillManager extends AbstractAppState implements IGameCycle{
 
     private AssetManager assetManager;
     private StageManager stageManager;
@@ -89,7 +90,7 @@ public class SkillManager  implements IGameCycle{
     public void addSkill(Skill skill) {
     }
 
-    public void upgrade(GameCharacter character, Skill skill) {
+    public void upgrade(CommonGameCharacter character, Skill skill) {
     }
 
     public void init() {
@@ -115,8 +116,8 @@ public class SkillManager  implements IGameCycle{
     public static class ShowSkillDamageFunction implements Function<Spatial, Void> {
 
         public ShowSkillDamageFunction(Skill skill, Vector2f pos) {
-            InGameState currentState = AtomMain.getInstance().getStateManager().getState(InGameState.class);
-            UIInGameScreen screenController = currentState.getScreenController();
+//            InGameState currentState = AtomMain.getInstance().getStateManager().getState(InGameState.class);
+//            UIInGameScreen screenController = currentState.getScreenController();
 
             //screenController.showSkillDamage(skill.damage, pos);
         }

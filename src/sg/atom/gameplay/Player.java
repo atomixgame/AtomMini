@@ -10,7 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * Player represent the Player Model and data.
+ * 
  * @author CuongNguyen
  */
 public class Player {
@@ -25,8 +26,8 @@ public class Player {
     int coin;
     int money;
     int status;
-    GameCharacter character;
-    ArrayList<GameCharacter> team;
+    CommonGameCharacter character;
+    ArrayList<CommonGameCharacter> team;
     
     //Infomations & Social------------------------------------------------------
     String realName;
@@ -52,15 +53,28 @@ public class Player {
     }
     public Player(String name) {
         this.name = name;
-        this.team = new ArrayList<GameCharacter>();
+        this.team = new ArrayList<CommonGameCharacter>();
         this.uid = "";
     }
+    //Exchange things
+    public void buySkill(Skill skill) {
+        money -= skill.cost;
+    }
 
-    public GameCharacter getMainCharacter() {
+    public void buyItem(Item item) {
+        money -= item.cost;
+    }
+    
+    //
+
+    // Collections support -----------------------------------------------------
+
+    // GETTER & SETTER ---------------------------------------------------------
+    public CommonGameCharacter getMainCharacter() {
         return character;
     }
 
-    public void setCharacter(GameCharacter character) {
+    public void setCharacter(CommonGameCharacter character) {
         this.character = character;
         character.isNpc = false;
     }
@@ -72,22 +86,11 @@ public class Player {
     public String getName() {
         return name;
     }
-
-    public void buySkill(Skill skill) {
-        money -= skill.cost;
-    }
-
-    public void buyItem(Item item) {
-        money -= item.cost;
-    }
-    // Collections support -----------------------------------------------------
-
-    // GETTER & SETTER ---------------------------------------------------------
-    public ArrayList<GameCharacter> getTeam() {
+    public ArrayList<CommonGameCharacter> getTeam() {
         return team;
     }
 
-    public List<GameCharacter> getCombatCharacters() {
+    public List<CommonGameCharacter> getCombatCharacters() {
         return team;
     }
 

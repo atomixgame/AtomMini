@@ -11,7 +11,7 @@ import com.jme3.input.InputManager;
 import java.util.List;
 import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.IGameCycle;
-import sg.atom.stage.StageManager;
+import sg.atom.corex.managers.StageManager;
 
 /**
  *
@@ -50,7 +50,7 @@ public abstract class BaseGamePlay extends AbstractAppState implements IGameCycl
         return gamePlayManager;
     }
 
-    public void setCharacters(List<GameCharacter> characters) {
+    public void setCharacters(List<CommonGameCharacter> characters) {
         gamePlayManager.setupCharacters(characters);
     }
 

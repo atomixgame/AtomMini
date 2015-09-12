@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package sg.atom.gameplay.controls;
 
 import com.jme3.animation.AnimChannel;
@@ -17,10 +13,10 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
 import java.util.HashMap;
-import sg.atom.gameplay.GameCharacter;
+import sg.atom.gameplay.CommonGameCharacter;
 import sg.atom.gameplay.GamePlayManager;
-import sg.atom.stage.StageManager;
-import sg.atom.stage.EffectManager;
+import sg.atom.corex.managers.StageManager;
+import sg.atom.corex.managers.EffectManager;
 
 /**
  *
@@ -32,7 +28,7 @@ public class BaseCharacterControl extends AbstractControl implements AnimEventLi
     protected GamePlayManager gamePlayManager;
     protected StageManager stageManager;
     //Visual
-    protected GameCharacter character;
+    protected CommonGameCharacter character;
     protected Node playerModel;
     // movement  ---------------------------------
     public float defaultSpeed = 0.05f;
@@ -73,7 +69,8 @@ public class BaseCharacterControl extends AbstractControl implements AnimEventLi
 //    CamShaker camShaker;
     // target ------------------------------------
     protected Spatial selectedEntitySpatial;
-    public BaseCharacterControl(StageManager stageManager, GameCharacter character) {
+
+    public BaseCharacterControl(StageManager stageManager, CommonGameCharacter character) {
 
         this.stageManager = stageManager;
         this.gamePlayManager = stageManager.getGamePlayManager();
@@ -91,14 +88,13 @@ public class BaseCharacterControl extends AbstractControl implements AnimEventLi
     // FIXME: Replace with AnimBehavours
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
-        
+
 //         if (channel == shootingChannel) {
 //         channel.setAnim("stand");
 //         } else if (channel == upperBody) {
 //         animationControl.clearChannels();
 //         setupBodyAnim();
 //         }
-         
     }
 
     public boolean isCurrentAnim(String animName) {
@@ -150,7 +146,7 @@ public class BaseCharacterControl extends AbstractControl implements AnimEventLi
     // Rountines  ---------------------------------------------------------------
     // Events
 
-    public void onSkillAttackHurt(GameCharacter attacker) {
+    public void onSkillAttackHurt(CommonGameCharacter attacker) {
         Vector3f directionOfAttack = spatial.getLocalTranslation().subtract(attacker.getLocation()).normalize();
         EffectManager effectManager = character.getStageManager().getEffectManager();
         effectManager.createMovement(spatial, 0.6f, new float[]{0.4f},
@@ -171,13 +167,12 @@ public class BaseCharacterControl extends AbstractControl implements AnimEventLi
     protected void defend(int status) {
     }
 
-    public void skillAttack(GameCharacter target) {
+    public void skillAttack(CommonGameCharacter target) {
         EffectManager effectManager = character.getStageManager().getEffectManager();
         effectManager.createMovement(spatial, 4.5f, new float[]{2, 2.5f},
                 spatial.getLocalTranslation().add(0, 1, 0),
                 target.getLocation().clone(),
                 spatial.getLocalTranslation().clone());
-
 
 //        target.getCharacterControl().onSkillAttackHurt(character);
     }
@@ -206,7 +201,7 @@ public class BaseCharacterControl extends AbstractControl implements AnimEventLi
         float distance = currentPos.distance(targetPos);
         Vector3f newPos = new Vector3f();
         if (moveSpeed <= distance) {
-            newPos = currentPos.interpolate(targetPos, moveSpeed / distance);
+            newPos = currentPos.interpolateLocal(targetPos, moveSpeed / distance);
             getSpatial().lookAt(newPos, Vector3f.UNIT_Y);
         } else {
             newPos.set(targetPos);
@@ -291,7 +286,7 @@ public class BaseCharacterControl extends AbstractControl implements AnimEventLi
     public void let(String die) {
     }
 
-    public void face(GameCharacter target) {
+    public void face(CommonGameCharacter target) {
         spatial.lookAt(target.getLocation(), Vector3f.UNIT_Y);
     }
 }

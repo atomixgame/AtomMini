@@ -29,6 +29,7 @@ import com.jme3.shader.Shader;
 import com.jme3.shader.ShaderGenerator;
 import com.jme3.shader.ShaderKey;
 import com.jme3.texture.Texture;
+import java.io.InputStream;
 import java.util.EnumSet;
 import java.util.List;
 import org.apache.commons.configuration.Configuration;
@@ -189,7 +190,7 @@ public class AtomAssetManager implements AssetManager, AppState, IGameCycle {
     }
 
     public void init() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     public void load() {
@@ -249,6 +250,26 @@ public class AtomAssetManager implements AssetManager, AppState, IGameCycle {
     }
 
     public void cleanup() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public <T> T loadAssetFromStream(AssetKey<T> key, InputStream inputStream) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public <T> T getFromCache(AssetKey<T> key) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public <T> void addToCache(AssetKey<T> key, T asset) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public <T> boolean deleteFromCache(AssetKey<T> key) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void clearCache() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

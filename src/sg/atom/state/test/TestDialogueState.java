@@ -12,12 +12,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.logging.Logger;
 import sg.atom.AtomMain;
-import sg.atom.stage.story.SimpleDialogue;
-import sg.atom.stage.StageManager;
-import sg.atom.stage.EffectManager;
+import sg.atom.corex.stage.story.SimpleDialogue;
+import sg.atom.corex.managers.StageManager;
+import sg.atom.corex.managers.EffectManager;
 import sg.atom.state.GameStateManager;
 import sg.atom.state.InGameState;
-import sg.atom.ui.GUIManager;
+import sg.atom.corex.managers.GUIManager;
 
 /**
  *

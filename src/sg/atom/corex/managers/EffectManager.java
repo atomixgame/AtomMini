@@ -6,7 +6,6 @@ package sg.atom.corex.managers;
 
 import sg.atom.corex.stage.fx.interpolators.Vector3fInterpolator;
 import com.google.common.base.Function;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.asset.AssetKey;
 import com.jme3.asset.AssetManager;
 import com.jme3.cinematic.Cinematic;
@@ -24,8 +23,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
-import sg.atom.core.lifecycle.IGameCycle;
-import sg.atom.corex.managers.StageManager;
+import sg.atom.core.lifecycle.AbstractManager;
 import sg.atom.corex.stage.fx.EffectControl;
 import sg.atom.corex.stage.fx.EffectEvent;
 import static sg.atom.corex.math.Tweenf.*;
@@ -34,12 +32,12 @@ import static sg.atom.corex.math.Tweenf.*;
  * An EffectManager is a Factory for Effects (Spatial + EffectControl).
  *
  * Effect built by EffectBuilder and get play back with Cinematic. Example:
- * 
- * 
+ *
+ *
  *
  * @author cuong.nguyenmanh2
  */
-public class EffectManager extends AbstractAppState implements IGameCycle{
+public class EffectManager extends AbstractManager {
 
     //Motions
     public static final int MOTION_SIN = 0;
@@ -48,19 +46,14 @@ public class EffectManager extends AbstractAppState implements IGameCycle{
     public static final int MOTION_RECT = 3;
     public static final int MOTION_TRI = 4;
     //Timing & curves
-    protected AtomMain app;
-    protected StageManager stageManager;
     protected HashMap<String, String> effectMap;
     protected HashMap<String, Spatial> effectModelMap;
-    protected AssetManager assetManager;
     protected Node worldNode;
     protected Node effectsModel;
     protected Cinematic effectCine;
 
     public EffectManager(AtomMain app) {
-        this.stageManager = app.getStageManager();
-        this.assetManager = app.getAssetManager();
-//        this.worldNode = stageManager.getWorldNode();
+        super(app);
         this.effectMap = new HashMap<String, String>();
         this.effectModelMap = new HashMap<String, Spatial>();
         this.effectCine = new Cinematic(worldNode);
@@ -70,12 +63,14 @@ public class EffectManager extends AbstractAppState implements IGameCycle{
     public void init() {
     }
 
-    public void load(String path){
-        
+    public void load(String path) {
+
     }
-    public void load(AssetKey assetKey){
-        
+
+    public void load(AssetKey assetKey) {
+
     }
+
     public void createEffects() {
         effectsModel = (Node) assetManager.loadModel("Models/FX/Effects.j3o");
         ParticleEmitter fireEffect = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
@@ -177,7 +172,7 @@ public class EffectManager extends AbstractAppState implements IGameCycle{
     }
 
     public void refesh() {
-        effectCine.initialize(this.stageManager.getApp().getStateManager(), this.stageManager.getApp());
+        effectCine.initialize(this.getApp().getStateManager(), this.getApp());
         effectCine.play();
     }
 
@@ -196,13 +191,15 @@ public class EffectManager extends AbstractAppState implements IGameCycle{
         }
     }
 
-    public void setPositions(){
-        
+    public void setPositions() {
+
     }
-    public void setAttributes(){
-        
+
+    public void setAttributes() {
+
     }
-    public void createMovement(Spatial spatial, float durationTime,  float[] times, Vector3f... moves) {
+
+    public void createMovement(Spatial spatial, float durationTime, float[] times, Vector3f... moves) {
         spatial.addControl(new EffectControl.Builder()
                 .withEffectManager(this)
                 .withRemoveSpatialOnEnd(false)
@@ -210,13 +207,13 @@ public class EffectManager extends AbstractAppState implements IGameCycle{
                 .withDurationTime(durationTime)
                 //Change pos
                 .withEvents(new EffectEvent.Builder<Vector3f>()
-                .withConverter(new Vector3fInterpolator(QUAD_IN_OUT))
-                .withPropertyName("localTranslation")
-                .withEffect(spatial)
-                .withMultiDuration(times)
-                .withEasing(QUAD_IN)
-                .withMultiValue((Object[]) moves)
-                .buildAll())
+                        .withConverter(new Vector3fInterpolator(QUAD_IN_OUT))
+                        .withPropertyName("localTranslation")
+                        .withEffect(spatial)
+                        .withMultiDuration(times)
+                        .withEasing(QUAD_IN)
+                        .withMultiValue((Object[]) moves)
+                        .buildAll())
                 .build());
     }
 
@@ -231,6 +228,5 @@ public class EffectManager extends AbstractAppState implements IGameCycle{
     public void finish() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
+
 }

@@ -14,6 +14,7 @@ import com.jme3.texture.Texture;
 import java.util.List;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
+import sg.atom.core.lifecycle.AbstractManager;
 
 /**
  * MaterialManager.
@@ -35,16 +36,15 @@ import sg.atom.AtomMain;
  *
  * @author atomix
  */
-public class MaterialManager {
+public class MaterialManager extends AbstractManager {
 
-    protected AssetManager assetManager;
     //FIXME: Default instance. Not a singleton!
     private static MaterialManager defaultInstance;
     private Material matWire;
     private Material unshadedMat;
 
     public MaterialManager(AtomMain app) {
-        this.assetManager = app.getAssetManager();
+        super(app);
     }
 
     public MaterialManager(AssetManager assetManager) {

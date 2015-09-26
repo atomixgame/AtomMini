@@ -13,8 +13,8 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
 import java.util.HashMap;
+import sg.atom.AtomMain;
 import sg.atom.gameplay.CommonGameCharacter;
-import sg.atom.gameplay.GamePlayManager;
 import sg.atom.corex.managers.StageManager;
 import sg.atom.corex.managers.EffectManager;
 
@@ -24,8 +24,7 @@ import sg.atom.corex.managers.EffectManager;
  */
 public class BaseCharacterControl extends AbstractControl implements AnimEventListener {
     // Shortcuts   
-
-    protected GamePlayManager gamePlayManager;
+    protected AtomMain app;
     protected StageManager stageManager;
     //Visual
     protected CommonGameCharacter character;
@@ -73,7 +72,6 @@ public class BaseCharacterControl extends AbstractControl implements AnimEventLi
     public BaseCharacterControl(StageManager stageManager, CommonGameCharacter character) {
 
         this.stageManager = stageManager;
-        this.gamePlayManager = stageManager.getGamePlayManager();
         this.character = character;
         this.moveSpeed = defaultSpeed;
         this.walkDirection = new Vector3f(Vector3f.UNIT_X);
@@ -288,5 +286,9 @@ public class BaseCharacterControl extends AbstractControl implements AnimEventLi
 
     public void face(CommonGameCharacter target) {
         spatial.lookAt(target.getLocation(), Vector3f.UNIT_Y);
+    }
+
+    public AtomMain getApp() {
+        return app;
     }
 }

@@ -23,10 +23,7 @@ import java.util.List;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.IGameCycle;
-import sg.atom.gameplay.controls.NonPlayerCharacterControl;
 import sg.atom.corex.managers.StageManager;
-import sg.atom.corex.ui.nifty.UIFightScreen;
-import sg.atom.corex.ui.nifty.UIInGameScreen;
 
 /**
  * GamePlayManager is Manager for GamePlay, Player, Character, Level, Score.

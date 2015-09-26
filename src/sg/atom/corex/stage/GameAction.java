@@ -13,7 +13,6 @@ import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import java.io.IOException;
 import java.util.concurrent.Callable;
-import sg.atom.gameplay.CommonGameCharacter;
 import sg.atom.gameplay.Skill;
 
 /**
@@ -29,6 +28,10 @@ public class GameAction implements Callable, Runnable, CinematicEvent {
     boolean actived;
     boolean isTransparent;
     int type;
+
+    public GameAction(GameActor actor) {
+        this.actor = actor;
+    }
 
     public GameAction(int id, Skill skill, GameActor actor) {
         this.id = id;

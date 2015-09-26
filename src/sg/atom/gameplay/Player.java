@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sg.atom.gameplay;
 
 import java.util.ArrayList;
@@ -11,7 +6,7 @@ import java.util.List;
 
 /**
  * Player represent the Player Model and data.
- * 
+ *
  * @author CuongNguyen
  */
 public class Player {
@@ -28,7 +23,7 @@ public class Player {
     int status;
     CommonGameCharacter character;
     ArrayList<CommonGameCharacter> team;
-    
+
     //Infomations & Social------------------------------------------------------
     String realName;
     int sex;
@@ -45,17 +40,18 @@ public class Player {
     int country;
     String address;
     String phoneNumber;
-    
 
-    public Player(String name,String uid){
+    public Player(String name, String uid) {
         this.name = name;
         this.uid = uid;
     }
+
     public Player(String name) {
         this.name = name;
         this.team = new ArrayList<CommonGameCharacter>();
         this.uid = "";
     }
+
     //Exchange things
     public void buySkill(Skill skill) {
         money -= skill.cost;
@@ -64,11 +60,9 @@ public class Player {
     public void buyItem(Item item) {
         money -= item.cost;
     }
-    
+
     //
-
     // Collections support -----------------------------------------------------
-
     // GETTER & SETTER ---------------------------------------------------------
     public CommonGameCharacter getMainCharacter() {
         return character;
@@ -86,6 +80,7 @@ public class Player {
     public String getName() {
         return name;
     }
+
     public ArrayList<CommonGameCharacter> getTeam() {
         return team;
     }

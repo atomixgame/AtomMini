@@ -17,8 +17,8 @@ import sg.atom.core.lifecycle.IGameCycle;
 import sg.atom.gameplay.CommonGameCharacter;
 import sg.atom.gameplay.Skill;
 import sg.atom.corex.managers.StageManager;
-import sg.atom.state.InGameState;
-import sg.atom.corex.ui.nifty.UIInGameScreen;
+import sg.atom.common.state.InGameState;
+import sg.atom.common.ui.nifty.UIInGameScreen;
 
 /**
  *

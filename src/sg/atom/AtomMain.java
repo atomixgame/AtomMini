@@ -23,7 +23,7 @@ import sg.atom.net.NetworkManager;
 import sg.atom.corex.managers.EffectManager;
 import sg.atom.corex.managers.SoundManager;
 import sg.atom.corex.managers.StageManager;
-import sg.atom.state.GameStateManager;
+import sg.atom.common.state.GameStateManager;
 import sg.atom.corex.managers.GUIManager;
 import sg.atom.corex.managers.WorldManager;
 

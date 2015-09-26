@@ -11,6 +11,7 @@
             <name>AtomMini</name>
             <source-roots>
                 <root id="src.dir"/>
+                <root id="src.common.dir" name="Common Packages"/>
             </source-roots>
             <test-roots>
                 <root id="test.test.dir"/>

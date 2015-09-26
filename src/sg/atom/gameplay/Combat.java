@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Combat is a predesigned match between player team and enemies or two players.
- * 
+ *
  * @author CuongNguyen
  */
 public class Combat {
@@ -20,7 +20,7 @@ public class Combat {
     private int resultScore;
     private int enviroment;
     private boolean finished;
-    
+
     public Combat(GamePlayManager gamePlayManager) {
         this.gamePlayManager = gamePlayManager;
 //        this.combatFightGamePlay = gamePlayManager.getCombatGamePlay();
@@ -38,7 +38,6 @@ public class Combat {
 
     public void end(boolean playerWin) {
         this.finished = true;
-        System.out.println("Combat end "+playerWin);
     }
 
     public List<CommonGameCharacter> getCharacters() {
@@ -82,6 +81,5 @@ public class Combat {
     public boolean isFinished() {
         return finished;
     }
-    
-    
+
 }

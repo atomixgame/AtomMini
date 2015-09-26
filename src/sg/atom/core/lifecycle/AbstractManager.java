@@ -4,10 +4,11 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioRenderer;
 import com.jme3.input.InputManager;
 import com.jme3.renderer.RenderManager;
+import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
-import com.sun.jmx.snmp.tasks.Task;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
 
@@ -25,8 +26,10 @@ public class AbstractManager implements IGameCycle, AppState {
     protected AppStateManager stateManager;
     protected InputManager inputManager;
     protected boolean actived;
-    private boolean initialized = false;
+    protected boolean initialized = false;
     protected boolean customCycle = false;
+    protected AudioRenderer audioRenderer;
+    protected ViewPort viewPort;
 
     protected AbstractManager() {
     }
@@ -35,6 +38,8 @@ public class AbstractManager implements IGameCycle, AppState {
         this.app = app;
         this.guiNode = app.getGuiNode();
         this.rootNode = app.getRootNode();
+        this.audioRenderer = app.getAudioRenderer();
+        this.viewPort = app.getViewPort();
         this.assetManager = app.getAssetManager();
         this.stateManager = app.getStateManager();
         this.inputManager = app.getInputManager();
@@ -56,7 +61,7 @@ public class AbstractManager implements IGameCycle, AppState {
     public void finish() {
     }
 
-    public void addTask(Task task) {
+    public void addTask(Runnable task) {
     }
 
     public void initialize(AppStateManager stateManager, Application app) {
@@ -70,6 +75,8 @@ public class AbstractManager implements IGameCycle, AppState {
             this.assetManager = app.getAssetManager();
             this.stateManager = app.getStateManager();
             this.inputManager = app.getInputManager();
+            this.audioRenderer = app.getAudioRenderer();
+            this.viewPort = app.getViewPort();
         }
 
     }
@@ -124,4 +131,13 @@ public class AbstractManager implements IGameCycle, AppState {
     public Node getRootNode() {
         return rootNode;
     }
+
+    public AudioRenderer getAudioRenderer() {
+        return audioRenderer;
+    }
+
+    public ViewPort getViewPort() {
+        return viewPort;
+    }
+
 }

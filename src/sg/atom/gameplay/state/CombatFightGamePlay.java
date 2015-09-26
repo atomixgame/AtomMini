@@ -12,7 +12,7 @@ import sg.atom.gameplay.Combat;
 import sg.atom.gameplay.CommonGameCharacter;
 import sg.atom.gameplay.GamePlayManager;
 import sg.atom.corex.managers.StageManager;
-import sg.atom.state.FightState;
+import sg.atom.common.state.FightState;
 
 /**
  *

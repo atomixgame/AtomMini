@@ -14,8 +14,8 @@ import java.util.logging.Logger;
 import sg.atom.AtomMain;
 import sg.atom.corex.managers.StageManager;
 import sg.atom.corex.managers.EffectManager;
-import sg.atom.state.GameStateManager;
-import sg.atom.state.InGameState;
+import sg.atom.common.state.GameStateManager;
+import sg.atom.common.state.InGameState;
 import sg.atom.corex.managers.GUIManager;
 
 /**

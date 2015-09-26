@@ -40,6 +40,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
+import sg.atom.core.lifecycle.AbstractManager;
 import sg.atom.corex.entity.SpatialEntity;
 import sg.atom.core.lifecycle.IGameCycle;
 import sg.atom.corex.stage.GameScene;
@@ -53,24 +54,15 @@ import sg.atom.gameplay.GameLevel;
  *
  * @author CuongNguyen
  */
-public class StageManager extends AbstractAppState  implements IGameCycle {
+public class StageManager extends AbstractManager implements IGameCycle {
 
-    protected final AtomMain app;
-    // Managers
-    protected final AssetManager assetManager;
-    protected final ViewPort viewPort;
-    protected final InputManager inputManager;
-    protected final AudioRenderer audioRenderer;
-    protected GamePlayManager gamePlayManager;
-    protected EffectManager effectManager;
-    protected WorldManager worldManager;
     // Controls
+
     protected ChaseCamera chaseCam;
     protected CursorControl cursorControl;
     // Characters
     protected ArrayList<CommonGameCharacter> characters;
     // Nodes
-    protected Node rootNode;
     protected Spatial cursor3D;
     protected Spatial playerModel;
     // Background
@@ -79,23 +71,18 @@ public class StageManager extends AbstractAppState  implements IGameCycle {
     protected boolean staticBg = false;
     protected ViewPort backgroundViewport;
     protected Cinematic cinematic;
-    protected ListeningScheduledExecutorService executor = MoreExecutors.listeningDecorator(new ScheduledThreadPoolExecutor(2));   
+    protected ListeningScheduledExecutorService executor = MoreExecutors.listeningDecorator(new ScheduledThreadPoolExecutor(2));
     protected HashMap<String, String> scenesMap;
     protected float time;
     protected GameScene currentScene;
     protected int defaultTransistionType;
-    
+    private EffectManager effectManager;
+
     public StageManager(AtomMain app) {
-        this.app = app;
-        this.assetManager = app.getAssetManager();
-        this.inputManager = app.getInputManager();
-        this.audioRenderer = app.getAudioRenderer();
-        this.viewPort = app.getViewPort();
-        this.rootNode = app.getRootNode();
+        super(app);
     }
 
     public void initManagers() {
-        this.worldManager = app.getWorldManager();
         this.effectManager = new EffectManager(this.getApp());
         this.cinematic = new Cinematic();
         this.app.getStateManager().attach(cinematic);
@@ -108,10 +95,9 @@ public class StageManager extends AbstractAppState  implements IGameCycle {
 //            if (app.getDeviceInfo().isDesktopApp()) {
 //                createBackground();
 //            }
-
-            createCursor();
-            setupCamera();
-            setupInput();
+        createCursor();
+        setupCamera();
+        setupInput();
 
 //            this.effectManager.createEffects();
 //            this.gamePlayManager = new GamePlayManager(app);  firstRun = false;
@@ -152,6 +138,7 @@ public class StageManager extends AbstractAppState  implements IGameCycle {
     }
 
     public void setBackgroundImage(String path) {/* A colored lit cube. Needs light source! */
+
         backgroundMaterial.setTexture("ColorMap", assetManager.loadTexture(path));
     }
 
@@ -187,11 +174,9 @@ public class StageManager extends AbstractAppState  implements IGameCycle {
 //        chaseCam.setMaxDistance(35f);
 //        chaseCam.setRotationSensitivity(0);
 //        chaseCam.setSmoothMotion(true);
-
     }
 
     public void loadScenes() {
- 
 
     }
 
@@ -207,16 +192,16 @@ public class StageManager extends AbstractAppState  implements IGameCycle {
 //        levelNode.attachChild(scene);
         // camera?
     }
-    
-    public void startScene(GameScene scene){
-        
+
+    public void startScene(GameScene scene) {
+
     }
 
-    public void goToScene(String sceneName){
+    public void goToScene(String sceneName) {
     }
-    
-    public void goToScene(GameScene scene){
-        
+
+    public void goToScene(GameScene scene) {
+
     }
 
     public void onState(Class<? extends AbstractAppState> newState) {
@@ -258,7 +243,7 @@ public class StageManager extends AbstractAppState  implements IGameCycle {
 
     public void removeCharacter(CommonGameCharacter pc, float delayTime) {
     }
-    
+
     protected AnalogListener analogListener = new AnalogListener() {
         public void onAnalog(String name, float intensity, float tpf) {
 
@@ -296,12 +281,12 @@ public class StageManager extends AbstractAppState  implements IGameCycle {
     //Action management---------------------------------------------------------
 
     public <T> void queueAction(final T callee, final Function<T, T> function, float time) {
-        ListenableFuture<T> actionFuture =
-                executor.schedule(new Callable<T>() {
-            public T call() {
-                return function.apply(callee);
-            }
-        }, (int) time * 1000, TimeUnit.MILLISECONDS);
+        ListenableFuture<T> actionFuture
+                = executor.schedule(new Callable<T>() {
+                    public T call() {
+                        return function.apply(callee);
+                    }
+                }, (int) time * 1000, TimeUnit.MILLISECONDS);
 
         Futures.addCallback(actionFuture, new FutureCallback<T>() {
             public void onSuccess(T result) {
@@ -313,8 +298,8 @@ public class StageManager extends AbstractAppState  implements IGameCycle {
     }
 
     public <T> void queueAction(final T callee, final Callable<T> actionCall, float time) {
-        ListenableFuture<T> actionFuture =
-                executor.schedule(actionCall, (int) time * 1000, TimeUnit.MILLISECONDS);
+        ListenableFuture<T> actionFuture
+                = executor.schedule(actionCall, (int) time * 1000, TimeUnit.MILLISECONDS);
 
         Futures.addCallback(actionFuture, new FutureCallback<T>() {
             public void onSuccess(T result) {
@@ -400,14 +385,10 @@ public class StageManager extends AbstractAppState  implements IGameCycle {
     }
 
     //GETTER & SETTER ----------------------------------------------------------
-    public Node getRootNode() {
-        return app.getRootNode();
-    }
-
     public float getTime() {
         return time;
     }
-    
+
     public Camera getCurrentCamera() {
         return app.getCamera();
     }
@@ -420,10 +401,6 @@ public class StageManager extends AbstractAppState  implements IGameCycle {
         return null;
     }
 
-    public GamePlayManager getGamePlayManager() {
-        return gamePlayManager;
-    }
-
     public AtomMain getApp() {
         return app;
     }
@@ -433,7 +410,7 @@ public class StageManager extends AbstractAppState  implements IGameCycle {
     }
 
     public CommonGameCharacter wrap(SpatialEntity robberEntity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
 }

@@ -5,6 +5,7 @@
  */
 package sg.atom.state;
 
+import sg.atom.common.state.GameStateManager;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -31,7 +32,7 @@ public class BaseGameState extends AbstractAppState {
     protected GUIManager guiManager;
     protected StageManager stageManager;
     protected InputManager inputManager;
-    private ViewPort viewPort;
+    protected ViewPort viewPort;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {

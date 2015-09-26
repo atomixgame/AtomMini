@@ -7,8 +7,8 @@ package sg.atom.gameplay;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.input.InputManager;
 import java.util.List;
+import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.IGameCycle;
 import sg.atom.corex.managers.StageManager;
@@ -32,13 +32,23 @@ public abstract class BaseGamePlay extends AbstractAppState implements IGameCycl
         this.app = gamePlayManager.getApp();
     }
 
+    public void init() {
+    }
+
+    public void load() {
+    }
+
+    public void config(Configuration props) {
+    }
+
+    public void finish() {
+    }
+
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (AtomMain) app;
         this.gamePlayManager = getApp().getGamePlayManager();
-//        this.stageManager = getApp().getStageManager();
-//        this.inputManager = getApp().getInputManager();
     }
 
     //SETTER & GETTER

@@ -8,9 +8,9 @@ import sg.atom.corex.managers.GUIManager;
 import com.google.common.collect.TreeTraverser;
 import com.jme3.scene.Node;
 import sg.atom.AtomMain;
-import sg.atom.corex.ui.tonegod.UITFightScreen;
-import sg.atom.corex.ui.tonegod.UITInGameScreen;
-import sg.atom.corex.ui.tonegod.UITMainMenuScreen;
+import sg.atom.common.ui.tonegod.UITFightScreen;
+import sg.atom.common.ui.tonegod.UITInGameScreen;
+import sg.atom.common.ui.tonegod.UITMainMenuScreen;
 import tonegod.gui.core.Element;
 import tonegod.gui.core.Screen;
 

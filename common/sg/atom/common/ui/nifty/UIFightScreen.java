@@ -11,7 +11,6 @@ import de.lessvoid.nifty.screen.ScreenController;
 import java.util.HashMap;
 import sg.atom.gameplay.CommonGameCharacter;
 import sg.atom.gameplay.GamePlayManager;
-import sg.atom.corex.ui.NiftyGUIManager;
 import sg.atom.corex.ui.hud.HealthBarNode;
 
 /**

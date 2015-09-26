@@ -12,7 +12,6 @@ import sg.atom.common.state.CreditState;
 import sg.atom.common.state.InGameState;
 import sg.atom.common.state.MainMenuState;
 import sg.atom.corex.managers.GUIManager;
-import sg.atom.corex.ui.NiftyGUIManager;
 
 /**
  *

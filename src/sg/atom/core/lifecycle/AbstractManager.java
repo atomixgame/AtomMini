@@ -30,6 +30,7 @@ public class AbstractManager implements IGameCycle, AppState {
     protected boolean customCycle = false;
     protected AudioRenderer audioRenderer;
     protected ViewPort viewPort;
+    protected ViewPort guiViewPort;
 
     protected AbstractManager() {
     }
@@ -37,6 +38,7 @@ public class AbstractManager implements IGameCycle, AppState {
     public AbstractManager(AtomMain app) {
         this.app = app;
         this.guiNode = app.getGuiNode();
+        this.guiViewPort = app.getGuiViewPort();
         this.rootNode = app.getRootNode();
         this.audioRenderer = app.getAudioRenderer();
         this.viewPort = app.getViewPort();
@@ -140,4 +142,7 @@ public class AbstractManager implements IGameCycle, AppState {
         return viewPort;
     }
 
+    public ViewPort getGuiViewPort() {
+        return guiViewPort;
+    }
 }

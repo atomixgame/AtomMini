@@ -1,4 +1,4 @@
-package sg.atom.corex.ui;
+package sg.atom.common.ui.nifty;
 
 import sg.atom.corex.managers.GUIManager;
 import com.google.common.collect.TreeTraverser;
@@ -34,40 +34,12 @@ public class NiftyGUIManager extends GUIManager implements ScreenController {
 
     public NiftyGUIManager(AtomMain app) {
         super(app);
-        instance = this;
     }
 
+    @Override
     public void setupGUI() {
         super.setupGUI();
         setupNifty();
-    }
-
-    public void loadNiftyScreens() {
-        //Screens
-//        UIInGameScreen inGameScreenController = new UIInGameScreen(this);
-//        UICreditScreen creditScreenController = new UICreditScreen(this);
-//        UIMainMenuScreen mainMenuScreenController = new UIMainMenuScreen(this);
-//        UILeaderBoardScreen leaderBoardScreenController = new UILeaderBoardScreen(this);
-//        UIShopScreen shopScreenController = new UIShopScreen(this);
-//        nifty.registerScreenController(mainMenuScreenController,
-//                inGameScreenController,
-//                creditScreenController,
-//                leaderBoardScreenController,
-//                shopScreenController);
-
-//        nifty.registerScreenController(new UIInGameScreen(this),
-//                new UICreditScreen(this),
-//                new UIMainMenuScreen(this),
-//                new UILeaderBoardScreen(this),
-//                new UIShopScreen(this),
-//                new UIFightScreen(this));
-        //nifty.addXml("Interface/Screens/SplashScreen.xml");
-//        nifty.addXml("Interface/Screens/MainMenu.xml");
-//        nifty.addXml("Interface/Screens/CreditScreen.xml");
-//        nifty.addXml("Interface/Screens/InGame.xml");
-//        nifty.addXml("Interface/Screens/LeaderBoard.xml");
-//        nifty.addXml("Interface/Screens/IngameScreens/Dialogue.xml");
-//        nifty.addXml("Interface/Screens/Shop.xml");
     }
 
     public void setupNifty() {
@@ -81,20 +53,7 @@ public class NiftyGUIManager extends GUIManager implements ScreenController {
         nifty.registerEffect("motionAxis", "sg.atom.corex.ui.nifty.effects.MotionAxis");
         nifty.registerEffect("imageOverlayPulsateBlend", "sg.atom.corex.ui.nifty.effects.ImageOverlayPulsateBlend");
 
-        loadNiftyScreens();
-        createInputMapping();
         attachNifty();
-    }
-
-    private void createInputMapping() {
-        inputManager.addMapping("toggleNifty", new KeyTrigger(KeyInput.KEY_F10));
-        inputManager.addListener(new ActionListener() {
-            public void onAction(String name, boolean isPressed, float tpf) {
-                if (name.equals("toggleNifty") && isPressed) {
-                    toggleNifty();
-                }
-            }
-        }, "toggleNifty");
     }
 
     public void attachNifty() {
@@ -216,10 +175,5 @@ public class NiftyGUIManager extends GUIManager implements ScreenController {
             detachNifty();
             disableNifty = true;
         }
-    }
-
-    public static NiftyGUIManager getInstance() {
-        return (NiftyGUIManager) instance;
-
     }
 }

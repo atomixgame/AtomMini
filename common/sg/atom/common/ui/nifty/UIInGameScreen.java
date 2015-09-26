@@ -23,7 +23,6 @@ import sg.atom.gameplay.Inventory;
 import sg.atom.gameplay.Skill;
 import sg.atom.common.state.InGameState;
 import sg.atom.corex.managers.GUIManager;
-import sg.atom.corex.ui.NiftyGUIManager;
 import sg.atom.corex.ui.hud.HealthBarNode;
 
 /**

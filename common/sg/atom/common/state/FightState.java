@@ -13,7 +13,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.Vector3f;
 import java.util.List;
 import java.util.logging.Logger;
-import sg.atom.corex.ui.NiftyGUIManager;
+import sg.atom.common.ui.nifty.NiftyGUIManager;
 import sg.atom.common.ui.nifty.UIFightScreen;
 import sg.atom.state.BaseGameState;
 

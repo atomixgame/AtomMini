@@ -2,13 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.atom.corex.ui.nifty.controls;
+package sg.atom.common.ui.nifty;
 
 import de.lessvoid.nifty.controls.ListBox.ListBoxViewConverter;
 import de.lessvoid.nifty.elements.Element;
 import sg.atom.gameplay.info.PlayerInfo;
 import sg.atom.corex.managers.GUIManager;
-import sg.atom.corex.ui.NiftyGUIManager;
+import sg.atom.common.ui.nifty.NiftyGUIManager;
 
 /**
  *
@@ -41,7 +41,7 @@ public class PlayerInfoList implements ListBoxViewConverter<PlayerInfo> {
             NiftyGUIManager.setText(name, item.getName());
             NiftyGUIManager.setText(score, item.getScore());
             NiftyGUIManager.setText(num, item.getNum());
-            NiftyGUIManager.setImage(icon, item.getIconImage());
+            NiftyGUIManager.setImage(icon, null);
         } else {
             NiftyGUIManager.setText(name, "No name");
             NiftyGUIManager.setText(score, "1");

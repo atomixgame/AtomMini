@@ -4,10 +4,6 @@
  */
 package sg.atom.gameplay.info;
 
-import de.lessvoid.nifty.render.NiftyImage;
-import sg.atom.corex.managers.GUIManager;
-import sg.atom.corex.ui.NiftyGUIManager;
-
 /**
  *
  * @author CuongNguyen
@@ -31,10 +27,6 @@ public class PlayerInfo {
         return name;
     }
 
-    public NiftyImage getIconImage() {
-        return NiftyGUIManager.getInstance().createNiftyImage(AVATAR_DIR + icon);
-    }
-
     public String getIcon() {
         return icon;
     }
@@ -46,6 +38,5 @@ public class PlayerInfo {
     public int getScore() {
         return score;
     }
-    
-    
+
 }

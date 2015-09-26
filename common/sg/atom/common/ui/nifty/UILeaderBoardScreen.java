@@ -13,7 +13,6 @@ import de.lessvoid.nifty.screen.ScreenController;
 import java.util.List;
 import sg.atom.gameplay.info.PlayerInfo;
 import sg.atom.corex.managers.GUIManager;
-import sg.atom.corex.ui.NiftyGUIManager;
 
 /**
  *

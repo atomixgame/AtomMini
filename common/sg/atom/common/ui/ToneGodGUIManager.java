@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.atom.corex.ui;
+package sg.atom.common.ui;
 
 import sg.atom.corex.managers.GUIManager;
 import com.google.common.collect.TreeTraverser;

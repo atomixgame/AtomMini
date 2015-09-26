@@ -26,7 +26,6 @@ import sg.atom.gameplay.Item;
 import sg.atom.gameplay.Shop;
 import sg.atom.common.state.ShopState;
 import sg.atom.corex.managers.GUIManager;
-import sg.atom.corex.ui.NiftyGUIManager;
 
 /**
  *

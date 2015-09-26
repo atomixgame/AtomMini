@@ -8,7 +8,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import java.util.logging.Logger;
-import sg.atom.corex.ui.NiftyGUIManager;
+import sg.atom.common.ui.nifty.NiftyGUIManager;
 import sg.atom.common.ui.nifty.UICreditScreen;
 import sg.atom.state.BaseGameState;
 

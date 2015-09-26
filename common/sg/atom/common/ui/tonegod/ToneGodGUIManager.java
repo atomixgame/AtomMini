@@ -2,15 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.atom.common.ui;
+package sg.atom.common.ui.tonegod;
 
 import sg.atom.corex.managers.GUIManager;
 import com.google.common.collect.TreeTraverser;
 import com.jme3.scene.Node;
 import sg.atom.AtomMain;
-import sg.atom.common.ui.tonegod.UITFightScreen;
-import sg.atom.common.ui.tonegod.UITInGameScreen;
-import sg.atom.common.ui.tonegod.UITMainMenuScreen;
 import tonegod.gui.core.Element;
 import tonegod.gui.core.Screen;
 

@@ -2,12 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.atom.common.ui.nifty;
+package sg.atom.common.ui.nifty.controls;
 
 import de.lessvoid.nifty.controls.ListBox.ListBoxViewConverter;
 import de.lessvoid.nifty.elements.Element;
 import sg.atom.gameplay.info.PlayerInfo;
 import sg.atom.corex.managers.GUIManager;
+import sg.atom.common.ui.nifty.NiftyGUIManager;
 import sg.atom.common.ui.nifty.NiftyGUIManager;
 
 /**

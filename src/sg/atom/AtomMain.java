@@ -32,7 +32,6 @@ import sg.atom.corex.managers.WorldManager;
  */
 public class AtomMain extends SimpleApplication implements IGameCycle {
 
-    
     protected AtomAssetManager exAssetManager;
     protected StageManager stageManager;
     protected GUIManager guiManager;
@@ -145,6 +144,8 @@ public class AtomMain extends SimpleApplication implements IGameCycle {
         initConfigurations();
         registerServices();
         initServices();
+        initManagers();
+        initStates();
     }
 
     public void load() {

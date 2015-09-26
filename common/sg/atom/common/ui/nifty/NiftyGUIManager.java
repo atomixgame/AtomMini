@@ -4,9 +4,6 @@ import sg.atom.corex.managers.GUIManager;
 import com.google.common.collect.TreeTraverser;
 import com.jme3.asset.DesktopAssetManager;
 import com.jme3.asset.TextureKey;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
@@ -156,10 +153,6 @@ public class NiftyGUIManager extends GUIManager implements ScreenController {
 
     public ScreenController getScreenController() {
         return this.nifty.getCurrentScreen().getScreenController();
-    }
-
-    public Node getGuiNode() {
-        return guiNode;
     }
 
     public void detachNifty() {

@@ -7,23 +7,10 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.jme3.app.state.AbstractAppState;
-import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioRenderer;
 import com.jme3.cinematic.Cinematic;
-import com.jme3.collision.CollisionResults;
 import com.jme3.input.ChaseCamera;
-import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.AnalogListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseAxisTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
-import com.jme3.math.Ray;
 import com.jme3.math.Transform;
-import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
@@ -32,7 +19,6 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.ui.Picture;
-import com.simsilica.es.Entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -45,7 +31,6 @@ import sg.atom.corex.entity.SpatialEntity;
 import sg.atom.core.lifecycle.IGameCycle;
 import sg.atom.corex.stage.GameScene;
 import sg.atom.gameplay.CommonGameCharacter;
-import sg.atom.gameplay.GamePlayManager;
 import sg.atom.corex.stage.select.CursorControl;
 import sg.atom.gameplay.GameLevel;
 
@@ -57,7 +42,6 @@ import sg.atom.gameplay.GameLevel;
 public class StageManager extends AbstractManager implements IGameCycle {
 
     // Controls
-
     protected ChaseCamera chaseCam;
     protected CursorControl cursorControl;
     // Characters
@@ -76,7 +60,7 @@ public class StageManager extends AbstractManager implements IGameCycle {
     protected float time;
     protected GameScene currentScene;
     protected int defaultTransistionType;
-    private EffectManager effectManager;
+    protected EffectManager effectManager;
 
     public StageManager(AtomMain app) {
         super(app);
@@ -89,35 +73,15 @@ public class StageManager extends AbstractManager implements IGameCycle {
     }
 
     public void onStageReady() {
-
-//        if (firstRun == true) {
-//
-//            if (app.getDeviceInfo().isDesktopApp()) {
-//                createBackground();
-//            }
         createCursor();
         setupCamera();
         setupInput();
-
-//            this.effectManager.createEffects();
-//            this.gamePlayManager = new GamePlayManager(app);  firstRun = false;
-//        }
-////            startLevel(levels.get(0));
-//            gamePlayManager.goInGame();
-//          
     }
 
     public void createBackground() {
-        //viewPort.setBackgroundColor(ColorRGBA.LightGray);
         backgroundMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         backgroundPicture = new Picture("background");
         backgroundPicture.setMaterial(backgroundMaterial);
-//        backgroundPicture.setQueueBucket(RenderQueue.Bucket.Opaque);
-//        float bgWidth = app.getSettings().getWidth();
-//        float bgHeight = app.getSettings().getHeight();
-//        float bgScale = 50;
-//        backgroundPicture.scale(bgWidth / bgScale, bgHeight / bgScale, 0);
-//        //float distance = getCurrentActiveCamera().get
         backgroundPicture.setQueueBucket(RenderQueue.Bucket.Gui);
         backgroundPicture.setLocalTranslation(0, 0, 0);
         backgroundPicture.center();
@@ -129,8 +93,6 @@ public class StageManager extends AbstractManager implements IGameCycle {
         backgroundViewport = app.getRenderManager().createPreView("background", app.getCamera());
         backgroundViewport.setClearFlags(true, true, true);
         backgroundViewport.attachScene(backgroundPicture);
-
-        backgroundPicture.updateGeometricState();
     }
 
     public Material getBackgroundMaterial() {
@@ -144,21 +106,6 @@ public class StageManager extends AbstractManager implements IGameCycle {
 
     public void setupInput() {
         inputManager.setCursorVisible(true);
-
-        inputManager.addMapping("Attack",
-                new KeyTrigger(KeyInput.KEY_SPACE),
-                new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
-        inputManager.addMapping("Pick",
-                new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        /**
-         * Add an action to one or more listeners
-         */
-        inputManager.addListener(actionListener, "Attack", "Pick");
-        inputManager.addListener(analogListener, "Attack", "Pick");
-        /**
-         * Use ActionListener to respond to pressed/released inputs (key
-         * presses, mouse clicks)
-         */
     }
 
     public void setupCamera() {
@@ -166,14 +113,6 @@ public class StageManager extends AbstractManager implements IGameCycle {
         app.getFlyByCamera().setMoveSpeed(10);
         app.getCamera().setLocation(new Vector3f(0, 3, 5));
         app.getCamera().lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
-
-//        chaseCam = new ChaseCamera(app.getCamera(), playerModel, inputManager);
-//        chaseCam.setDefaultDistance(12f);
-//        chaseCam.setZoomSensitivity(0.0f);
-//        chaseCam.setMinDistance(5.8f);
-//        chaseCam.setMaxDistance(35f);
-//        chaseCam.setRotationSensitivity(0);
-//        chaseCam.setSmoothMotion(true);
     }
 
     public void loadScenes() {
@@ -181,10 +120,7 @@ public class StageManager extends AbstractManager implements IGameCycle {
     }
 
     public void startLevel(GameLevel level) {
-//        String levelName = "Forest";
-//        String sceneName = levelName;
         startScene(level.getPath());
-//        this.currentLevel = level;
     }
 
     public void startScene(String sceneName) {
@@ -208,32 +144,16 @@ public class StageManager extends AbstractManager implements IGameCycle {
     }
 
     public void putCharacter(CommonGameCharacter character) {
-//        System.out.println(" Place character " + character.name + " at :" + character.getModel().getLocalTranslation());
-//        if (!gamePlayManager.fightMode) {
-//            levelNode.attachChild(character.getModel());
-//        } else {
-//            fightLevelNode.attachChild(character.getModel());
-//        }
         character.onStage(this);
     }
 
     public void putCharacter(CommonGameCharacter character, Vector3f pos) {
         character.getModel().setLocalTranslation(pos);
-//        if (!gamePlayManager.fightMode) {
-//            levelNode.attachChild(character.getModel());
-//        } else {
-//            fightLevelNode.attachChild(character.getModel());
-//        }
         character.onStage(this);
     }
 
     public void putCharacter(CommonGameCharacter character, Transform pos) {
         character.getModel().setLocalTransform(pos);
-//        if (!gamePlayManager.fightMode) {
-//            levelNode.attachChild(character.getModel());
-//        } else {
-//            fightLevelNode.attachChild(character.getModel());
-//        }
         character.onStage(this);
     }
 
@@ -243,35 +163,6 @@ public class StageManager extends AbstractManager implements IGameCycle {
 
     public void removeCharacter(CommonGameCharacter pc, float delayTime) {
     }
-
-    protected AnalogListener analogListener = new AnalogListener() {
-        public void onAnalog(String name, float intensity, float tpf) {
-
-            if (name.equals("Pick")) {
-                // Reset results list.
-                CollisionResults results = new CollisionResults();
-                // Convert screen click to 3d position
-                Vector2f click2d = inputManager.getCursorPosition();
-                Vector3f click3d = app.getCamera().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
-                Vector3f dir = app.getCamera().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d);
-                // Aim the ray from the clicked spot forwards.
-                Ray ray = new Ray(click3d, dir);
-                rootNode.collideWith(ray, results);
-
-                if (results.size() > 0) {
-                    // The closest result is the target that the player picked:
-                    Geometry target = results.getClosestCollision().getGeometry();
-                    if (!isOnTerrain(target)) {
-                        onSelect(target, intensity);
-                    } else {
-                        Vector3f touchLoc = results.getClosestCollision().getContactPoint();
-                        onTouch(touchLoc);
-                    }
-                }
-            }
-
-        }
-    };
     //Stage---------------------------------------------------------------------
 
     boolean isOnTerrain(Geometry target) {
@@ -326,36 +217,6 @@ public class StageManager extends AbstractManager implements IGameCycle {
         Node worldNode = app.getWorldManager().getWorldNode();
         cursorControl = new CursorControl(this);
         cursor3D = cursorControl.createCursor(assetManager, worldNode);
-    }
-    //Events--------------------------------------------------------------------
-    protected ActionListener actionListener = new ActionListener() {
-        public void onAction(String name, boolean pressed, float tpf) {
-        }
-    };
-
-    public void onTouch(Vector3f touchLoc) {
-        cursorControl.placeCursor(touchLoc);
-//        gamePlayManager.getAdventureGamePlay().getCharacterControl().letMoveTo(touchLoc);
-    }
-
-    public void onSelect(Geometry target, float intensity) {
-        // Here comes the action:
-//        if (target.hasAncestor((Node) gamePlayManager.getCharacter("Aerith").getModel())) {
-//            if (!gamePlayManager.fightMode) {
-//                app.getStateManager().getState(InGameState.class).toState(FightState.class);
-//            } else {
-//                app.getStateManager().getState(FightState.class).toState(InGameState.class);
-//            }
-//        }
-    }
-
-    public void onSelect() {
-    }
-
-    public void onHover(CommonGameCharacter gameCharacter) {
-    }
-
-    public void onHover(Entity entity) {
     }
     //Cycle -------------------------------------------------------------------
 

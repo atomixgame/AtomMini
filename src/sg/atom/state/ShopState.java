@@ -7,12 +7,8 @@ package sg.atom.state;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import java.util.logging.Logger;
-import sg.atom.AtomMain;
 import sg.atom.gameplay.Shop;
-import sg.atom.corex.managers.StageManager;
-import sg.atom.corex.managers.GUIManager;
 import sg.atom.corex.ui.NiftyGUIManager;
 import sg.atom.corex.ui.nifty.UIShopScreen;
 
@@ -20,29 +16,15 @@ import sg.atom.corex.ui.nifty.UIShopScreen;
  *
  * @author CuongNguyen
  */
-public class ShopState extends AbstractAppState {
+public class ShopState extends BaseGameState {
 
-    private AtomMain app;
-    private AssetManager assetManager;
-    private AppStateManager stateManager;
-    private GameStateManager gameStateManager;
     private static final Logger logger = Logger.getLogger(CreditState.class.getName());
-    private GUIManager guiManager;
-    private StageManager stageManager;
     private UIShopScreen screenController;
     private Shop shop;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        this.app = (AtomMain) app; // can cast Application to something more specific
-
-        this.assetManager = this.app.getAssetManager();
-        this.stateManager = this.app.getStateManager();
-        //this.gameStateManager = this.app.getGameStateManager();
-
-        this.guiManager = this.app.getGUIManager();
-        this.stageManager = this.app.getStageManager();
         setEnabled(true);
     }
 

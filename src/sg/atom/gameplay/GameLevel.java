@@ -16,6 +16,7 @@ import com.jme3.scene.Node;
 import java.io.IOException;
 import java.util.HashMap;
 import org.apache.commons.configuration.Configuration;
+import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.IGameCycle;
 import sg.atom.core.lifecycle.ManagableObject;
 
@@ -25,6 +26,7 @@ import sg.atom.core.lifecycle.ManagableObject;
  */
 public class GameLevel implements ManagableObject, Savable {
 
+    protected AtomMain app;
     protected int id;
     protected String name;
     protected int point;
@@ -34,7 +36,6 @@ public class GameLevel implements ManagableObject, Savable {
     protected String description;
     protected Node levelNode;
     protected HashMap<String, Transform> levelPoints;
-    protected Application app;
 
     public GameLevel(String name) {
         this.name = name;
@@ -49,7 +50,7 @@ public class GameLevel implements ManagableObject, Savable {
     }
 
     public void init(Application app) {
-        this.app = app;
+        this.app = (AtomMain) app;
     }
 
     public void initManagers(IGameCycle... managers) {

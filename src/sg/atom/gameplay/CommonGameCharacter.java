@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import sg.atom.corex.managers.StageManager;
 import sg.atom.corex.stage.select.CursorControl;
+import sg.atom.gameplay.ai.Behaviour;
 
 /**
  *
@@ -199,6 +200,18 @@ public class CommonGameCharacter extends AbstractGameCharacter {
     }
 
     public void load(AssetManager assetManager) {
+    }
+
+    public long getId() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<Behaviour> getBehaviours() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void react(Object signal) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public static class GetByRankPredicate implements Predicate<CommonGameCharacter> {

@@ -3,16 +3,11 @@ package sg.atom.state;
 import com.google.common.util.concurrent.ListenableFuture;
 import sg.atom.corex.ui.nifty.UILoadingScreenController;
 import com.jme3.app.Application;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
-import com.jme3.scene.Node;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.util.logging.Logger;
 import sg.atom.AtomMain;
-import sg.atom.corex.managers.StageManager;
-import sg.atom.corex.managers.GUIManager;
 
 /**
  * AssetLoadState take request to load some asset or do some workload and handle
@@ -27,17 +22,10 @@ import sg.atom.corex.managers.GUIManager;
  *
  * @author cuong.nguyenmanh2
  */
-public class AssetLoadState extends AbstractAppState {
+public class AssetLoadState extends BaseGameState {
 
     public static final Logger logger = Logger.getLogger(AssetLoadState.class.getName());
-    protected AtomMain app;
-    protected Node rootNode;
-    //Managers
-    protected AssetManager assetManager;
-    protected AppStateManager stateManager;
-    protected StageManager stageManager;
-    protected GUIManager guiManager;
-    protected ListenableFuture<Boolean> loadGUIAsset, loadDataTask, loadAssetTask, loadStageTask, configTask, socialTask;   
+    protected ListenableFuture<Boolean> loadGUIAsset, loadDataTask, loadAssetTask, loadStageTask, configTask, socialTask;
     // GUI
     protected UILoadingScreenController guiController;
     protected Screen loadingScreen;
@@ -46,13 +34,6 @@ public class AssetLoadState extends AbstractAppState {
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        this.app = (AtomMain) app; // can cast Application to something more specific
-
-        this.rootNode = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
-        this.stateManager = this.app.getStateManager();
-        this.stageManager = this.app.getStageManager();
-        this.guiManager = this.app.getGUIManager();
 
         setEnabled(true);
     }

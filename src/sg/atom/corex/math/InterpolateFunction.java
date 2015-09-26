@@ -18,12 +18,11 @@ public abstract class InterpolateFunction<T> extends Converter<T, Float> impleme
     public void setEasing(Easing easing) {
         this.easing = easing;
     }
-    
-    protected abstract float getDistance(T first,T next);
+
+    protected abstract float getDistance(T first, T next);
 
     public Easing getEasing() {
         return easing;
     }
-    
-    
+
 }

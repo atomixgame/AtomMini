@@ -50,7 +50,8 @@ import sg.atom.corex.managers.StageManager;
  * <li> Most important, with reactive facilities. It open gates to managed actor
  * framework and the transactional memory model.</li> </ul>
  *
- * <p><b>NOTE:</b> Overview, the system works like this: <ul>
+ * <p>
+ * <b>NOTE:</b> Overview, the system works like this: <ul>
  *
  * <li>A waving of access (can be asynchoronous as in concurrent processing...)
  * to Entities lead to a waving of lookup (non-access) to their associated
@@ -60,12 +61,14 @@ import sg.atom.corex.managers.StageManager;
  *
  * <li> </p>
  *
- * <p>FIXME: Replace or intergrate with Zay-ES or Artemis.
+ * <p>
+ * FIXME: Replace or intergrate with Zay-ES or Artemis.
  *
  * @author atomix
  */
 @Deprecated
-public class EntityManager implements IGameCycle{
+public class EntityManager implements IGameCycle {
+
     protected AtomMain app;
     protected StageManager stageManager;
     protected EntityFactory entityFactory;
@@ -73,15 +76,17 @@ public class EntityManager implements IGameCycle{
     protected HashMap<Long, Entity> entities = new HashMap<Long, Entity>();
     private long totalEntityId = -1;
     public static long NONE_ID = -1;
+
     // Lookup
 //    protected Function<AbstractEntity, AbstractComponent> lookupFunction = null;
     // Services
+
     public EntityManager(AtomMain app) {
         this.app = app;
         this.stageManager = app.getStageManager();
         this.entityFactory = new EntityFactory(this);
     }
-    
+
     public EntityManager(StageManager stageManager) {
         this.app = stageManager.getApp();
         this.stageManager = stageManager;
@@ -171,24 +176,22 @@ public class EntityManager implements IGameCycle{
         //
         return result;
     }
-        //Cycle--------------------------------------------------------------------
+
+    //Cycle--------------------------------------------------------------------
+
     public void init() {
     }
-
 
     public void load() {
     }
 
-
     public void config(Configuration props) {
     }
-
 
     public void update(float tpf) {
         //For sometime we will require a consist view.
         //framework.get
     }
-
 
     public void finish() {
     }
@@ -249,8 +252,5 @@ public class EntityManager implements IGameCycle{
     public void setEntityById(long id, Entity newEntity) {
         entities.put(id, newEntity);
     }
-
-
-
 
 }

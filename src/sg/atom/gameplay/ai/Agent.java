@@ -1,13 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package sg.atom.gameplay.ai;
 
+import java.util.List;
+
 /**
- *
+ * Has abilities, aweaness, and events.
+ * 
  * @author CuongNguyen
  */
-public interface Agent {
+public interface Agent{
+    long getId();
+    
+    List<Behaviour> getBehaviours();
+    
+    void update(float tpf);
+    
+    void react(Object signal);
     
 }

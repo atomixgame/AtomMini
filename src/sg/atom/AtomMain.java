@@ -1,10 +1,17 @@
 package sg.atom;
 
+import com.google.common.base.Stopwatch;
+import com.google.common.eventbus.EventBus;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.ListeningScheduledExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ServiceManager;
 import com.jme3.app.SimpleApplication;
 import com.jme3.renderer.RenderManager;
 import com.jme3.system.AppSettings;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.core.device.DeviceInfo;
 import sg.atom.corex.entity.EntityManager;
@@ -18,7 +25,6 @@ import sg.atom.corex.managers.SoundManager;
 import sg.atom.corex.managers.StageManager;
 import sg.atom.state.GameStateManager;
 import sg.atom.corex.managers.GUIManager;
-import sg.atom.corex.ui.ToneGodGUIManager;
 import sg.atom.corex.managers.WorldManager;
 
 /**
@@ -26,6 +32,7 @@ import sg.atom.corex.managers.WorldManager;
  */
 public class AtomMain extends SimpleApplication implements IGameCycle {
 
+    
     protected AtomAssetManager exAssetManager;
     protected StageManager stageManager;
     protected GUIManager guiManager;
@@ -40,7 +47,12 @@ public class AtomMain extends SimpleApplication implements IGameCycle {
     protected GameStateManager gameStateManager;
     protected DeviceInfo deviceInfo;
     protected boolean customCycle = false;
+    protected boolean injected = false;
     protected ArrayList<IGameCycle> cycles = new ArrayList<IGameCycle>();
+    protected EventBus eventBus = new EventBus("AtomMain");
+    protected Stopwatch stopwatch = Stopwatch.createStarted();
+    protected ListeningExecutorService executorService = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
+    protected ListeningScheduledExecutorService scheduler = MoreExecutors.listeningDecorator(new ScheduledThreadPoolExecutor(2));
 
     @Override
     public void simpleInitApp() {
@@ -61,12 +73,14 @@ public class AtomMain extends SimpleApplication implements IGameCycle {
     }
 
     protected void registerManagers() {
-        this.materialManager = new MaterialManager(assetManager);
-        this.soundManager = new SoundManager(this);
-        this.worldManager = new WorldManager(this);
-        this.stageManager = new StageManager(this);
-        this.guiManager = new ToneGodGUIManager(this);
-        this.gamePlayManager = new GamePlayManager(this);
+        if (!injected) {
+            this.materialManager = new MaterialManager(this);
+            this.soundManager = new SoundManager(this);
+            this.worldManager = new WorldManager(this);
+            this.stageManager = new StageManager(this);
+            this.guiManager = new GUIManager(this);
+            this.gamePlayManager = new GamePlayManager(this);
+        }
     }
 
     protected void initManagers() {
@@ -279,5 +293,25 @@ public class AtomMain extends SimpleApplication implements IGameCycle {
 
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    public ServiceManager getServiceManager() {
+        return serviceManager;
+    }
+
+    public ListeningExecutorService getExecutorService() {
+        return executorService;
+    }
+
+    public ListeningScheduledExecutorService getScheduler() {
+        return scheduler;
+    }
+
+    public Stopwatch getStopwatch() {
+        return stopwatch;
+    }
+
+    public EventBus getEventBus() {
+        return eventBus;
     }
 }

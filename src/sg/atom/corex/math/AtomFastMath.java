@@ -18,7 +18,7 @@ import java.util.Random;
  *
  * @author atomix
  */
-public class AtomFastMath extends sg.atom.corex.math.FastMath{
+public class AtomFastMath extends sg.atom.corex.math.MathUtils{
     public static Random random = new Random();
     
     // aditional 3d maths

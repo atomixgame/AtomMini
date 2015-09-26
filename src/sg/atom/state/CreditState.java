@@ -7,13 +7,7 @@ package sg.atom.state;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
-import com.jme3.scene.Node;
-import de.lessvoid.nifty.Nifty;
 import java.util.logging.Logger;
-import sg.atom.AtomMain;
-import sg.atom.corex.managers.StageManager;
-import sg.atom.corex.managers.GUIManager;
 import sg.atom.corex.ui.NiftyGUIManager;
 import sg.atom.corex.ui.nifty.UICreditScreen;
 
@@ -21,16 +15,9 @@ import sg.atom.corex.ui.nifty.UICreditScreen;
  *
  * @author CuongNguyen
  */
-public class CreditState extends AbstractAppState {
+public class CreditState extends BaseGameState {
 
-    private AtomMain app;
-    private Node rootNode;
-    private AssetManager assetManager;
-    private AppStateManager stateManager;
-    private GameStateManager gameStateManager;
     private static final Logger logger = Logger.getLogger(CreditState.class.getName());
-    private GUIManager guiManager;
-    private StageManager stageManager;
     private UICreditScreen creditScreenController;
     float thisTime = 0, lastTime = 0, stepTime = 0.2f;
 
@@ -41,15 +28,6 @@ public class CreditState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
 
-        this.app = (AtomMain) app; // can cast Application to something more specific
-
-        this.rootNode = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
-        this.stateManager = this.app.getStateManager();
-        //this.gameStateManager = this.app.getGameStateManager();
-
-        this.guiManager = this.app.getGUIManager();
-        this.stageManager = this.app.getStageManager();
         setEnabled(true);
 
     }

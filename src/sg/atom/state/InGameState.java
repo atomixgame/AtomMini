@@ -3,17 +3,11 @@ package sg.atom.state;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
-import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.scene.Node;
 import java.util.logging.Logger;
 
-import sg.atom.AtomMain;
-import sg.atom.gameplay.GamePlayManager;
-import sg.atom.corex.managers.StageManager;
 import sg.atom.corex.managers.GUIManager;
 import sg.atom.corex.ui.NiftyGUIManager;
 import sg.atom.corex.ui.nifty.UIInGameScreen;
@@ -22,20 +16,10 @@ import sg.atom.corex.ui.nifty.UIInGameScreen;
  *
  * @author cuong.nguyenmanh2
  */
-public class InGameState extends AbstractAppState {
+public class InGameState extends BaseGameState {
 
     private static final Logger logger = Logger.getLogger(InGameState.class.getName());
-    //FIXME: Should not use shortcuts!
-    protected AtomMain app;
-    protected Node rootNode;
-    protected AssetManager assetManager;
-    protected AppStateManager stateManager;
-    protected GameStateManager gameStateManager;
-    protected GUIManager guiManager;
-    protected StageManager stageManager;
-    protected GamePlayManager gamePlayManager;
     protected UIInGameScreen screenController;
-    protected InputManager inputManager;
     //FIXME: replace with Int state
     protected boolean gamePause;
     protected ActionListener actionListener;
@@ -43,16 +27,6 @@ public class InGameState extends AbstractAppState {
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        this.app = (AtomMain) app; // can cast Application to something more specific
-
-        this.rootNode = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
-        this.stateManager = this.app.getStateManager();
-        //this.gameStateManager = this.app.getGameStateManager();
-
-        this.guiManager = this.app.getGUIManager();
-        this.stageManager = this.app.getStageManager();
-        this.inputManager = this.app.getInputManager();
         setEnabled(true);
     }
 

@@ -13,20 +13,25 @@ import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
 import java.util.List;
 import org.apache.commons.configuration.Configuration;
+import sg.atom.AtomMain;
 
 /**
  * MaterialManager.
  *
- * <p>Manager and Wrapper for useful functions for Material, including Material
+ * <p>
+ * Manager and Wrapper for useful functions for Material, including Material
  * clone, conversion, Color, Light attributes (Shiny,diffuse,...) and low level
  * effects. Tracked Material can be automaticly sync with each other in Atom
  * life cycle.
  *
- * <p>Convert various Material format to JME pipeline.
+ * <p>
+ * Convert various Material format to JME pipeline.
  *
- * <p>Manipulate Material quality, blending.
+ * <p>
+ * Manipulate Material quality, blending.
  *
- * <p>Ready for different Material scheme.
+ * <p>
+ * Ready for different Material scheme.
  *
  * @author atomix
  */
@@ -38,12 +43,20 @@ public class MaterialManager {
     private Material matWire;
     private Material unshadedMat;
 
-    public MaterialManager(WorldManager worldManager) {
-        this.assetManager = worldManager.getAssetManager();
+    public MaterialManager(AtomMain app) {
+        this.assetManager = app.getAssetManager();
     }
 
     public MaterialManager(AssetManager assetManager) {
         this.assetManager = assetManager;
+    }
+
+    public static MaterialManager getDefaultInstance(AtomMain app) {
+        if (defaultInstance == null) {
+            defaultInstance = new MaterialManager(app);
+        } else {
+        }
+        return defaultInstance;
     }
 
     public static MaterialManager getDefaultInstance(AssetManager assetManager) {

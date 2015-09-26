@@ -4,11 +4,15 @@
  */
 package sg.atom.gameplay;
 
+import com.jme3.renderer.RenderManager;
+import com.jme3.renderer.ViewPort;
+import com.jme3.scene.control.AbstractControl;
+
 /**
  *
  * @author CuongNguyen
  */
-public class Item {
+public class Item extends AbstractControl{
 
     int id;
     String name;
@@ -45,20 +49,24 @@ public class Item {
     public void onDrop() {
     }
 
-    public void onPickInventory(){
-        
+    public void onPickInventory() {
+
     }
-    public void onDropInventory(){
-        
+
+    public void onDropInventory() {
+
     }
-    public void onHover(){
-        
+
+    public void onHover() {
+
     }
-    
+
     public void onUse(CommonGameCharacter character) {
-        
+
     }
+
     //GETTER & SETTER -------------------------------------------------------------------
+
     public int getId() {
         return id;
     }
@@ -129,5 +137,15 @@ public class Item {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    @Override
+    protected void controlUpdate(float tpf) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void controlRender(RenderManager rm, ViewPort vp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

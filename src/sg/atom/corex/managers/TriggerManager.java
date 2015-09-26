@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.atom.corex.logic.trigger;
+package sg.atom.corex.managers;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -13,6 +13,7 @@ import com.google.common.util.concurrent.Service;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.scene.Spatial;
 import java.util.ArrayList;
+import sg.atom.corex.logic.Trigger;
 
 /**
  *

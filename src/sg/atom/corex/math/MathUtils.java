@@ -13,7 +13,7 @@ import java.util.Random;
  *
  * @author atomix
  */
-public class FastMath {
+public class MathUtils {
 
     public static Random random = new Random();
     public static float PI = 3.14159265358979323846f;
@@ -209,7 +209,7 @@ public class FastMath {
      * value.
      */
     static public final boolean randomBoolean(float chance) {
-        return FastMath.random() < chance;
+        return MathUtils.random() < chance;
     }
 
     /**

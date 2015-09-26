@@ -7,55 +7,28 @@ package sg.atom.state;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
-import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
 import java.util.List;
 import java.util.logging.Logger;
-import sg.atom.AtomMain;
-import sg.atom.gameplay.GamePlayManager;
-import sg.atom.corex.managers.StageManager;
-import sg.atom.corex.managers.GUIManager;
 import sg.atom.corex.ui.NiftyGUIManager;
 import sg.atom.corex.ui.nifty.UIFightScreen;
-import sg.atom.corex.ui.nifty.UIInGameScreen;
 
 /**
  *
  * @author cuong.nguyenmanh2
  */
-public class FightState extends AbstractAppState {
+public class FightState extends BaseGameState {
 
-    private AtomMain app;
-    private Node rootNode;
-    private AssetManager assetManager;
-    private AppStateManager stateManager;
-    private GameStateManager gameStateManager;
     private static final Logger logger = Logger.getLogger(CreditState.class.getName());
-    private GUIManager guiManager;
-    private StageManager stageManager;
-    private GamePlayManager gamePlayManager;
     private UIFightScreen screenController;
     private boolean gamePause;
-    private InputManager inputManager;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        this.app = (AtomMain) app; // can cast Application to something more specific
-
-        this.rootNode = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
-        this.stateManager = this.app.getStateManager();
-        //this.gameStateManager = this.app.getGameStateManager();
-
-        this.guiManager = this.app.getGUIManager();
-        this.stageManager = this.app.getStageManager();
-        this.inputManager = this.app.getInputManager();
         setEnabled(true);
     }
 

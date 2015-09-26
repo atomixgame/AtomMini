@@ -14,29 +14,13 @@ import sg.atom.corex.managers.GUIManager;
  *
  * @author cuong.nguyenmanh2
  */
-public class MainMenuState extends AbstractAppState {
+public class MainMenuState extends BaseGameState {
 
     private static final Logger logger = Logger.getLogger(MainMenuState.class.getName());
-    protected AtomMain app;
-    protected Node rootNode;
-    protected AssetManager assetManager;
-    protected AppStateManager stateManager;
-    protected GameStateManager gameStateManager;
-    protected GUIManager guiManager;
-    protected StageManager stageManager;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        this.app = (AtomMain) app; // can cast Application to something more specific
-
-        this.rootNode = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
-        this.stateManager = this.app.getStateManager();
-        //this.gameStateManager = this.app.getGameStateManager();
-
-        this.guiManager = this.app.getGUIManager();
-        this.stageManager = this.app.getStageManager();
         setEnabled(true);
     }
 

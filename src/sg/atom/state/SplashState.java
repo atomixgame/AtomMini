@@ -7,27 +7,15 @@ package sg.atom.state;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
-import com.jme3.scene.Node;
 import java.util.logging.Logger;
-import sg.atom.AtomMain;
-import sg.atom.corex.managers.StageManager;
-import sg.atom.corex.managers.GUIManager;
 
 /**
  *
  * @author CuongNguyen
  */
-public class SplashState extends AbstractAppState {
+public class SplashState extends BaseGameState {
     
-    private AtomMain app;
-    private Node rootNode;
-    private AssetManager assetManager;
-    private AppStateManager stateManager;
-    private GameStateManager gameStateManager;
     private static final Logger logger = Logger.getLogger(SplashState.class.getName());
-    private GUIManager guiManager;
-    private StageManager stageManager;
     float thisTime = 0, lastTime = 0, stepTime = 2;
     
     public SplashState() {
@@ -37,15 +25,6 @@ public class SplashState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         
-        this.app = (AtomMain) app; // can cast Application to something more specific
-
-        this.rootNode = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
-        this.stateManager = this.app.getStateManager();
-        //this.gameStateManager = this.app.getGameStateManager();
-
-        this.guiManager = this.app.getGUIManager();
-        this.stageManager = this.app.getStageManager();
         setEnabled(true);
         
     }

@@ -8,7 +8,7 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.util.logging.Logger;
 import sg.atom.AtomMain;
-import sg.atom.state.BaseGameState;
+import sg.atom.state.base.BaseGameState;
 
 /**
  * AssetLoadState take request to load some asset or do some workload and handle

@@ -143,7 +143,7 @@ public class Inventory {
     }
 
     public Item getItemAt(int x, int y) {
-        return ItemManager.getInstance().getItem(itemIdMap[x][y]);
+        return itemManager.getItem(itemIdMap[x][y]);
     }
 
     public Item getItemAt(int xy) {

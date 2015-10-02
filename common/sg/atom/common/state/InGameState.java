@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import sg.atom.corex.managers.GUIManager;
 import sg.atom.common.ui.nifty.NiftyGUIManager;
 import sg.atom.common.ui.nifty.UIInGameScreen;
-import sg.atom.state.BaseGameState;
+import sg.atom.state.base.BaseGameState;
 
 /**
  *

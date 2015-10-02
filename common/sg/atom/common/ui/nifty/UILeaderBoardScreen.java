@@ -37,11 +37,11 @@ public class UILeaderBoardScreen implements ScreenController {
     public void createPlayerInfoList() {
         ListBox listBox = screen.findNiftyControl(INFO_LIST_ID, ListBox.class);
         listBox.clear();
-        
+
         //
-        listBox.addItem(new PlayerInfo(1, "Atomix", "2425.png", 800));
-        listBox.addItem(new PlayerInfo(2, "Kelly", "2426.png", 400));
-        listBox.addItem(new PlayerInfo(3, "Hato", "2427.png", 200));
+        listBox.addItem(new PlayerInfo(1, "Atomix", "2425.png"));
+        listBox.addItem(new PlayerInfo(2, "Kelly", "2426.png"));
+        listBox.addItem(new PlayerInfo(3, "Hato", "2427.png"));
     }
 
     /**

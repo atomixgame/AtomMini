@@ -17,9 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import sg.atom.corex.entity.SpatialEntity;
 import sg.atom.corex.managers.StageManager;
-import sg.atom.corex.stage.GameAction;
 import sg.atom.corex.stage.select.CursorControl;
-import sg.atom.gameplay.ai.Behaviour;
+import sg.atom.ai.Behaviour;
 import sg.atom.gameplay.managers.ItemManager;
 import sg.atom.gameplay.managers.SkillManager;
 
@@ -59,6 +58,7 @@ public class CommonGameCharacter extends AbstractGameCharacter {
     protected ArrayList<Skill> skills;
     protected Inventory inventory;
     protected Item currentItem;
+    protected boolean isNpc;
 
     public CommonGameCharacter(String name) {
         super(name, null);
@@ -77,7 +77,7 @@ public class CommonGameCharacter extends AbstractGameCharacter {
         this(name, model);
         this.isNpc = false;
         this.owner = owner;
-        this.owner.getTeam().add(this);
+        this.owner.getCharacters().add(this);
     }
 
     public void onStage(StageManager stageManager) {
@@ -355,13 +355,13 @@ public class CommonGameCharacter extends AbstractGameCharacter {
     public void createInventory() {
         inventory = new Inventory(5, 5);
         items = new ArrayList<Item>();
-        ItemManager itemManager = ItemManager.getInstance();
+        ItemManager itemManager = getApp().getStateManager().getState(ItemManager.class);
         inventory.addAll(items);
         this.currentItem = items.get(0);
     }
 
     public void createSkills() {
-        SkillManager skillManager = SkillManager.getInstance();
+        SkillManager skillManager = getApp().getStateManager().getState(SkillManager.class);
         this.mainSkill = skills.get(0);
     }
 
@@ -427,4 +427,14 @@ public class CommonGameCharacter extends AbstractGameCharacter {
 
     public void useItem() {
     }
+
+    @Override
+    public boolean isNpc() {
+        return super.isNpc(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setIsNpc(boolean isNpc) {
+        this.isNpc = isNpc;
+    }
+
 }

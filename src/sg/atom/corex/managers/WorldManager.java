@@ -1,6 +1,5 @@
 package sg.atom.corex.managers;
 
-import com.jme3.asset.AssetManager;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
@@ -22,6 +21,7 @@ import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.AbstractManager;
 import sg.atom.corex.AbstractHelper;
+import sg.atom.corex.entity.SpatialEntity;
 import sg.atom.gameplay.GameLevel;
 import sg.atom.corex.world.WorldSettings;
 
@@ -153,9 +153,6 @@ public class WorldManager extends AbstractManager {
     public void attachScene() {
     }
 
-    public void attachSpatial() {
-    }
-
     public void attachWorld() {
         rootNode.attachChild(worldNode);
     }
@@ -188,6 +185,49 @@ public class WorldManager extends AbstractManager {
 
     public void loadLevel(GameLevel level) {
         level.load(assetManager);
+    }
+
+    public void putEntity(Node parentNode, SpatialEntity entity, Vector2f mapPos) {
+        Spatial spatial = entity.getSpatial();
+        parentNode.attachChild(spatial);
+        spatial.setLocalTranslation(new Vector3f(mapPos.x, 0, mapPos.y));
+    }
+
+    public void putEntity(SpatialEntity entity, Vector2f mapPos) {
+        putEntity(worldNode, entity, mapPos);
+    }
+
+    public void putEntity(SpatialEntity entity, Vector2f mapPos, int state) {
+    }
+
+    public void putEntity(Node parentNode, SpatialEntity entity, Vector3f mapPos) {
+        Spatial spatial = entity.getSpatial();
+        parentNode.attachChild(spatial);
+        spatial.setLocalTranslation(new Vector3f(mapPos));
+    }
+
+    public void putEntity(SpatialEntity entity, Vector3f mapPos) {
+        putEntity(worldNode, entity, mapPos);
+    }
+
+    public void putEntity(SpatialEntity entity, Vector3f mapPos, int state) {
+    }
+
+    public void putSpatial(Spatial spatial, Vector3f mapPos) {
+        worldNode.attachChild(spatial);
+        spatial.setLocalTranslation(new Vector3f(mapPos));
+    }
+
+    public void putSpatial(Spatial spatial, Vector2f mapPos) {
+        worldNode.attachChild(spatial);
+    }
+
+    public void putSpatial(Spatial spatial) {
+        worldNode.attachChild(spatial);
+    }
+
+    public void putSpatial(Node parent, Spatial spatial) {
+        parent.attachChild(spatial);
     }
     //Cycle -------------------------------------------------------------------
 
@@ -255,7 +295,7 @@ public class WorldManager extends AbstractManager {
         return gizmo;
     }
 
-    public GameLevel getCurrentLevel() {
-        return app.getGamePlayManager().getCurrentLevel();
+    public Spatial createPlaceHolder(String type) {
+        return null;
     }
 }

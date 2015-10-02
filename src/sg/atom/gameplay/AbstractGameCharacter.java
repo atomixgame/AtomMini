@@ -14,7 +14,7 @@ import sg.atom.AtomMain;
 import sg.atom.corex.entity.SpatialEntity;
 import sg.atom.core.lifecycle.IGameCycle;
 import sg.atom.core.lifecycle.ManagableObject;
-import sg.atom.gameplay.ai.Agent;
+import sg.atom.ai.Agent;
 import sg.atom.corex.stage.GameAction;
 import sg.atom.corex.stage.GameActor;
 import sg.atom.corex.managers.StageManager;

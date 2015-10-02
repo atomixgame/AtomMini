@@ -51,7 +51,7 @@ public class UIShopScreen implements ScreenController, DroppableDropFilter {
     public void bind(Nifty nifty, Screen screen) {
         this.screen = screen;
         this.nifty = nifty;
-        this.shop = Shop.getInstance();
+//        this.shop = ;
         itemListPanel = nifty.getCurrentScreen().findElementById("itemList");
 
     }

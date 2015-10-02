@@ -4,9 +4,15 @@
  */
 package sg.atom.corex.entity;
 
-import com.simsilica.es.Entity;
-import sg.atom.corex.managers.StageManager;
-import sg.atom.corex.managers.WorldManager;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.reflect.ClassPath;
+import com.jme3.scene.Spatial;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
+import sg.atom.AtomMain;
 
 /**
  * EntityFactory to procedure Entity.
@@ -17,12 +23,6 @@ import sg.atom.corex.managers.WorldManager;
  * <li>It has a Cache implementation of original entities beside of one in
  * AssetManager.
  *
- * <li>It can compose any "free bunch" (no-order, no dependencies) of
- * Components. As in ComponentSet like an Entity!
- *
- * <li>Also support dependency injection to create (compose) Entity as a
- * Composite of Fragment (like in Qi4j).
- *
  * <li>
  *
  * </ul>
@@ -30,39 +30,117 @@ import sg.atom.corex.managers.WorldManager;
  * @author atomix
  */
 public class EntityFactory {
+    public static final String entityPackageName = "sg.games.dragon.entities";
+    protected AtomMain app;
 
-    protected EntityManager entityManager;
-    protected StageManager stageManager;
-    protected WorldManager worldManager;
-
-    public EntityFactory(EntityManager entityManager) {
-        this.entityManager = entityManager;
-//        this.stageManager = stageManager;
+    public EntityFactory(AtomMain app) {
+        this.app = app;
+//        this.entityManager = app.getEntityManager();
     }
 
-    public Entity create(Class clazz) {
+    public ComposableEntity create(String type) {
         return null;
     }
 
-    public Entity create(Object param) {
+    public ComposableEntity create(Class<? extends SpatialEntity> clazz) {
+        ComposableEntity newEntity = createSpatialEntity(clazz, "");
+        return newEntity;
+    }
+
+    public Class<? extends SpatialEntity> getEntityClass(String type) {
+        try {
+            Class<? extends SpatialEntity> clazz = null;
+            ImmutableSet<ClassPath.ClassInfo> packages = ClassPath.from(this.getClass().getClassLoader()).getTopLevelClasses(entityPackageName);
+            for (ClassPath.ClassInfo clazzInfo : packages) {
+                if (clazzInfo.getSimpleName().equalsIgnoreCase(type)) {
+                    clazz = (Class<? extends SpatialEntity>) clazzInfo.load();
+                }
+            }
+            if (clazz != null) {
+                return clazz;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(EntityFactory.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
 
-    public Entity create(Object... params) {
+    public SpatialEntity createSpatialEntity(String type, String path) {
+        Class<? extends SpatialEntity> clazz = getEntityClass(type);
+        if (clazz != null) {
+            return createSpatialEntity(clazz, path);
+        }
+
         return null;
     }
 
-    public Entity cloneObject(Entity orginal) {
+    public SpatialEntity createSpatialEntity(String type, Spatial model) {
+        Class<? extends SpatialEntity> clazz = getEntityClass(type);
+        if (clazz != null) {
+            return createSpatialEntity(clazz, model);
+        }
+
         return null;
     }
 
-//    public Entity get() {
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
-    public void buildEntityFromComponents(Object... components) {
+    public SpatialEntity createSpatialEntity(Class<? extends SpatialEntity> clazz, Spatial model, Class<? extends SpatialEntityControl>... controls) {
+        SpatialEntity newEntity = null;
+        String type = clazz.getSimpleName();
+        try {
+            newEntity = ConstructorUtils.invokeConstructor(clazz, new Object[]{app.getEntityManager().getNewEntityId(), type, model});
+//            entityManager.addEntity(newEntity);
+            for (Class<? extends SpatialEntityControl> c : controls) {
+                SpatialEntityControl controlInstance = ConstructorUtils.invokeConstructor(c, new Object[]{app.getEntityManager(), newEntity});
+                newEntity.getSpatial().addControl(controlInstance);
+            }
+
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(EntityFactory.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(EntityFactory.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(EntityFactory.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(EntityFactory.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return newEntity;
     }
 
-    public static void decorate(Entity entity, Object component) {
+    public SpatialEntity createSpatialEntity(Class<? extends SpatialEntity> clazz, String path) {
+        Spatial model;
+        String type = clazz.getSimpleName();
+        if (path == null || path.isEmpty()) {
+            model = app.getWorldManager().createPlaceHolder(type);
+        } else {
+            model = app.getAssetManager().loadModel(path);
+        }
+
+        return createSpatialEntity(clazz, model);
+    }
+
+    public SpatialEntity createSpatialEntity(String type, Class<? extends SpatialEntityControl>... controls) {
+        Spatial model = app.getWorldManager().getModel(type).clone();
+        Class<? extends SpatialEntity> clazz = getEntityClass(type);
+        SpatialEntity newEntity = createSpatialEntity(clazz, model, controls);
+        return newEntity;
+    }
+
+    public ComposableEntity create(String type, Object... params) {
+        return null;
+    }
+
+    public ComposableEntity cloneObject(ComposableEntity orginal) {
+        return null;
+    }
+
+    public ComposableEntity createFromComponents(Object... components) {
+        SpatialEntity newEntity = new SpatialEntity(app.getEntityManager().getNewEntityId());
+        newEntity.compose(components);
+        return newEntity;
+    }
+
+    public static void decorate(ComposableEntity entity, Object... components) {
+        entity.compose(components);
     }
 
     public Object cloneComponent(Object component) {

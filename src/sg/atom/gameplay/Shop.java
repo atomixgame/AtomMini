@@ -4,44 +4,31 @@
  */
 package sg.atom.gameplay;
 
+import com.jme3.app.Application;
+import com.jme3.app.state.AppStateManager;
 import sg.atom.gameplay.managers.ItemManager;
 import java.util.ArrayList;
 import java.util.List;
+import sg.atom.state.base.BaseGameState;
 
 /**
  *
  * @author cuong.nguyenmanh2
  */
-public class Shop {
+public class Shop extends BaseGameState {
 
     ArrayList<Item> items;
-    /**
-     * Singleton reference of Shop.
-     */
-    private static Shop defaultInstance;
 
-    /**
-     * Constructs singleton instance of Shop.
-     */
-    private Shop() {
+    @Override
+    public void initialize(AppStateManager stateManager, Application app) {
+        super.initialize(stateManager, app);
+
         items = new ArrayList<Item>();
         loadItems();
     }
 
-    /**
-     * Provides reference to singleton object of Shop.
-     *
-     * @return Singleton instance of Shop.
-     */
-    public static synchronized final Shop getInstance() {
-        if (defaultInstance == null) {
-            defaultInstance = new Shop();
-        }
-        return defaultInstance;
-    }
-
     public void loadItems() {
-        items = ItemManager.getInstance().getItems();
+        items = getApp().getStateManager().getState(ItemManager.class).getItems();
     }
 
     public List<Item> getItems() {

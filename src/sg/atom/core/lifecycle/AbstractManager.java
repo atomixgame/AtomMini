@@ -37,18 +37,25 @@ public class AbstractManager implements IGameCycle, AppState {
 
     public AbstractManager(AtomMain app) {
         this.app = app;
-        this.guiNode = app.getGuiNode();
-        this.guiViewPort = app.getGuiViewPort();
-        this.rootNode = app.getRootNode();
-        this.audioRenderer = app.getAudioRenderer();
-        this.viewPort = app.getViewPort();
-        this.assetManager = app.getAssetManager();
-        this.stateManager = app.getStateManager();
-        this.inputManager = app.getInputManager();
-        this.initialized = true;
+
+        init();
     }
 
     public void init() {
+        if (this.app == null) {
+            this.guiNode = this.app.getGuiNode();
+            this.guiViewPort = this.app.getGuiViewPort();
+            this.rootNode = this.app.getRootNode();
+            this.audioRenderer = this.app.getAudioRenderer();
+            this.viewPort = this.app.getViewPort();
+            this.assetManager = this.app.getAssetManager();
+            this.stateManager = this.app.getStateManager();
+            this.inputManager = this.app.getInputManager();
+
+            this.initialized = true;
+        } else {
+            this.initialized = false;
+        }
     }
 
     public void load() {
@@ -70,15 +77,8 @@ public class AbstractManager implements IGameCycle, AppState {
 
         if (this.initialized) {
         } else {
-            this.initialized = true;
             this.app = (AtomMain) app;
-            this.guiNode = this.app.getGuiNode();
-            this.rootNode = this.app.getRootNode();
-            this.assetManager = app.getAssetManager();
-            this.stateManager = app.getStateManager();
-            this.inputManager = app.getInputManager();
-            this.audioRenderer = app.getAudioRenderer();
-            this.viewPort = app.getViewPort();
+            init();
         }
 
     }

@@ -5,8 +5,6 @@
 package sg.atom.corex.stage.fx.sprite;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import sg.atom.corex.animation.AtomAnimation;
 
 
 /**
@@ -16,7 +14,7 @@ import sg.atom.corex.animation.AtomAnimation;
  *
  * @author CuongNguyen
  */
-public class SpriteAnimation extends AtomAnimation {
+public class SpriteAnimation {
 
     public ArrayList<Integer> getFrameIndexes() {
         return null;

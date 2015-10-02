@@ -2,7 +2,8 @@ package sg.atom.corex.stage.fx;
 
 import sg.atom.corex.managers.EffectManager;
 import com.google.common.base.Function;
-import com.jme3.asset.AssetManager;
+import com.jme3.cinematic.KeyFrame;
+import com.jme3.cinematic.TimeLine;
 import com.jme3.cinematic.events.CinematicEvent;
 import com.jme3.cinematic.events.CinematicEventListener;
 import com.jme3.renderer.RenderManager;
@@ -17,13 +18,11 @@ import java.util.List;
 /**
  * Spawning and detaching...
  *
- * @author normenhansen
+ * @author cuongnguyen
  */
 public class EffectControl extends AbstractControl implements CinematicEventListener {
 
     private EffectManager effectManager;
-    private AssetManager assetManager;
-    private Effect originalEffect;
     //Timing
     float effectTime = 0;
     float lastTime = 0;
@@ -35,6 +34,11 @@ public class EffectControl extends AbstractControl implements CinematicEventList
     boolean removeSpatialOnEnd = true;
     Function<Spatial, Void> callBackFunc;
     List<EffectEvent> events;
+    private boolean selfTiming = false;
+    private boolean started = false;
+    private boolean startImmediately = true;
+    protected TimeLine timeLine;
+    private int lastFetchedKeyFrame = -1;
 
     public EffectControl() {
         this.events = new ArrayList<EffectEvent>();
@@ -48,35 +52,87 @@ public class EffectControl extends AbstractControl implements CinematicEventList
 
     @Override
     public void setSpatial(Spatial spatial) {
-        super.setSpatial(spatial); //To change body of generated methods, choose Tools | Templates.
+        super.setSpatial(spatial);
+        if (spatial != null) {
+        }
+        if (startImmediately) {
+            start();
+        }
+    }
+
+    public void start() {
+        System.out.println("Start effect!");
+        if (this.effectManager == null) {
+            this.selfTiming = true;
+            this.timeLine = new TimeLine();
+            for (EffectEvent ee : events) {
+                addEffectEvent(ee.getStartTime(), ee);
+            }
+        } else {
+            this.effectManager.addKeys(this.events);
+        }
         effectTime = 0;
-        //this.effectManager.add
+        this.started = true;
+    }
+
+    public KeyFrame addEffectEvent(float timeStamp, EffectEvent cinematicEvent) {
+        KeyFrame keyFrame = timeLine.getKeyFrameAtTime(timeStamp);
+        if (keyFrame == null) {
+            keyFrame = new KeyFrame();
+            timeLine.addKeyFrameAtTime(timeStamp, keyFrame);
+        }
+        keyFrame.getCinematicEvents().add(cinematicEvent);
+
+        return keyFrame;
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-//        System.out.println("Effect update!");
-        //count down
-        effectTime += tpf;
+        if (started) {
+            effectTime += tpf;
 
-        if (effectTime - lastTime > stepTime) {
-            lastTime = effectTime;
+            if (effectTime - lastTime > stepTime) {
+                lastTime = effectTime;
+            }
+
+            if (selfTiming) {
+                updateSelfEvents(tpf);
+            }
+            if (effectTime > durationTime) {
+                if (!continuePlay) {
+                    if (removeSpatialOnEnd) {
+                        this.spatial.removeFromParent();
+                    }
+                    if (removeOnEnd) {
+                        this.setEnabled(false);
+                        this.spatial.removeControl(this);
+                        this.dispose();
+                    }
+                    onEndEffect();
+                }
+            }
+        } else {
+            
+        }
+    }
+
+    void updateSelfEvents(float tpf) {
+        for (int i = 0; i < events.size(); i++) {
+            CinematicEvent ce = events.get(i);
+            ce.internalUpdate(tpf);
         }
 
-        if (effectTime > durationTime) {
-            if (!continuePlay) {
-                if (removeOnEnd) {
-                    this.setEnabled(false);
-                    this.spatial.removeControl(this);
-                }
-                if (removeSpatialOnEnd) {
-                    this.spatial.removeFromParent();
-                }
-                onEndEffect();
+        int keyFrameIndex = timeLine.getKeyFrameIndexFromTime(effectTime);
+
+        //iterate to make sure every key frame is triggered
+        for (int i = lastFetchedKeyFrame + 1; i <= keyFrameIndex; i++) {
+            KeyFrame keyFrame = timeLine.get(i);
+            if (keyFrame != null) {
+                keyFrame.trigger();
             }
         }
 
-//        System.out.println(" end size: "+((ParticleEmitter)spatial).getEndSize());
+        lastFetchedKeyFrame = keyFrameIndex;
     }
 
     @Override
@@ -90,10 +146,10 @@ public class EffectControl extends AbstractControl implements CinematicEventList
     }
 
     public void onStop(CinematicEvent event) {
-        if (events.indexOf(event) == events.size() - 1) {
-            // onEndEffect():
-            //effectTime = durationTime;
-        }
+//        if (events.indexOf(event) == events.size() - 1) {
+        // onEndEffect():
+        //effectTime = durationTime;
+//        }
     }
 
     public void onEndEffect() {
@@ -104,6 +160,42 @@ public class EffectControl extends AbstractControl implements CinematicEventList
 
     public float getEffectTime() {
         return effectTime;
+    }
+
+    public float getDurationTime() {
+        return durationTime;
+    }
+
+    public EffectManager getEffectManager() {
+        return effectManager;
+    }
+
+    public float getStepTime() {
+        return stepTime;
+    }
+
+    public boolean isStartImmediately() {
+        return startImmediately;
+    }
+
+    public boolean isContinuePlay() {
+        return continuePlay;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public boolean isSelfTiming() {
+        return selfTiming;
+    }
+
+    private void dispose() {
+        for (CinematicEvent event : events) {
+            event.dispose();
+        }
+        events.clear();
+        timeLine.clear();
     }
 
     public static class Builder {
@@ -158,6 +250,11 @@ public class EffectControl extends AbstractControl implements CinematicEventList
             return this;
         }
 
+        public Builder withStartImmediately(final boolean state) {
+            this.item.startImmediately = state;
+            return this;
+        }
+        
         public Builder withCallBackFunc(final Function<Spatial, Void> callBackFunc) {
             this.item.callBackFunc = callBackFunc;
             return this;
@@ -170,22 +267,23 @@ public class EffectControl extends AbstractControl implements CinematicEventList
 
         public Builder withEvents(final List<EffectEvent> events) {
             this.item.events.addAll(events);
+            for (EffectEvent e : events) {
+                e.effectControl = this.item;
+            }
             return this;
         }
 
         public Builder withEvents(final EffectEvent... effectEvents) {
-            this.item.events.addAll(Arrays.asList(effectEvents));
+            withEvents(Arrays.asList(effectEvents));
             return this;
         }
 
         public Builder withEvents(final Collection<EffectEvent> effectEvents) {
-            this.item.events.addAll(effectEvents);
+            withEvents(effectEvents);
             return this;
         }
 
         public EffectControl build() {
-            this.item.effectManager.addKeys(this.item.events);
-//            System.out.println("Control Built!");
             return this.item;
         }
     }

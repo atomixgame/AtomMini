@@ -2,10 +2,11 @@ package sg.atom.common.ui.nifty;
 
 import sg.atom.corex.managers.GUIManager;
 import com.google.common.collect.TreeTraverser;
+import com.jme3.app.Application;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.DesktopAssetManager;
 import com.jme3.asset.TextureKey;
 import com.jme3.niftygui.NiftyJmeDisplay;
-import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
@@ -26,7 +27,6 @@ public class NiftyGUIManager extends GUIManager implements ScreenController {
 
     protected NiftyJmeDisplay niftyDisplay;
     protected Nifty nifty;
-    protected boolean niftyStarted = false;
     protected boolean disableNifty = false;
 
     public NiftyGUIManager(AtomMain app) {
@@ -39,6 +39,12 @@ public class NiftyGUIManager extends GUIManager implements ScreenController {
         setupNifty();
     }
 
+    @Override
+    public void initialize(AppStateManager stateManager, Application app) {
+        super.initialize(stateManager, app);
+        setEnabled(true);
+    }
+
     public void setupNifty() {
         niftyDisplay = new NiftyJmeDisplay(assetManager,
                 inputManager,
@@ -49,8 +55,17 @@ public class NiftyGUIManager extends GUIManager implements ScreenController {
         nifty.registerEffect("customHint", "sg.atom.corex.ui.nifty.effects.CustomHint");
         nifty.registerEffect("motionAxis", "sg.atom.corex.ui.nifty.effects.MotionAxis");
         nifty.registerEffect("imageOverlayPulsateBlend", "sg.atom.corex.ui.nifty.effects.ImageOverlayPulsateBlend");
+    }
 
-        attachNifty();
+    @Override
+    public void setEnabled(boolean active) {
+        super.setEnabled(active);
+
+        if (active) {
+            attachNifty();
+        } else {
+            detachNifty();
+        }
     }
 
     public void attachNifty() {
@@ -134,12 +149,9 @@ public class NiftyGUIManager extends GUIManager implements ScreenController {
      * @param screenName
      */
     public void goToScreen(String screenName) {
-        //FIXME: Intercept goto
-
         if (nifty.getScreen(screenName) != null) {
             nifty.gotoScreen(screenName);
         } else {
-            //loadAndGotoScreen(screenName);
         }
     }
 
@@ -156,7 +168,6 @@ public class NiftyGUIManager extends GUIManager implements ScreenController {
     }
 
     public void detachNifty() {
-
         guiViewPort.removeProcessor(niftyDisplay);
     }
 
@@ -169,4 +180,9 @@ public class NiftyGUIManager extends GUIManager implements ScreenController {
             disableNifty = true;
         }
     }
+
+    public boolean isDisableNifty() {
+        return disableNifty;
+    }
+
 }

@@ -23,9 +23,11 @@ public class GUIManager extends AbstractManager {
     protected BiMap<String, Object> commonScreens;
     protected EventBus eventBus;
 
-
     public GUIManager(AtomMain app) {
         super(app);
+    }
+
+    public void createCommonScreens() {
         commonScreens = HashBiMap.create();
     }
 
@@ -75,15 +77,6 @@ public class GUIManager extends AbstractManager {
         setupGUI();
     }
 
-    public void load() {
-    }
-
-    public void config(Configuration props) {
-    }
-
-    public void update(float tpf) {
-    }
-
     public void finish() {
         //Dispose related assets.
     }
@@ -95,5 +88,8 @@ public class GUIManager extends AbstractManager {
 
     public BiMap<String, Object> getCommonScreens() {
         return commonScreens;
+    }
+
+    public void clearScreen() {
     }
 }

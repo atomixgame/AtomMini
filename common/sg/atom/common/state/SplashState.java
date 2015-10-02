@@ -8,7 +8,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import java.util.logging.Logger;
-import sg.atom.state.BaseGameState;
+import sg.atom.state.base.BaseGameState;
 
 /**
  *

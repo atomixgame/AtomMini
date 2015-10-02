@@ -61,7 +61,7 @@ public class TestEffectsState extends AbstractAppState {
         super.setEnabled(enabled);
 
         if (enabled) {
-            this.effectManager.createEffects();
+            this.effectManager.load();
             this.effectManager.attachEffect(Vector3f.ZERO, "fire", null);
             this.effectManager.refesh();
         } else {

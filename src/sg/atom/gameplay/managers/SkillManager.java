@@ -6,54 +6,28 @@
 package sg.atom.gameplay.managers;
 
 import com.google.common.base.Function;
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Spatial;
 import java.util.ArrayList;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
-import sg.atom.core.lifecycle.IGameCycle;
+import sg.atom.core.lifecycle.AbstractManager;
 import sg.atom.gameplay.CommonGameCharacter;
 import sg.atom.gameplay.Skill;
 import sg.atom.corex.managers.StageManager;
-import sg.atom.common.state.InGameState;
-import sg.atom.common.ui.nifty.UIInGameScreen;
 
 /**
  *
  * @author CuongNguyen
  */
-public class SkillManager extends AbstractAppState implements IGameCycle{
+public class SkillManager extends AbstractManager {
 
-    private AssetManager assetManager;
-    private StageManager stageManager;
     private ArrayList<Skill> skills;
     private int gid = 0;
     public static String IMAGE_DIR = "Interface/Images/Icons/Skills/";
-    /**
-     * Singleton reference of SkillManager.
-     */
-    private static SkillManager defaultInstance;
 
-    /**
-     * Constructs singleton instance of SkillManager.
-     */
-    private SkillManager() {
-
-        loadSkills();
-    }
-
-    /**
-     * Provides reference to singleton object of SkillManager.
-     *
-     * @return Singleton instance of SkillManager.
-     */
-    public static synchronized final SkillManager getInstance() {
-        if (defaultInstance == null) {
-            defaultInstance = new SkillManager();
-        }
-        return defaultInstance;
+    public SkillManager(AtomMain app) {
+        super(app);
     }
 
     public void loadSkills() {
@@ -71,11 +45,6 @@ public class SkillManager extends AbstractAppState implements IGameCycle{
         skills.add(new Skill(gid++, "Skill-011", 40, IMAGE_DIR + "vines-acid-2.png"));
         skills.add(new Skill(gid++, "Skill-012", 40, IMAGE_DIR + "vines-acid-3.png"));
 
-
-    }
-
-    public void setStageManager(StageManager stageManager) {
-        this.stageManager = stageManager;
     }
 
     public Skill getSkillByName(String itemName) {
@@ -91,26 +60,6 @@ public class SkillManager extends AbstractAppState implements IGameCycle{
     }
 
     public void upgrade(CommonGameCharacter character, Skill skill) {
-    }
-
-    public void init() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void load() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void config(Configuration props) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void update(float tpf) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void finish() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public static class ShowSkillDamageFunction implements Function<Spatial, Void> {

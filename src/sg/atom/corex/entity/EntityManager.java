@@ -7,18 +7,24 @@ package sg.atom.corex.entity;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.MapMaker;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.simsilica.es.Entity;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
+import javax.inject.Inject;
 import org.apache.commons.configuration.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sg.atom.AtomMain;
-import sg.atom.core.lifecycle.IGameCycle;
+import sg.atom.core.lifecycle.AbstractManager;
 import sg.atom.corex.managers.StageManager;
 
 /**
- * An simple EntityManager implementation which have basic Spatial - Entity
  * relationship management.
  *
  * <ul>
@@ -26,73 +32,85 @@ import sg.atom.corex.managers.StageManager;
  * <li>It has a Cache implementation of original entities beside of one in
  * AssetManager.</li>
  *
- * <li> Also support dependency injection to create Entity.</li>
- *
- * <li> It hashed its managed entities with regular "good" hash method to manage
- * indexing.</li>
- *
- * <li> provides Functions like
- * set/get/insert/remove/swap/replace/lookup/search/scanning/distributing/inheritance
- * inspecting over its managed entities. <b>aka. 1 step ref or direct
- * modification</b></li>
- *
- * <li> Provide services over its managed entities. <b>aka. 2 steps
- * refs</b></li>
- *
- * <li> Provide reflection, references/ versioned tricks and other functions
- * over lookup result of Components. <b>aka. 3 steps refs</b></li>
- *
- * <li> open gates to manage also components of Entities (like other ES
- * implementation). In the moment of speech, other ES implementation "usually"
- * manage a "isolated view" of available components. Its meant to be using
- * "Class level of atomicity" in Java language!</li>
- *
- * <li> Most important, with reactive facilities. It open gates to managed actor
- * framework and the transactional memory model.</li> </ul>
- *
- * <p>
- * <b>NOTE:</b> Overview, the system works like this: <ul>
- *
- * <li>A waving of access (can be asynchoronous as in concurrent processing...)
- * to Entities lead to a waving of lookup (non-access) to their associated
- * Component(s).
- *
- * <li>The reference allow direct modification or transactional modification.
- *
- * <li> </p>
- *
- * <p>
- * FIXME: Replace or intergrate with Zay-ES or Artemis.
- *
  * @author atomix
  */
 @Deprecated
-public class EntityManager implements IGameCycle {
+public class EntityManager extends AbstractManager {
 
-    protected AtomMain app;
+    public static final Logger logger = LoggerFactory.getLogger(EntityManager.class.getName());
     protected StageManager stageManager;
     protected EntityFactory entityFactory;
-    // Entity management 
-    protected HashMap<Long, Entity> entities = new HashMap<Long, Entity>();
+    // ComposableEntity management 
+    protected ConcurrentMap<Long, ComposableEntity> entities = new MapMaker()
+            .concurrencyLevel(10)
+            .weakKeys()
+            .weakValues().makeMap();
+    protected HashMap<String, Node> nodes = new HashMap<String, Node>();
     private long totalEntityId = -1;
-    public static long NONE_ID = -1;
+    public static long DEFAULT_NONE_ID = SpatialEntity.DEFAULT_NONE_ID;
 
-    // Lookup
-//    protected Function<AbstractEntity, AbstractComponent> lookupFunction = null;
-    // Services
-
+    @Inject
+    public EntityManager(){
+        
+    }
     public EntityManager(AtomMain app) {
-        this.app = app;
-        this.stageManager = app.getStageManager();
-        this.entityFactory = new EntityFactory(this);
+        super(app);
     }
 
-    public EntityManager(StageManager stageManager) {
-        this.app = stageManager.getApp();
-        this.stageManager = stageManager;
-        this.entityFactory = new EntityFactory(this);
+    public static class EntityEvent {
+
+        long timeStamp;
+        ComposableEntity entity;
+        long entityId;
+
+        public EntityEvent(ComposableEntity e) {
+            this.entity = e;
+            this.entityId = e.getIid();
+        }
+
+        public EntityEvent(ComposableEntity e, long timeStamp) {
+            this.timeStamp = timeStamp;
+            this.entity = e;
+            this.entityId = e.getIid();
+        }
+
+        public ComposableEntity getEntity() {
+            return entity;
+        }
+
+        public long getEntityId() {
+            return entityId;
+        }
+
+        public void setTimeStamp(long timeStamp) {
+            this.timeStamp = timeStamp;
+        }
     }
 
+    public static class EntityAddEvent extends EntityEvent {
+
+        public EntityAddEvent(ComposableEntity e) {
+            super(e);
+        }
+
+        public EntityAddEvent(ComposableEntity e, long timeStamp) {
+            super(e, timeStamp);
+        }
+    }
+
+    public static class EntityRemovalEvent extends EntityEvent {
+
+        public EntityRemovalEvent(ComposableEntity e, long timeStamp) {
+            super(e, timeStamp);
+        }
+
+        public EntityRemovalEvent(ComposableEntity e) {
+            super(e);
+        }
+    }
+//    public static class EntityRemoteEvent {
+//        
+//    }
     /* Manage entities's type as primary lookup methods */
     public void registerEntityType() {
     }
@@ -109,25 +127,28 @@ public class EntityManager implements IGameCycle {
         return new Long(totalEntityId);
     }
 
-    public void addEntity(Entity e) {
-//        if (e.id == null || e.id == NONE_ID) {
-//            Long newId = getNewEntityId();
-//            e.id = newId;
-//        }
-//        entities.put(e.id, e);
+    public void addEntity(SpatialEntity e) {
+        if (e.iid == DEFAULT_NONE_ID) {
+            Long newId = getNewEntityId();
+            e.iid = newId;
+        }
+        entities.put(e.iid, e);
+        app.getEventBus().post(new EntityAddEvent(e, app.getStopwatch().elapsed(TimeUnit.MICROSECONDS)));
     }
 
-    public void removeEntity(Long id) {
-        entities.remove(id);
+    public ComposableEntity removeEntity(Long id) {
+        ComposableEntity e = entities.remove(id);
+        app.getEventBus().post(new EntityRemovalEvent(e, app.getStopwatch().elapsed(TimeUnit.MICROSECONDS)));
+        return e;
     }
 
-    public void removeEntity(Entity e) {
-//        entities.remove(e.id);
+    public ComposableEntity removeEntity(ComposableEntity e) {
+        return removeEntity(e.getIid());
     }
 
     /**
      * Should be overiden to determinate the relationship between a spatial and
-     * its associated Entity
+     * its associated ComposableEntity
      *
      * @param selectableSpatial
      * @return
@@ -135,12 +156,16 @@ public class EntityManager implements IGameCycle {
     public boolean isEntitySpatial(Spatial selectableSpatial) {
         return true;
     }
+
+    public boolean isHasNoId(SpatialEntity entity) {
+        return entity.iid == SpatialEntity.DEFAULT_NONE_ID;
+    }
     /* Search and filter over entities */
 
     public ArrayList<SpatialEntity> getAllSpatialEntities() {
         // do filter...
         ArrayList<SpatialEntity> result = new ArrayList<SpatialEntity>();
-        for (Entity entity : entities.values()) {
+        for (ComposableEntity entity : entities.values()) {
             if (entity instanceof SpatialEntity) {
                 result.add((SpatialEntity) entity);
             }
@@ -153,7 +178,7 @@ public class EntityManager implements IGameCycle {
         // do filter...
         ArrayList<SpatialEntity> result = new ArrayList<SpatialEntity>();
 
-        for (Entity entity : entities.values()) {
+        for (ComposableEntity entity : entities.values()) {
             //System.out.println(" ByGroup " + entity.id);
 //            if (entity instanceof SpatialEntity) {
 //                if (entity.getGroup().equals(groupName)) {
@@ -165,10 +190,10 @@ public class EntityManager implements IGameCycle {
         return result;
     }
 
-    public <T extends Entity> ArrayList<T> getEntitiesByClass(Class<T> clazz) {
+    public <T extends ComposableEntity> ArrayList<T> getEntitiesByClass(Class<T> clazz) {
         // do filter...
         ArrayList<T> result = new ArrayList<T>();
-        for (Entity entity : entities.values()) {
+        for (ComposableEntity entity : entities.values()) {
             if (clazz.isAssignableFrom(entity.getClass())) {
                 result.add((T) entity);
             }
@@ -180,6 +205,8 @@ public class EntityManager implements IGameCycle {
     //Cycle--------------------------------------------------------------------
 
     public void init() {
+        this.entityFactory = new EntityFactory(app);
+        this.setEnabled(true);
     }
 
     public void load() {
@@ -188,9 +215,20 @@ public class EntityManager implements IGameCycle {
     public void config(Configuration props) {
     }
 
+    @Override
     public void update(float tpf) {
-        //For sometime we will require a consist view.
-        //framework.get
+        if (actived) {
+            if (!customCycle) {
+                //For sometime we will require a consist view.
+                Iterator<ComposableEntity> iterator = entities.values().iterator();
+                while (iterator.hasNext()) {
+                    ComposableEntity entity = iterator.next();
+                    if (entity instanceof SpatialEntity) {
+                        ((SpatialEntity) entity).update(tpf);
+                    }
+                }
+            }
+        }
     }
 
     public void finish() {
@@ -198,9 +236,9 @@ public class EntityManager implements IGameCycle {
     //GETTER & SETTER
     // For Collections of Entities!-----------------------------------------
 
-    public static List<Entity> getBy(List<Entity> characters, Predicate<Entity> predicate) {
-        ArrayList<Entity> result = new ArrayList<Entity>();
-        for (Entity gc : characters) {
+    public static List<ComposableEntity> getBy(List<ComposableEntity> characters, Predicate<ComposableEntity> predicate) {
+        ArrayList<ComposableEntity> result = new ArrayList<ComposableEntity>();
+        for (ComposableEntity gc : characters) {
             if (predicate.apply(gc)) {
                 result.add(gc);
             }
@@ -209,9 +247,9 @@ public class EntityManager implements IGameCycle {
         //        return ImmutableList.copyOf(Iterables.filter(characters, predicate));
     }
 
-    public static List<Entity> getBy(List<Entity> characters, Predicate<Entity>... filters) {
-        ArrayList<Entity> result = new ArrayList<Entity>();
-        for (Entity gc : characters) {
+    public static List<ComposableEntity> getBy(List<ComposableEntity> characters, Predicate<ComposableEntity>... filters) {
+        ArrayList<ComposableEntity> result = new ArrayList<ComposableEntity>();
+        for (ComposableEntity gc : characters) {
             Predicate predicate = Predicates.and(filters);
             if (predicate.apply(gc)) {
                 result.add(gc);
@@ -221,36 +259,56 @@ public class EntityManager implements IGameCycle {
         //        return ImmutableList.copyOf(Iterables.filter(characters, predicate));
     }
 
-    public List<Entity> getBy(Predicate<Entity>... filters) {
-        ArrayList<Entity> result = new ArrayList<Entity>();
-        for (Entity gc : entities.values()) {
+    public List<ComposableEntity> getBy(Predicate<ComposableEntity>... filters) {
+        ArrayList<ComposableEntity> result = new ArrayList<ComposableEntity>();
+        for (ComposableEntity entity : entities.values()) {
             Predicate predicate = Predicates.and(filters);
-            if (predicate.apply(gc)) {
-                result.add(gc);
+            if (predicate.apply(entity)) {
+                result.add(entity);
             }
         }
         return ImmutableList.copyOf(result);
         //        return ImmutableList.copyOf(Iterables.filter(characters, predicate));
+    }
+
+    public SpatialEntity getEntityFrom(Spatial sp) {
+        SpatialEntity result = null;
+        Iterator<ComposableEntity> iterator = entities.values().iterator();
+        while (iterator.hasNext()) {
+            ComposableEntity entity = iterator.next();
+            if (entity instanceof SpatialEntity) {
+                Spatial esp = ((SpatialEntity) entity).getSpatial();
+                if (esp instanceof Node && sp.hasAncestor((Node) esp)) {
+                    result = (SpatialEntity) entity;
+                    break;
+                } else if (sp == esp) {
+                    result = (SpatialEntity) entity;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<SpatialEntity> getAllEntitiesFrom(Node node) {
+        final ArrayList<SpatialEntity> result = new ArrayList<SpatialEntity>();
+
+        return result;
+    }
+
+    public ComposableEntity getEntityById(long id) {
+        return entities.get(id);
+    }
+
+    public void setEntityById(long id, ComposableEntity newEntity) {
+        entities.put(id, newEntity);
     }
 
     public <T extends EntityFactory> T getEntityFactory(Class<T> clazz) {
         return (T) entityFactory;
     }
 
-    public Entity toEntity(Spatial sp) {
-        return null;
+    public EntityFactory getEntityFactory() {
+        return entityFactory;
     }
-
-    public Entity getEntityBySpatial(Spatial spatial) {
-        return null;
-    }
-
-    public Entity getEntityById(long id) {
-        return entities.get(id);
-    }
-
-    public void setEntityById(long id, Entity newEntity) {
-        entities.put(id, newEntity);
-    }
-
 }

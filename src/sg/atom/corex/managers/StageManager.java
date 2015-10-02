@@ -57,10 +57,10 @@ public class StageManager extends AbstractManager implements IGameCycle {
     protected Cinematic cinematic;
     protected ListeningScheduledExecutorService executor = MoreExecutors.listeningDecorator(new ScheduledThreadPoolExecutor(2));
     protected HashMap<String, String> scenesMap;
-    protected float time;
     protected GameScene currentScene;
     protected int defaultTransistionType;
     protected EffectManager effectManager;
+    protected float time;
 
     public StageManager(AtomMain app) {
         super(app);
@@ -272,6 +272,9 @@ public class StageManager extends AbstractManager implements IGameCycle {
 
     public CommonGameCharacter wrap(SpatialEntity robberEntity) {
         return null;
+    }
+
+    public void playCinematic(String intro) {
     }
 
 }

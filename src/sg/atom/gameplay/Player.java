@@ -1,45 +1,38 @@
 package sg.atom.gameplay;
 
+import com.jme3.app.Application;
+import com.jme3.asset.AssetManager;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import org.apache.commons.configuration.Configuration;
+import sg.atom.AtomMain;
+import sg.atom.core.lifecycle.IGameCycle;
+import sg.atom.core.lifecycle.ManagableObject;
+import sg.atom.gameplay.info.PlayerInfo;
 
 /**
  * Player represent the Player Model and data.
  *
  * @author CuongNguyen
  */
-public class Player {
+public class Player implements ManagableObject {
 
+    protected AtomMain app;
     int id;
     String uid;
     String name;
-    int point;
-    int range;
-    int score;
-    int gold;
-    int coin;
-    int money;
-    int status;
+    PlayerInfo playerInfo;
     CommonGameCharacter character;
-    ArrayList<CommonGameCharacter> team;
+    ArrayList<CommonGameCharacter> characters;
+    protected HashMap<String, Object> userData;
+    protected boolean isBot = false;
 
-    //Infomations & Social------------------------------------------------------
-    String realName;
-    int sex;
-    String fbAccount;
-    String fbPassword;
-    String fbUID;
-    String gpAccount;
-    String gpPassword;
-    String gpUID;
-    String email;
-    String email2;
-    int age;
-    Date birthDate;
-    int country;
-    String address;
-    String phoneNumber;
+    public Player(AtomMain app, String name) {
+        this.app = app;
+        this.name = name;
+        this.uid = name;
+    }
 
     public Player(String name, String uid) {
         this.name = name;
@@ -48,22 +41,9 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-        this.team = new ArrayList<CommonGameCharacter>();
         this.uid = "";
     }
 
-    //Exchange things
-    public void buySkill(Skill skill) {
-        money -= skill.cost;
-    }
-
-    public void buyItem(Item item) {
-        money -= item.cost;
-    }
-
-    //
-    // Collections support -----------------------------------------------------
-    // GETTER & SETTER ---------------------------------------------------------
     public CommonGameCharacter getMainCharacter() {
         return character;
     }
@@ -81,12 +61,12 @@ public class Player {
         return name;
     }
 
-    public ArrayList<CommonGameCharacter> getTeam() {
-        return team;
+    public ArrayList<CommonGameCharacter> getCharacters() {
+        return characters;
     }
 
     public List<CommonGameCharacter> getCombatCharacters() {
-        return team;
+        return characters;
     }
 
     public int getId() {
@@ -97,59 +77,46 @@ public class Player {
         this.id = id;
     }
 
-    public int getPoint() {
-        return point;
+    public void setPlayerInfo(PlayerInfo playerInfo) {
+        this.playerInfo = playerInfo;
     }
 
-    public void setPoint(int point) {
-        this.point = point;
+    public PlayerInfo getPlayerInfo() {
+        return playerInfo;
     }
 
-    public int getRange() {
-        return range;
+    public void init(Application app) {
+        this.app = (AtomMain) app;
+        this.characters = new ArrayList<CommonGameCharacter>();
+        if (this.playerInfo == null) {
+            playerInfo = new PlayerInfo(id, name, null);
+        }
     }
 
-    public void setRange(int range) {
-        this.range = range;
+    public void initManagers(IGameCycle... managers) {
     }
 
-    public int getScore() {
-        return score;
+    public void load(AssetManager assetManager) {
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void config(Configuration configuration) {
     }
 
-    public int getGold() {
-        return gold;
+    public void update(float tpf) {
     }
 
-    public void setGold(int gold) {
-        this.gold = gold;
+    public void finish() {
     }
 
-    public int getCoin() {
-        return coin;
+    public AtomMain getApp() {
+        return app;
     }
 
-    public void setCoin(int coin) {
-        this.coin = coin;
+    public HashMap<String, Object> getUserData() {
+        return userData;
     }
 
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
+    public boolean isBot() {
+        return isBot;
     }
 }

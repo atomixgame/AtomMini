@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sg.atom.gameplay;
 
 import sg.atom.gameplay.managers.ItemManager;
@@ -46,8 +41,6 @@ public class GamePlayManager extends AbstractAppState implements IGameCycle {
     protected ArrayList<Player> players;
     // Gameplay Mode! FIXME: State plz!
     protected int playMode = -1;
-    protected ArrayList<GameLevel> levels;
-    protected GameLevel currentLevel;
     protected ArrayList<BaseGamePlay> gamePlayList;
     protected BaseGamePlay currentGamePlay;
     protected boolean firstRun = true;
@@ -62,30 +55,10 @@ public class GamePlayManager extends AbstractAppState implements IGameCycle {
         this.stageManager = app.getStageManager();
     }
 
-    public void loadLevels(AssetKey assetKey) {
-        ArrayList<GameLevel> newLevels = (ArrayList<GameLevel>) assetManager.loadAsset(assetKey);
-        this.levels.addAll(newLevels);
-    }
-
-    public void loadLevels() {
-    }
-
-    public void addLevel(GameLevel level) {
-        this.levels.add(level);
-    }
-
-    public void addLevels(Collection<GameLevel> newLevels) {
-        this.levels.addAll(newLevels);
-    }
-
     public void startLevel(GameLevel level) {
     }
 
     public void initLevel(GameLevel currentLevel) {
-    }
-
-    public void setCurrentLevel(GameLevel level) {
-        this.currentLevel = level;
     }
 
     public void startGame() {
@@ -104,12 +77,11 @@ public class GamePlayManager extends AbstractAppState implements IGameCycle {
     }
 
     public void updateGUI(ScreenController screenController, float tpf) {
-        
 
     }
 
     public void award(Player player, int score) {
-        ItemManager itemManager = ItemManager.getInstance();
+        ItemManager itemManager = getApp().getStateManager().getState(ItemManager.class);
         Item item = itemManager.getAwardItem();
     }
 
@@ -117,9 +89,11 @@ public class GamePlayManager extends AbstractAppState implements IGameCycle {
     }
 
     public void toState(Class<? extends AbstractAppState> newState) {
-        
+
     }
+
     //Cycle---------------------------------------------------------------------
+
     public void init() {
     }
 
@@ -135,10 +109,6 @@ public class GamePlayManager extends AbstractAppState implements IGameCycle {
     //GETTER & SETTER
     public void setupCharacters(List<CommonGameCharacter> characters) {
         this.characters = Lists.newArrayList(characters);
-    }
-
-    public GameLevel getCurrentLevel() {
-        return currentLevel;
     }
 
     public List<CommonGameCharacter> getCharacters() {

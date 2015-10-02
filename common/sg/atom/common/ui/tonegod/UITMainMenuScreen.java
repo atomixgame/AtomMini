@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package sg.atom.common.ui.tonegod;
 
 import com.jme3.app.Application;
@@ -16,8 +12,8 @@ import sg.atom.corex.managers.GUIManager;
 import sg.atom.corex.ui.tonegod.layouts.QLayout;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.core.Screen;
-import static sg.atom.corex.ui.tonegod.layouts.QLayout.LayoutData.*;
 import tonegod.gui.core.Element;
+import tonegod.gui.core.layouts.LayoutHint.SizeUnit;
 
 /**
  *
@@ -81,14 +77,8 @@ public class UITMainMenuScreen extends Screen {
 
         //Now resolve the layout, IOC style!
         QLayout layout = new QLayout(this);
-        layout.$(background).convert().unit(UNIT_PERCENT).addTo(this).set();
-        layout.$(logo).convert().unit(UNIT_PERCENT).addTo(this).alignCenter(40).vAlignCenter(0).set();
-        layout.$(btnInGame, btnCredit, btnSocial, btnOption, btnShop, btnQuit)
-                .text("SingleGame", "Credit", "Social", "Option", "Shop", "Quit")
-                .addTo(this)
-                .size(10, 10, UNIT_PERCENT)
-                .pos(10, 20, UNIT_PERCENT).posInc((100 - 20) / 6, 0, 2, 0, UNIT_PERCENT)
-                .set();
+        layout.$(background).convert().unit(SizeUnit.percent).addTo(this).set();
+        layout.$(logo).convert().unit(SizeUnit.percent).addTo(this).alignCenter(40).vAlignCenter(0).set();
 
         layout.active(this);
     }

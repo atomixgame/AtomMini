@@ -12,10 +12,6 @@ import com.jme3.scene.control.Control;
 import sg.atom.corex.managers.WorldManager;
 
 /**
- *
- * @author atomix
- */
-/**
  * <code>SpatialEntityControl</code> (Common Implementation) keep the link from
  * the
  * <code>Spatial</code> to the appropriate
@@ -29,16 +25,18 @@ import sg.atom.corex.managers.WorldManager;
  */
 public class SpatialEntityControl extends AbstractControl {
 
-    protected WorldManager worldManager;
+    protected EntityManager entityManager;
     protected SpatialEntity spatialEntity;
 
-    public SpatialEntityControl(WorldManager worldManager, SpatialEntity spatialEntity) {
-        this.worldManager = worldManager;
+    public SpatialEntityControl(EntityManager worldManager, SpatialEntity spatialEntity) {
+        this.entityManager = worldManager;
         this.spatialEntity = spatialEntity;
+        this.spatial = spatialEntity.getSpatial();
     }
 
     @Override
     protected void controlUpdate(float tpf) {
+        this.spatialEntity.update(tpf);
     }
 
     @Override

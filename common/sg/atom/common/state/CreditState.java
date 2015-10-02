@@ -10,7 +10,7 @@ import com.jme3.app.state.AppStateManager;
 import java.util.logging.Logger;
 import sg.atom.common.ui.nifty.NiftyGUIManager;
 import sg.atom.common.ui.nifty.UICreditScreen;
-import sg.atom.state.BaseGameState;
+import sg.atom.state.base.BaseGameState;
 
 /**
  *

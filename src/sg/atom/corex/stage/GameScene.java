@@ -17,17 +17,17 @@ import sg.atom.corex.stage.sound.SoundClip;
  *
  * @author CuongNguyen
  */
-public class GameScene extends AbstractAppState{
+public class GameScene extends AbstractAppState {
 
     protected List<Camera> cameraList = new LinkedList<Camera>();
     protected Camera currentCamera;
-    protected GameLevel parentLevel;
+    protected GameLevel level;
     protected List<GameActor> actors;
     protected WorldEnviroment enviroment;
     protected SoundClip mainTheme;
 
-    public GameScene(GameLevel parentLevel, Camera cam) {
-        this.parentLevel = parentLevel;
+    public GameScene(GameLevel level, Camera cam) {
+        this.level = level;
         if (cam != null) {
             currentCamera = cam;
         } else {

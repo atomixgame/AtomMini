@@ -70,13 +70,19 @@ public class EffectEvent<T> extends AbstractCinematicEvent {
         this.effect = item.effect;
         this.interpolator = item.interpolator;
         this.propertyName = item.propertyName;
+        this.effector = item.effector;
+        this.useReflection = item.useReflection;
     }
 
     @Override
     protected void onPlay() {
         this.status = EFFECT_STARTED;
-        this.effectControl = effect.getControl(EffectControl.class);
-        //this.effectControl.
+//        System.out.println("OnPlay!");
+        if (effect != null) {
+            this.effectControl = effect.getControl(EffectControl.class);
+        } else {
+            this.effect = effectControl.getSpatial();
+        }
     }
 
     @Override
@@ -90,9 +96,7 @@ public class EffectEvent<T> extends AbstractCinematicEvent {
                 } else {
                     value = interpolator.interpolate(startValue, endValue, time / eventDuration);
                 }
-                //FIXME: Use effector instead.
-//            System.out.println(" Event effect: " + value);
-                if (useReflection) {
+                if (this.useReflection) {
                     defaultEffector.affect(effect, propertyName, value);
                 } else {
 
@@ -157,6 +161,11 @@ public class EffectEvent<T> extends AbstractCinematicEvent {
             return this;
         }
 
+        public Builder withUseReflection(final boolean isUseReflection) {
+            this.item.useReflection = isUseReflection;
+            return this;
+        }
+
         public Builder withEndValue(final T endValue) {
             this.item.endValue = endValue;
             return this;
@@ -189,6 +198,14 @@ public class EffectEvent<T> extends AbstractCinematicEvent {
 
         public Builder withConverter(final Interpolator<T> converter) {
             this.item.interpolator = converter;
+            return this;
+        }
+
+        public Builder withEffector(final Effector<T> effector) {
+            this.item.effector = effector;
+            if (effector != null) {
+                this.item.useReflection = false;
+            }
             return this;
         }
 
@@ -226,7 +243,7 @@ public class EffectEvent<T> extends AbstractCinematicEvent {
             return this;
         }
 
-        public List<EffectEvent> buildAll() {
+        public List<EffectEvent> buildSequence() {
             this.num = values.size();
 //            System.out.println("Num of effect events :" + num);
             if (values != null && num > 1) {

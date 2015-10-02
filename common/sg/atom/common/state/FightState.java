@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import sg.atom.common.ui.nifty.NiftyGUIManager;
 import sg.atom.common.ui.nifty.UIFightScreen;
-import sg.atom.state.BaseGameState;
+import sg.atom.state.base.BaseGameState;
 
 /**
  *

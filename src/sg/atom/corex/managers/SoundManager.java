@@ -6,6 +6,7 @@ package sg.atom.corex.managers;
 
 import sg.atom.corex.stage.sound.SoundClip;
 import java.util.ArrayList;
+import javax.inject.Inject;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.AbstractManager;
@@ -21,6 +22,11 @@ public class SoundManager extends AbstractManager {
     protected ArrayList<SoundClip> musicSounds;
     protected ArrayList<AudioChannel> channels;
 
+    public SoundManager() {
+        super();
+    }
+
+    @Inject
     public SoundManager(AtomMain app) {
         super(app);
     }

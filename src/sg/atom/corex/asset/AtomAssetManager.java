@@ -27,30 +27,43 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Spatial;
 import com.jme3.shader.Shader;
 import com.jme3.shader.ShaderGenerator;
-import com.jme3.shader.ShaderKey;
 import com.jme3.texture.Texture;
 import java.io.InputStream;
 import java.util.EnumSet;
 import java.util.List;
+import javax.inject.Inject;
 import org.apache.commons.configuration.Configuration;
+import sg.atom.AtomMain;
+import sg.atom.core.lifecycle.AbstractManager;
 import sg.atom.core.lifecycle.IGameCycle;
 
 /**
  * An AppState automaticly reload assets when it out of date.
  *
- * <p>This is a different AssetManager that Atom framework provide. It support
+ * <p>
+ * This is a different AssetManager that Atom framework provide. It support
  * serveral scenario of asset managing: loading, caching, free, import, export.
  *
- * <p>This class hook into Ant task structure, and only work for standard JME
- * SDK build workflow! So use it with care and only if you know what it does!
+ * <p>
+ * This class hook into Ant task structure, and only work for standard JME SDK
+ * build workflow! So use it with care and only if you know what it does!
  *
  * @author atomix
  */
-public class AtomAssetManager implements AssetManager, AppState, IGameCycle {
+public class AtomAssetManager extends AbstractManager implements AssetManager, AppState, IGameCycle {
 
     AtomAssetCache assetCache;
     EventBus eventBus;
 //    protected int mode = Globals.MODE_DEVELOPING;
+
+    public AtomAssetManager() {
+        super();
+    }
+
+    @Inject
+    public AtomAssetManager(AtomMain app) {
+        super(app);
+    }
 
     public void loadAssetAsync() {
     }
@@ -153,10 +166,6 @@ public class AtomAssetManager implements AssetManager, AppState, IGameCycle {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Shader loadShader(ShaderKey key) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public BitmapFont loadFont(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -190,7 +199,7 @@ public class AtomAssetManager implements AssetManager, AppState, IGameCycle {
     }
 
     public void init() {
-        
+
     }
 
     public void load() {

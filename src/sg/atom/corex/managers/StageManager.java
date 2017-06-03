@@ -29,10 +29,12 @@ import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.AbstractManager;
 import sg.atom.corex.entity.SpatialEntity;
 import sg.atom.core.lifecycle.IGameCycle;
+import sg.atom.corex.spatial.VirtualSpatialUnit;
 import sg.atom.corex.stage.GameScene;
-import sg.atom.gameplay.CommonGameCharacter;
+import sg.atom.corex.stage.VirtualGameActor;
+import sg.atom.corex.stage.VirtualGamePlayUnit;
+import sg.atom.corex.stage.VirtualGameScene;
 import sg.atom.corex.stage.select.CursorControl;
-import sg.atom.gameplay.GameLevel;
 
 /**
  * StageManager for Stage, Actors (Characters) and Camera.
@@ -45,7 +47,7 @@ public class StageManager extends AbstractManager implements IGameCycle {
     protected ChaseCamera chaseCam;
     protected CursorControl cursorControl;
     // Characters
-    protected ArrayList<CommonGameCharacter> characters;
+    protected ArrayList<VirtualGameActor> characters;
     // Nodes
     protected Spatial cursor3D;
     protected Spatial playerModel;
@@ -57,6 +59,7 @@ public class StageManager extends AbstractManager implements IGameCycle {
     protected Cinematic cinematic;
     protected ListeningScheduledExecutorService executor = MoreExecutors.listeningDecorator(new ScheduledThreadPoolExecutor(2));
     protected HashMap<String, String> scenesMap;
+    protected ArrayList<VirtualGameScene> scenes;
     protected GameScene currentScene;
     protected int defaultTransistionType;
     protected EffectManager effectManager;
@@ -119,8 +122,7 @@ public class StageManager extends AbstractManager implements IGameCycle {
 
     }
 
-    public void startLevel(GameLevel level) {
-        startScene(level.getPath());
+    public void startLevel(VirtualGamePlayUnit level, VirtualSpatialUnit spatial) {
     }
 
     public void startScene(String sceneName) {
@@ -143,25 +145,25 @@ public class StageManager extends AbstractManager implements IGameCycle {
     public void onState(Class<? extends AbstractAppState> newState) {
     }
 
-    public void putCharacter(CommonGameCharacter character) {
+    public void putCharacter(VirtualGameActor character) {
         character.onStage(this);
     }
 
-    public void putCharacter(CommonGameCharacter character, Vector3f pos) {
+    public void putCharacter(VirtualGameActor character, Vector3f pos) {
         character.getModel().setLocalTranslation(pos);
         character.onStage(this);
     }
 
-    public void putCharacter(CommonGameCharacter character, Transform pos) {
+    public void putCharacter(VirtualGameActor character, Transform pos) {
         character.getModel().setLocalTransform(pos);
         character.onStage(this);
     }
 
-    public void removeCharacter(CommonGameCharacter character) {
+    public void removeCharacter(VirtualGameActor character) {
 //        levelNode.detachChild(character.getModel());
     }
 
-    public void removeCharacter(CommonGameCharacter pc, float delayTime) {
+    public void removeCharacter(VirtualGameActor pc, float delayTime) {
     }
     //Stage---------------------------------------------------------------------
 
@@ -258,7 +260,7 @@ public class StageManager extends AbstractManager implements IGameCycle {
         return playerModel;
     }
 
-    public GameLevel getCurrentLevel() {
+    public VirtualGamePlayUnit getCurrentLevel() {
         return null;
     }
 
@@ -270,11 +272,7 @@ public class StageManager extends AbstractManager implements IGameCycle {
         return effectManager;
     }
 
-    public CommonGameCharacter wrap(SpatialEntity robberEntity) {
-        return null;
-    }
-
-    public void playCinematic(String intro) {
+    public void playCinematic(VirtualGameScene scene) {
     }
 
 }

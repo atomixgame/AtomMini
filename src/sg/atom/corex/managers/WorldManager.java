@@ -15,14 +15,12 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.debug.Arrow;
 import com.jme3.scene.debug.Grid;
 import com.jme3.scene.shape.Box;
-import com.jme3.texture.Texture;
 import java.util.HashMap;
-import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.AbstractManager;
 import sg.atom.corex.AbstractHelper;
 import sg.atom.corex.entity.SpatialEntity;
-import sg.atom.gameplay.GameLevel;
+import sg.atom.corex.stage.VirtualGamePlayUnit;
 import sg.atom.corex.world.WorldSettings;
 
 /**
@@ -49,6 +47,9 @@ public class WorldManager extends AbstractManager {
     // Simple maps for indirect assets management
     protected HashMap<String, String> levelMap;
     protected HashMap<String, String> modelMap;
+
+    public WorldManager() {
+    }
 
     public WorldManager(AtomMain app) {
         super(app);
@@ -102,11 +103,10 @@ public class WorldManager extends AbstractManager {
         createGrid(10, 10);
     }
 
-    public void createFlatGround(int size) {
+    public void createFlatGround(int size, Material matGround) {
         Box b = new Box(new Vector3f(0, -0.1f, size / 2), size, 0.01f, size);
         b.scaleTextureCoordinates(new Vector2f(40, 40));
         groundGeo = new Geometry("Ground", b);
-        matGround = getMatGround();
 
         groundGeo.setMaterial(matGround);
         groundGeo.setShadowMode(RenderQueue.ShadowMode.Receive);
@@ -146,8 +146,8 @@ public class WorldManager extends AbstractManager {
     public void putHelper(AbstractHelper helper, Transform pos) {
     }
 
-    public void attachLevel(GameLevel level) {
-        worldNode.attachChild(level.getLevelNode());
+    public void attachLevel(VirtualGamePlayUnit level) {
+        worldNode.attachChild(level.getNode());
     }
 
     public void attachScene() {
@@ -183,7 +183,7 @@ public class WorldManager extends AbstractManager {
 //        levels = new ArrayList<GameLevel>();
     }
 
-    public void loadLevel(GameLevel level) {
+    public void loadLevel(VirtualGamePlayUnit level) {
         level.load(assetManager);
     }
 
@@ -228,37 +228,6 @@ public class WorldManager extends AbstractManager {
 
     public void putSpatial(Node parent, Spatial spatial) {
         parent.attachChild(spatial);
-    }
-    //Cycle -------------------------------------------------------------------
-
-    public void init() {
-    }
-
-    public void config(Configuration configuration) {
-    }
-
-    public void load() {
-    }
-
-    public void update(float tpf) {
-    }
-
-    public void finish() {
-    }
-
-    // GETTER & SETTER
-    //Material . Should move to MaterialManager ------------------------------
-    //    public Material getColoredMat(ColorRGBA color) {
-//        //return MaterialManager.getDefaultInstance(assetManager).getColoredMat(color);
-//    }
-    public Material getMatGround() {
-        if (matGround == null) {
-            matGround = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-            Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
-            grass.setWrap(Texture.WrapMode.Repeat);
-            matGround.setTexture("DiffuseMap", grass);
-        }
-        return matGround;
     }
 
     public Material getLightMat() {

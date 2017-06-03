@@ -10,23 +10,23 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import java.util.LinkedList;
 import java.util.List;
-import sg.atom.gameplay.GameLevel;
+import sg.atom.corex.spatial.VirtualSpatialUnit;
 import sg.atom.corex.stage.sound.SoundClip;
 
 /**
  *
  * @author CuongNguyen
  */
-public class GameScene extends AbstractAppState {
+public class GameScene extends AbstractAppState implements VirtualGameScene{
 
     protected List<Camera> cameraList = new LinkedList<Camera>();
     protected Camera currentCamera;
-    protected GameLevel level;
+    protected VirtualSpatialUnit level;
     protected List<GameActor> actors;
     protected WorldEnviroment enviroment;
     protected SoundClip mainTheme;
 
-    public GameScene(GameLevel level, Camera cam) {
+    public GameScene(VirtualSpatialUnit level, Camera cam) {
         this.level = level;
         if (cam != null) {
             currentCamera = cam;

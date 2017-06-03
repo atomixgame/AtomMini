@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sg.atom.state.base;
 
-import sg.atom.common.state.GameStateManager;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -16,6 +10,7 @@ import com.jme3.scene.Node;
 import sg.atom.AtomMain;
 import sg.atom.corex.managers.GUIManager;
 import sg.atom.corex.managers.StageManager;
+import sg.atom.state.GameStateManager;
 
 /**
  *

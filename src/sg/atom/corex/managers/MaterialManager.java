@@ -12,6 +12,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
 import java.util.List;
+import javax.inject.Inject;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.AbstractManager;
@@ -43,6 +44,10 @@ public class MaterialManager extends AbstractManager {
     private Material matWire;
     private Material unshadedMat;
 
+    public MaterialManager(){
+    }
+    
+    @Inject
     public MaterialManager(AtomMain app) {
         super(app);
     }

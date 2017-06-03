@@ -49,10 +49,11 @@ public class EntityManager extends AbstractManager {
     private long totalEntityId = -1;
     public static long DEFAULT_NONE_ID = SpatialEntity.DEFAULT_NONE_ID;
 
-    @Inject
     public EntityManager(){
         
     }
+    
+    @Inject
     public EntityManager(AtomMain app) {
         super(app);
     }

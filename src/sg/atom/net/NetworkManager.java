@@ -9,30 +9,41 @@ import com.google.common.util.concurrent.Service;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import javax.inject.Inject;
 import org.apache.commons.configuration.Configuration;
+import sg.atom.AtomMain;
+import sg.atom.core.lifecycle.AbstractManager;
 import sg.atom.core.lifecycle.IGameCycle;
 
 /**
  *
  * @author CuongNguyen
  */
-public class NetworkManager implements IGameCycle, Service{
-    
-        //Cycle -------------------------------------------------------------------
-    public void init(){
-        
+public class NetworkManager extends AbstractManager implements IGameCycle, Service {
+
+    public NetworkManager() {
     }
-    
-    public void config(Configuration configuration){
-        
+
+    @Inject
+    public NetworkManager(AtomMain app) {
+        super(app);
     }
-    
-    public void load(){
-        
+
+    //Cycle -------------------------------------------------------------------
+    public void init() {
+
     }
-    
-    public void update(float tpf){
-        
+
+    public void config(Configuration configuration) {
+
+    }
+
+    public void load() {
+
+    }
+
+    public void update(float tpf) {
+
     }
 
     public void finish() {

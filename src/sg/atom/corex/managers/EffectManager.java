@@ -4,7 +4,6 @@
  */
 package sg.atom.corex.managers;
 
-import sg.atom.corex.stage.fx.interpolators.Vector3fInterpolator;
 import com.google.common.base.Function;
 import com.jme3.asset.AssetKey;
 import com.jme3.cinematic.Cinematic;
@@ -18,13 +17,12 @@ import com.jme3.scene.Spatial;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
+import javax.inject.Inject;
 import org.apache.commons.configuration.Configuration;
 import sg.atom.AtomMain;
 import sg.atom.core.lifecycle.AbstractManager;
 import sg.atom.corex.fx.EffectFactory;
-import sg.atom.corex.stage.fx.EffectControl;
 import sg.atom.corex.stage.fx.EffectEvent;
-import static sg.atom.corex.math.Tweenf.*;
 
 /**
  * An EffectManager is a Factory for Effects (Spatial + EffectControl).
@@ -51,6 +49,11 @@ public class EffectManager extends AbstractManager {
     protected Cinematic effectCine;
     private EffectFactory effectFactory;
 
+    public EffectManager() {
+        super();
+    }
+
+    @Inject
     public EffectManager(AtomMain app) {
         super(app);
         this.effectFactory = new EffectFactory(app);
